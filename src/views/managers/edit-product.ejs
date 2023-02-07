@@ -1,0 +1,184 @@
+<%- include('../includes/adminHead') %>
+
+    <%- include('../includes/adminNavbar.ejs') %>
+
+        <main class="main" id="adminMain">
+            <div class="page-title">
+                <h1 style="text-transform: capitalize">
+
+                </h1>
+            </div>
+            <div class="direction">
+                <ul class="flex">
+                    <li>Home</li>
+                    <li style="text-transform: capitalize">
+
+                    </li>
+                </ul>
+            </div>
+            <div>
+            </div>
+            <div class="contents">
+                <form action="/manager/product/<%= product._id %>" method="post" enctype="multipart/form-data" style="position: relative;">
+                    <div class="productEdit-page grid">
+                        <div class="left card">
+                            <div class="productField-wrap">
+                                <label class="field-title" for="name">Product Name</label>
+                                <input class="productPage-field" type="text" name="name" id="name" required
+                                    value="<%= product.name %>">
+                                <p class="description">Do not exceed 20 character when enteing the product name</p>
+                            </div>
+                            <div class="productField-wrap">
+                                <label class="field-title" for="category">Category</label>
+                                <select class="productPage-field" name="category" id="category" required>
+                                    <option selected="selected" disabled>Select Category</option>
+                                    <% categoryList.forEach(x=>{ %>
+                                        <option value="<%= x._id %>">
+                                            <%= x.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="right card" id="right">
+                            <div>
+
+
+                                <input type="file" name="productPictures" id="productPictures" class="upload-file ">
+                                <label for="productPictures" class="upload-label field-title">Upload Image</label>
+
+                                <p class="description">Pay attention to the quality of the pictures that you
+                                    add comply with the background color standers. Picture must be in certain
+                                    dimensions. Notice that the product shows all the details
+                                </p>
+                            </div>
+                            <div class="price flex">
+                                <div class="productField-wrap">
+                                    <label class="field-title" for="stock">Stocks</label>
+                                    <input class="productPage-field" type="number" name="stock" id="stock" required
+                                        value="<%= product.stock %>">
+                                </div>
+                                <div class="productField-wrap ">
+                                    <label class="field-title" for="price">Actual Price</label>
+                                    <input class="productPage-field" type="number" name="price" id="price" required
+                                        value="<%= product.price %>">
+                                </div>
+                                <div class="productField-wrap">
+                                    <label class="field-title" for="offer">Offer</label>
+                                    <input class="productPage-field" type="number" name="offer" id="offer" required
+                                        value="<%= product.offer %>">
+                                </div>
+                                <div class="productField-wrap">
+                                    <label class="field-title" for="singleQty">Qty <span
+                                            style="font-size: 10px;">(in grams)</span></label>
+                                    <input class="form-feild productPage-field" type="number" name="singleQty"
+                                        id="singleQty" required value="<%= product.singleQty %>">
+                                </div>
+
+                            </div>
+                            <div class="productField-wrap">
+                                <p class="field-title" for="name">Payment Methods</p>
+                                <input type="checkbox" name="paymentMethod" value="cashOnDelivery" id="cashOnDelivery"
+                                    required checked>
+                                <label for="cashOnDelivery">Cash on delivery</label>
+                                <input type="checkbox" name="paymentMethod" value="onlinePayment" id="onlinePayment">
+                                <label for="onlinePayment">Online Payment</label>
+                            </div>
+                            <div class="btns-wrap">
+                                <a href="/manager/products" class="btn cancel">Cancel</a>
+                                <a class="btn delete" id="deleteBtn">delete
+                                    Product</a>
+                                <input type="button" value="update Product" class="btn confirm"
+                                    onclick="validateForm()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" flex card message-wrap" id="message-wrap">
+
+                        <p id="messagevalue" class="alert-meassage danger"></p>
+                    </div>
+                    <div id="confirm-wrap">
+                        <div class="card confirm-box flex" id="confirm-box">
+                            <div class="confirm-box-img">
+                                <img src="/images/logo/icon.png" alt="">
+                            </div>
+                            <h2 id="alert-message">Are you sure to update?</h2>
+                            <div class="confirm-box-btns flex">
+                                <a class="btn cancel" id="close">no</a>
+                                <input type="submit" class="btn confirm" value="yes" id="submitBtn">
+                                <a href="/manager/product/delete/<%= product._id %>" class="btn delete" id="deleteConfBtn">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+
+        </main>
+
+
+        <script>
+
+            let messageBox = document.getElementById('message-wrap')
+            let messageValue = document.getElementById('messagevalue')
+            let formFeild = document.querySelectorAll('.productPage-field')
+            let confirmBox = document.getElementById('confirm-wrap')
+            let deleteBtn = document.getElementById('deleteBtn')
+            let deleteConfBtn = document.getElementById('deleteConfBtn')
+            let submitBtn = document.getElementById('submitBtn')
+            let closeBtn = document.getElementById('close')
+            let right = document.getElementById('right')
+            let alertMessage = document.getElementById('alert-message')
+
+            messageBox.style.display = 'none'
+            confirmBox.style.display = 'none'
+
+            closeBtn.onclick = () => {
+                confirmBox.style.display = 'none'
+                right.style.display = 'block'
+            }
+            deleteBtn.onclick =()=>{
+                submitBtn.style.display ='none'
+                alertMessage.innerText = "Are you sure to delete?"
+                confirmBox.style.display = 'flex'
+                deleteConfBtn.style.display = 'block'
+            }
+
+            function validateForm() {
+                let messageList = []
+                formFeild.forEach(x => {
+                    if (x.value == '') {
+                        console.log(x.labels[0].innerText);
+                        messageList.push(x.labels[0].innerText)
+                    }
+                })
+                sendMessage(messageList);
+            }
+
+            function sendMessage(message) {
+                console.log(message);
+                if (message != '') {
+                    console.log(message[0]);
+                    messageBox.style.display = 'block'
+                    messageValue.innerText = message[0] + " should not be empty"
+                } else {
+                    alertMessage.innerText = "Are you sure to update?"
+                    deleteConfBtn.style.display = 'none'
+                    messageBox.style.display = 'none'
+                    submitBtn.style.display = 'block'
+                    confirmBox.style.display = 'flex'
+                    right.style.display = 'none'
+                }
+
+            }
+
+        </script>
+
+
+
+
+
+
+
+
+        <%- include('../includes/bottom') %>

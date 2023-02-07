@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+    <%- include('../includes/adminNavbar.ejs') %>
+
+        <main class="main" id="adminMain">
+            <div class="page-title">
+                <h1 style="text-transform: capitalize">
+                    Dahboard
+                </h1>
+            </div>
+            <div class="direction">
+                <ul class="flex">
+                    <li>Home</li>
+                    <li style="text-transform: capitalize">
+                        Dashboard
+                    </li>
+                </ul>
+            </div>
+            <div>
+            </div>
+            <div class="contents">
+
+            </div>
+            <section class="home grid">
+                <div class="left">
+                    <div class="report-cards grid">
+                        <div class="card">
+                            <p class="admin-titles">Total Revenue</p>
+                            <div class="flex card-content">
+                                <div class="card-logo">
+                                    <img src="/images/icons/profits.SVG" alt="">
+                                </div>
+                                <p style="color: green; font-size: 32px;font-weight: 800;">0</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <p class="admin-titles">Total Expenses</p>
+                            <div class="flex card-content">
+                                <div class="card-logo">
+                                    <img src="/images/icons/loss.SVG" alt="" width="60px">
+                                </div>
+                                <p style="color: red; font-size: 32px;font-weight: 800;" >0</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <p class="admin-titles">Total family</p>
+                            <div class="flex card-content">
+                                <div class="card-logo">
+                                    <img src="/images/icons/people.SVG" alt="" width="60px">
+                                </div>
+                                <p style="color: orange; font-size: 32px;font-weight: 800;" id="employessCount">5000</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart card">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="card">
+                        <p class="admin-titles">Notifications</p>
+                        <ul>
+                            <li class="alert-meassage danger" id="alert-meassage">
+                                <i class='bx bxs-bell-ring'></i>
+                                <span>Out of Stocks</span>
+                            </li>
+                            <li class="alert-meassage warning" id="alert-meassage">
+                                <i class='bx bxs-bell-ring'></i>
+                                <span>limited Stocks</span>
+                            </li>
+                        </ul>
+
+
+                    </div>
+                </div>
+
+
+            </section>
+
+        </main>
+
+        <script src="https://kit.fontawesome.com/6819033383.js" crossorigin="anonymous"></script>
+        <script src="/js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('myChart');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(201, 203, 207, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+
+
+            /*-----------------------------*/
+            let employessCount = document.getElementById('employessCount')
+            fetch('/api/admindashboard')
+                .then(res => res.json())
+                .then(data => {
+                    employessCount.innerText = data.employeesCount
+                }).catch(err => {
+                    console.log(err);
+                })
+        </script>
+
+</body>
+
+
+</html>

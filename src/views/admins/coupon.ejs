@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="refresh" content="2"> -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <link rel="icon" href="/images/logo/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+
+    <%- include('../includes/adminNavbar.ejs') %>
+        <main class="main" id="adminMain">
+            <div class="flex">
+                <div class="">
+                    <div class="page-title">
+                        <h1 style="text-transform: capitalize">
+                            Coupon
+                        </h1>
+                    </div>
+                    <div class="direction">
+                        <ul class="flex">
+                            <li>Home</li>
+                            <li style="text-transform: capitalize">
+                                Total Coupons
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-left: auto;" class="flex">
+                    <button class="add-btn confirm" id="createBtn"><i class='bx bxs-plus-circle'></i><span>Add
+                            Coupon</span></button>
+                </div>
+            </div>
+            <div class="condtents">
+
+                <div class="content-section card" id="users">
+
+                    <div class="userBox">
+
+                        <table id="table_id">
+                            <thead>
+                                <tr style="font-weight: 800; background-color: var(--blue); color: var(--white);">
+                                    <th>Code</th>
+                                    <th>Discount</th>
+                                    <th class="table-hide">Status</th>
+                                    <th class="table-hide">Claimed</th>
+                                    <th class="table-hide">Total codes</th>
+                                    <th class="table-hide">Minimum purchase</th>
+                                    <th>Expires</th>
+                                    <th>select</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% couponsList.forEach(coupon=>{ %>
+                                    <tr>
+                                        <td>
+                                            <%= coupon.code %>
+                                        </td>
+                                        <td>
+                                            <%= coupon.discount %>
+                                        </td>
+                                        <td class="table-hide">
+                                            <%= coupon.status %>
+                                        </td>
+                                        <td class="table-hide">
+                                            <%= coupon.claimed_user %>
+                                        </td>
+                                        <td class="table-hide">
+                                            <%= coupon.user_allowed %>
+                                        </td>
+                                        <td class="table-hide">
+                                            <%= coupon.minimum_purchase %>
+                                        </td>
+                                        <td>
+                                            <% var date = new Date(coupon.expiry);
+                                            var formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear(); %>
+                                            <%= formattedDate  %>
+                                        </td>
+                                        <td><button onclick="editForm(`<%= coupon._id %>`)"
+                                                class="crud-btn">select</button>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+                <section class="" id="createCoupon">
+                    <div class="addUser-section card" id="users">
+                        <form action="" method="post" class="edit-wrap"  id="form">
+                            <ul class="flex">
+
+                                <div class="upload-with-name">
+                                    <li class="flex">
+                                        <label for="code">Code</label>
+                                        <input type="text" name="code" id="code"
+                                            style="width: 100%;padding: .5rem; text-transform: capitalize;" required
+                                            value="" class="form-inp">
+                                    </li>
+                                    <!-- <div class="flex" style="align-items: center;">
+                                        <div class="card account-image" style="width: 100px;">
+                                            <img src="/uploads/profiles/avatar.jpg" alt="" id="preview"
+                                                style="width: 100%;">
+                                        </div>
+                                        <div class="btn-wra">
+                                            <label for="image" class=" btn confirm">Upload</label>
+                                            <input type="file" accept="image/*" name="image" id="image"
+                                                class="upload-file" style="display: none;">
+                                        </div>
+                                    </div> -->
+                                </div>
+
+                                <li class="flex">
+                                    <label for="user_allowed">User allowed</label>
+                                    <input type="number" name="user_allowed" id="user_allowed" class="form-inp"
+                                        required value="">
+                                </li>
+                                <li class="flex">
+                                    <label for="minimum_purchase">Minimum purchase</label>
+                                    <input type="number" name="minimum_purchase" id="minimum_purchase"
+                                        class="form-inp" required value="">
+                                </li>
+                                <li class="flex">
+                                    <label for="expiry">expiry</label>
+                                    <input type="date" name="expiry" id="expiry" class="form-inp" required value="">
+                                </li>
+                                <li class="flex">
+                                    <label for="discount">Discount</label>
+                                    <input type="number" name="discount" id="discount" class="form-inp" required
+                                        value="">
+                                </li>
+
+                                <div class="btns-wrap flex" style="justify-content: space-evenly; width: 100%;">
+                                    <a class="btn cancel" id="close2">Cancel</a>
+                                    <a class="btn delete" id="deleteBtn">delete coupon</a>
+                                    <input type="button" value="create coupon" class="btn confirm"
+                                        id="createFormBtn" onclick="createForm()">
+                                    <input type="button" value="update coupon" class="btn confirm"
+                                        id="updateFormBtn" onclick="updateForm()">
+                                </div>
+
+                                <div>
+
+                                    <div id="confirm-wrap">
+                                        <div class="card confirm-box flex" id="confirm-box">
+                                            <div class="confirm-box-img">
+                                                <img src="/images/logo/icon.png" alt="">
+                                            </div>
+                                            <h2 id="alert-message">Are you sure to update?</h2>
+                                            <div class="confirm-box-btns flex">
+                                                <a class="btn cancel" id="close">no</a>
+                                                <input type="submit" class="btn confirm" value="yes" id="submitBtn">
+                                                <input type="button" class="btn delete" value="Delete"
+                                                    id="deleteConfBtn">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </ul>
+                        </form>
+                        <div class=" flex message-wrap" id="message-wrap">
+                            <p id="messagevalue" class="alert-meassage danger">fsdfs</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+
+        <script src="https://kit.fontawesome.com/6819033383.js" crossorigin="anonymous"></script>
+        <script src="/js/main.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#table_id').DataTable();
+            });
+        </script>
+        <script>
+            let messageBox = document.getElementById('message-wrap');
+            let messageValue = document.getElementById('messagevalue');
+            let formFeild = document.querySelectorAll('.productPage-field');
+            let confirmBox = document.getElementById('confirm-wrap');
+            let alertMessage = document.getElementById('alert-message');
+            let couponForm = document.getElementById('createCoupon');
+            let formInp = document.querySelectorAll('.form-inp')
+            let right = document.getElementById('right');
+            let form = document.getElementById('form')
+            //buttons
+            let deleteBtn = document.getElementById('deleteBtn');
+            let deleteConfBtn = document.getElementById('deleteConfBtn');
+            let closeBtn = document.getElementById('close');
+            let closeBtn2 = document.getElementById('close2');
+            let createBtn = document.getElementById('createBtn');
+            let createFormBtn = document.getElementById('createFormBtn');
+            let submitBtn = document.getElementById('submitBtn');
+            let updateFormBtn = document.getElementById('updateFormBtn');
+            //feilds
+            let codeInp = document.getElementById('code');
+            let discountInp = document.getElementById('discount');
+            let user_allowed = document.getElementById('user_allowed');
+            let minimum_purchase = document.getElementById('minimum_purchase');
+            let expiry = document.getElementById('expiry');
+            var ID;
+            messageBox.style.display = 'none'
+            confirmBox.style.display = 'none'
+            couponForm.style.display = 'none'
+
+
+
+            createBtn.onclick = () => {
+                couponForm.style.display = 'block'
+                deleteBtn.style.display = 'none'
+                updateFormBtn.style.display = 'none'
+                createFormBtn.style.display = 'block'
+            }
+            closeBtn2.onclick = () => {
+                couponForm.style.display = 'none'
+            }
+
+            closeBtn.onclick = () => {
+                confirmBox.style.display = 'none'
+                right.style.display = 'block'
+            }
+
+            deleteBtn.onclick = () => {
+                let url = form.action.split('/').pop()
+                url = `/admin/coupon/delete/${url}`
+                submitBtn.style.display = 'none'
+                alertMessage.innerText = "Are you sure to delete coupon?"
+                confirmBox.style.display = 'flex    '
+                deleteConfBtn.style.display = 'block'
+                    deleteConfBtn.onclick = ()=>{
+                        
+                        fetch(url,{
+                            method: 'get'
+                        })
+                        .then(res=> res.json())
+                        .then(data =>{
+                            location.reload()
+                        })
+                        .catch(err=> console.log(err))
+                    }
+            }
+
+
+            async function createForm() {
+                let conf = await validateFormInp();
+
+                if (conf) {
+                    alertMessage.innerText = "Are you sure to create coupon?"
+                    deleteConfBtn.style.display = 'none'
+                    messageBox.style.display = 'none'
+                    submitBtn.style.display = 'block'
+                    confirmBox.style.display = 'flex'
+                    form.action = `/admin/coupon`
+                }
+            }
+
+            function editForm(id) {
+                 ID = id;
+                couponForm.style.display = 'block'
+                deleteBtn.style.display = 'block'
+                updateFormBtn.style.display = 'block'
+                createFormBtn.style.display = 'none'
+                fetch(`/api/coupon/${id}`)
+                    .then(res => res.json())
+                    .then(coupon => {
+                        codeInp.value = coupon.coupon.code
+                        discountInp.value = coupon.coupon.discount
+                        user_allowed.value = coupon.coupon.user_allowed
+                        minimum_purchase.value = coupon.coupon.minimum_purchase
+                        expiry.value = coupon.coupon.expiry
+                        form.action = `/admin/coupon/update/${coupon.coupon._id}`
+                    })
+                    .catch(err => {
+                        sendMessage(['server error'])
+                    })
+            }
+
+            function updateForm() {
+
+                let conf = validateFormInp()
+                if (conf) {
+                    alertMessage.innerText = "Are you sure to update coupon?"
+                    deleteConfBtn.style.display = 'none'
+                    messageBox.style.display = 'none'
+                    submitBtn.style.display = 'block'
+                    confirmBox.style.display = 'flex'
+                    form.action = `/admin/coupon/update/${ID}`
+                    form.method = 'post'
+                }
+            }
+
+
+            function validateFormInp() {
+                let messageList = []
+                formInp.forEach(x => {
+                    if (x.value == '') {
+                        console.log(x.labels[0].innerText);
+                        messageList.push(x.labels[0].innerText)
+                    }
+                })
+                return sendMessage(messageList);
+            }
+
+            function validateForm() {
+                let messageList = []
+                formFeild.forEach(x => {
+                    if (x.value == '') {
+                        messageList.push(x.labels[0].innerText)
+                    }
+                })
+                sendMessage(messageList);
+            }
+
+            function sendMessage(message) {
+                console.log(message);
+                if (message != '') {
+                    console.log(message[0]);
+                    messageBox.style.display = 'block'
+                    messageValue.innerText = message[0] + " should not be empty"
+                } else {
+                    return true;
+                }
+
+            }
+        </script>
+
+</body>
+
+
+</html>

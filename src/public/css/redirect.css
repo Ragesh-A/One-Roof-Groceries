@@ -1,0 +1,216 @@
+:root {
+    --bar: rgb(167, 167, 167);
+    --gray: rgb(232, 230, 230);
+    --cloud: rgb(252, 223, 0);
+    --shadow:rgb(45, 44, 44);
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+.err-outer-bdy{
+    display: flex;
+    flex-direction: column;
+   align-items: center;
+}
+.err-body {
+    width: 250px;
+    height: 350px;
+}
+.err-top {
+    width: 100%;
+    height: 90%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sun {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-color: var(--gray);
+    border-radius: 50%;
+    transform-origin: 50% 50%;
+    bottom: 0;
+}
+
+.hills {
+    position: absolute;
+    width: 100%;
+    height: 5rem;
+    bottom: 0;
+    overflow: hidden;
+    display: inline-flex;
+}
+.hillR {
+    width: 2rem;
+    height: 2rem;
+    background-color: red;
+    transform: rotate(45deg);
+    margin-top: 4rem;
+    margin-left: 0.5rem;
+    z-index: 3;
+}
+.hillY {
+    width: 3rem;
+    height: 3rem;
+    background-color: var(--cloud);
+    transform: rotate(45deg);
+    margin-top: 3.5rem;
+    z-index: 2;
+    
+}
+.hillB {
+    width: 5rem;
+    height: 5rem;
+    background-color: blue;
+    transform: rotate(45deg);
+    margin-top: 2.5rem;
+    margin-left: 4.1rem;
+    z-index: 1;
+   
+}
+.err-bottom {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.phone {
+    position: absolute;
+    top: -10.2rem;
+    width: 6rem;
+    z-index: 4;
+    background-color: var(--gray);
+    height: 9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+    border-top: 20px solid white;
+    border-bottom: 20px solid white;
+    border-radius: 8px;
+    box-shadow: 5px 0 10px rgba(90, 90, 90, 0.475);
+}
+.phone-btn1 {
+    background-color: white;
+    width: 5px;
+    height: 10px;
+    position: absolute;
+    left: 4.5rem;
+    top: -6rem;
+    border-radius: 2px;
+}
+.phone-btn2 {
+    background-color: white;
+    width: 5px;
+    height: 15px;
+    position: absolute;
+    left: 4.5rem;
+    top: -5rem;
+    border-radius: 2px;
+}
+.screen {
+   display: inline-flex;
+    width: 50%;
+    justify-content: space-around;
+    align-items: end;
+}
+
+.cloud-bdy {
+    width: 100%;
+    position: absolute;
+    height: 7rem;
+    top: -2rem;
+}
+.cloud {
+    width: 100%;
+    height: 100%;
+}
+.cloud-base {
+    background-color: var(--cloud);
+    width: 80%;
+    height: 3rem;
+    border-radius: 2rem;
+    position: relative;
+    margin: auto;
+    
+}
+.cloud-big {
+    position: absolute;
+    border-radius: 50%;
+    width: 6rem;
+    height: 6rem;
+    background-color: var(--cloud);
+    top: -3.2rem;
+    left: 1.5rem;
+}
+.cloud-small {
+    position: absolute;
+    border-radius: 50%;
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: var(--cloud);
+    top: -2rem;
+    left: 6.7rem;
+}
+.thunder {
+    width: 3.5rem;
+    height: 5rem;
+    margin: auto;
+}
+.thunder1 {
+    margin: auto;
+    border-top: 50px solid red;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    width: 25px;
+    height: 0;
+   
+}
+.thunder2 {
+    height: 0px;
+    width: 0;
+    margin-left: 35px;
+    margin-top: -10px;
+    border: 20px solid transparent;
+    border-top-color: red;
+    border-left-color: red;
+}
+.rain-base {
+    position: absolute;
+    width: 100%;
+    height: 3rem;
+    top: 3.5rem;
+}
+.rain {
+    width: 100%;
+    height: 1rem;
+    margin: 3px;
+    display: flex;
+    justify-content: space-around;
+}
+.rain div {
+    width: 2px;
+    height: 5px;
+    background-color: var(--cloud);
+}
+h1 {
+    text-align: center;
+}
+.message{
+    display: flex;
+    flex-direction: column;
+    line-height: 50px;
+    
+}

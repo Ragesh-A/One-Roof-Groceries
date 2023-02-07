@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Roof Groceries</title>
+    <link rel="icon" href="/images/logo/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <section class="login-section flex">
+
+        <div class="login-container">
+            <div class="left flex">
+                <div class="logo flex col" style="flex-direction: column; align-items: center">
+                    <img src="/images/logo/icon.png" alt="logo" width="100px">
+                    <p class="logoname">One Roof Groceries</p>
+                </div>
+                <img src="/images/backgrounds/login-bg.jpg" alt="" class="login-bg">
+            </div>
+            <div class="right flex">
+                <div class="login-wrap col ">
+                    <h2 class="green-text form-title" id="title">LOGIN</h2>
+                    <div class="form-wrap">
+                        <form action="signin" method="post" id="form">
+                            <div class="input-container" id="input-container">
+                                <div class="input-feild" id="emaildiv">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" id="email" class="form-input">
+                                </div>
+                                <div class="input-feild" id="password-feild">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="password" id="password" class="form-input">
+                                </div>
+                            </div>
+                            <% if(message){ %>
+                                <div id="alert-box" class="flex">
+
+                                    <p class="alertmessage">
+                                        <%= message %>
+                                    </p>
+                                    <div id="close-btn">
+                                        <i class='bx bx-x-circle'></i>
+                                    </div>
+                                </div>
+                                <% } %>
+                                    <div id="alert-box1" class="flex">
+                                        <p class="alertmessage" id="alertmessage"></p>
+                                    </div>
+                                    <div class="flex" style="justify-content: space-between;">
+                                        <p><a href="signup">create new account</a></p>
+                                        <p><a id="forgotBtn">Forgot password</a></p>
+
+                                    </div>
+
+                                    <div class="btns-wrap" id="otpBtnWrap">
+                                        <a href="/" class="btn cancel" value="Cancel">Cancel</a>
+                                        <input type="submit" class="btn confirm" value="Confirm" id="formSubmit">
+                                        <!-- <input type="button" value="verify" class="btn confirm " id="verifyBtn"> -->
+                                    </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </section>
+    <script>
+        let closeBtn = document.getElementById('close-btn')
+        let alertBox = document.getElementById('alert-box')
+        let title = document.getElementById('title')
+        let forgotBtn = document.getElementById('forgotBtn')
+        let form = document.getElementById('form')
+        let passwordFeild = document.getElementById('password-feild')
+        let inputContainer = document.getElementById('input-container')
+        let formSubmit = document.getElementById('formSubmit')
+        let otpBtnWrap = document.getElementById('otpBtnWrap')
+        let verifyBtn = document.getElementById('verifyBtn')
+        let alertBox1 = document.getElementById('alert-box1')
+        let alertmessage = document.getElementById('alertmessage')
+        var count = 0;
+        var messageCount = 0
+        alertBox1.style.display = 'none'
+
+        //forgot button clicks time
+        forgotBtn.onclick = () => {
+            title.innerText = "Password reset"
+            form.action = '/account/verifyOtp'
+            passwordFeild.style.display = 'none'
+            formSubmit.style.display = 'none'
+            //Otp btn
+            let otpBtn = document.createElement('input')
+            otpBtn.setAttribute('type', "button")
+            otpBtn.setAttribute('value', "get otp ")
+            otpBtn.setAttribute('class', "btn confirm")
+            otpBtn.setAttribute('id', "otpRequestBtn")
+            otpBtn.setAttribute('onclick', "requestOtp()")
+            otpBtnWrap.appendChild(otpBtn)
+            forgotBtn.style.display = 'none'
+            messageCount = 0
+        }
+        // otp request
+        function requestOtp() {
+            let emailInp = document.getElementById('email')
+            messageCount++
+            if (validateEmail(emailInp.value)) {
+
+                count++
+                if (count == 1) {
+                    //div creation
+                    let otpDiv = document.createElement('div')
+                    otpDiv.setAttribute('class', 'input-feild')
+                    otpDiv.setAttribute('id', 'otpWrap')
+                    //label creation
+                    let otpLabel = document.createElement('label')
+                    otpLabel.setAttribute('for', 'otp')
+                    otpLabel.innerHTML = "otp";
+                    //input feild
+                    let otpInput = document.createElement('input')
+                    otpInput.setAttribute('type', 'number')
+                    otpInput.setAttribute('name', 'otp')
+                    otpInput.setAttribute('id', 'otp')
+                    otpInput.setAttribute('class', 'form-input')
+                    //append
+                    inputContainer.appendChild(otpDiv)
+                    let otpContainer = document.getElementById('otpWrap')
+                    otpContainer.appendChild(otpLabel)
+                    otpContainer.appendChild(otpInput)
+
+                    //get otp
+
+                    fetch('/api/getOtp', {
+                        method: "post",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+
+                            email: emailInp.value
+                        }),
+                        credentials: "include",
+                    }).then(res => res.json())
+                        .then(data => {
+                            alertBox1.style.display = 'flex'
+                            alertmessage.innerText = data.message
+                            alertmessage.style.color = 'red'
+                        })
+                        .catch(err => console.log(err))
+
+                    //
+                    let otpBtn = document.getElementById('otpRequestBtn')
+                    console.log(otpBtn)
+                    otpBtn.value = "submit"
+                    otpBtn.onclick = function () {
+                        let otpInp = document.getElementById('otp')
+                        console.log(otpInp.value);
+                        if (otpInp.value.length < 3) {
+                            alertBox1.style.display = 'flex'
+                            alertmessage.innerText = 'Enter valid Otp'
+                            alertmessage.style.color = 'red'
+                        } else {
+
+                            otpBtn.type = 'submit'
+                        }
+                    }
+
+                } else {
+
+                }
+            } else {
+                //creation message element
+                alertBox1.style.display = 'flex'
+                alertmessage.innerText = 'email should be valid'
+                alertmessage.style.color = 'red'
+                if (messageCount == 1) {
+                    emailDiv.appendChild(message)
+                }
+
+            }
+
+            // let otpBtn = document.getElementById('otpRequestBtn')
+            // 
+
+        }
+        //email validation
+        function validateEmail(email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+
+
+        closeBtn.addEventListener('click', () => {
+            alertBox.style.display = 'none  '
+        })
+    </script>
+</body>
+
+</html>

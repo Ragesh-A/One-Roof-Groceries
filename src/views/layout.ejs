@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> <%= title %> </title>
+   
+    <link rel="stylesheet" href="/public/css/style.css">
+    <% if(page == "home") { %>
+    <link rel="stylesheet" href="/public/css/home.css">
+    <% }else if(page == "login"){ %>
+    <link rel="stylesheet" href="/css/login.css">
+    <% }else if(page == "admin"){ %>
+    <link rel="stylesheet" href="/css/admin.css">
+    <% } %>
+</head>
+<body>
+    <% if(page == 'home') { %>
+    <%- include('./partials/userNavBar') %>
+    <% } %>
+
+    <% if(page == 'home') { %>
+    <%- include('./partials/userNavBar') %>
+    <% } %>
+    
+    <% if(page == 'home') { %>
+    <%- include('./partials/userFooter') %>
+    <% } %>
+
+    <script src="https://kit.fontawesome.com/6819033383.js" crossorigin="anonymous"></script>
+</body>
+</html>

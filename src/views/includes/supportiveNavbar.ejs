@@ -1,0 +1,63 @@
+<!-------------------- HEADER ----------------------------->
+<header class="header flex">
+
+    <div class="logo-wrap flex">
+        <div class="logo flex">
+            <img src="/images/logo/logo.png" alt="logo">
+
+        </div>
+        <div class="toggle-btn" id="toggle-btn">
+            <i class='bx bx-menu'></i>
+        </div>
+    </div>
+    <div class="search-wrap">
+        <form action="/search" method="post" class="flex">
+            <input type="search" name="search" placeholder="Search" style="width:100%">
+            <button type="submit" id="search-icon">
+                <i class='bx bx-search-alt-2'></i>
+            </button>
+        </form>
+    </div>
+    <div class="header-profile">
+        <a href="/account">
+            <div class="profile-logo flex">
+                <img src="/uploads/profiles/<% if(user.profilePicture){ %><%= user.profilePicture %><% }else{ %>avatar.jpg<% } %>" alt="profile image">
+            </div>
+        </a>
+    </div>
+</header>
+<!-------------------- SIDEBAR ----------------------------------->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+        
+        <li class="nav-item">
+            <a class="nav-link <% if(page=='dashboard'){ %>active <%} %>" href="/manager">
+                <i class='bx bxs-category'></i>
+                <span>Dashboard</span>
+            </a>
+    
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed  <% if(page=='users'){ %>active <%} %>" href="/support/users">
+                <i class='bx bxs-group'></i>
+                <span>Users</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed  <% if(page=='track-order'){ %>active <%} %>" href="/support/track-order">
+                <i class='bx bxs-group'></i>
+                <span>Track Order</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed  <% if(page=='message'){ %>active <%} %>" href="/support/message">
+                <i class='bx bxs-chat'></i>
+                <span>Messages</span>
+            </a>
+        </li>
+        
+    </ul>
+
+</aside>

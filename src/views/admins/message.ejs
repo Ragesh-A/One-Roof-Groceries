@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="refresh" content="2"> -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="icon" href="/images/logo/icon.png" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+
+    <%- include('../includes/adminNavbar.ejs') %>
+        <main class="main" id="adminMain">
+            <div class="flex">
+                <div class="">
+                    <div class="page-title">
+                        <h1 style="text-transform: capitalize">
+                            Inbox
+                        </h1>
+                    </div>
+                    <div class="direction">
+                        <ul class="flex">
+                            <li>Home</li>
+                            <li style="text-transform: capitalize">
+                                Messages
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="condtents">
+
+                <section class="message-sec grid">
+            
+                    <div class="left ">
+                        <div class="inbox-wrap card ">
+                            <div class="inbox-head flex">
+                                <div class="flex " style="align-items: center;">
+                                    <div class="profile-wrap">
+                                        <img src="/uploads/profiles/avatar.jpg" alt="" width="100%">
+                                    </div>
+                                    <span class="name">dfgs</span>
+                                </div>
+                                <i class='bx bx-message-alt-x'></i>
+                            </div>
+                            <div class="indox-body">
+                                dfsjghfs
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                       
+                        
+                    </div>
+                    <div class="right">
+                        
+                        <div class="card">
+                            <form action="">
+                                <div class="input-feild">
+                                    <input type="email" name="email" id="email" class="form-input" required placeholder="Recipient">
+                                </div>
+                                <div class="input-feild">
+                                    <input type="text" name="subject" id="subject" class="form-input" required placeholder="Subject">
+                                </div>
+                                <div class="input-feild">
+                                    <textarea name="message" id="message" class="indox-body mail-body"></textarea>
+                                </div>
+                                <div class="flex">
+                                    <input type="submit" value="submit" class="btn" style="width: 100%; background-color: var(--link-clr);color: var(--white);">
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+
+
+
+                </section>
+
+
+            </div>
+
+        </main>
+
+        <script src="https://kit.fontawesome.com/6819033383.js" crossorigin="anonymous"></script>
+        <script src="/js/main.js"></script>
+        <script>
+            let inboxWrap = document.querySelectorAll('.inbox-wrap')
+            for(let i=0; i<inboxWrap.length; i++){
+                inboxWrap[i].addEventListener('click', function(){
+                    this.classList.toggle('active')
+                })
+            }
+        </script>
+
+</body>
+
+
+</html>

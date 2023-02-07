@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Roof Groceries</title>
+    <link rel="icon" href="/images/logo/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <section class="login-section flex">
+
+        <div class="login-container">
+            <div class="left flex">
+                <div class="logo flex col" style="flex-direction: column; align-items: center">
+                    <img src="/images/logo/icon.png" alt="logo" width="100px">
+                    <p class="logoname">One Roof Groceries</p>
+                </div>
+                <img src="/images/backgrounds/login-bg.jpg" alt="" class="login-bg">
+            </div>
+            <div class="right flex">
+                <div class="login-wrap col ">
+                    <h2 class="green-text form-title">OTP Verification</h2>
+                    <div class="form-wrap">
+                        <form action="verify" method="post">
+                            <div class="input-container">
+                                
+                                <div class="input-feild">
+                                    <input type="number" name="otp" id="otp" class="form-input" required>
+                                </div>
+                            </div>
+                            <% if(message){ %>
+                            <div id="alert-box" class="flex">
+
+                                <p class="alertmessage">
+                                    <%= message %>
+                                </p>
+                                <div id="close-btn">
+                                    <i class='bx bx-x-circle'></i>
+                                </div>
+                            </div>
+                            <% } %>
+                        
+                            <div class="btns-wrap">
+                                <a href="/" class="btn cancel" value="Cancel">Cancel</a>
+                                <input type="submit" class="btn confirm" value="Confirm">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+
+    </section>
+    <script>
+        let closeBtn = document.getElementById('close-btn')
+        let alertBox = document.getElementById('alert-box')
+        closeBtn.addEventListener('click', () => {
+            alertBox.style.display = 'none  '
+        })
+    </script>
+</body>
+
+</html>

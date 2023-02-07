@@ -1,0 +1,90 @@
+<%- include('../includes/adminHead') %>
+
+    <%- include('../includes/managerNavbar.ejs') %>
+
+        <main class="main" id="adminMain">
+            <div class="page-title">
+                <h1 style="text-transform: capitalize">
+
+                </h1>
+            </div>
+            <div class="direction">
+                <ul class="flex">
+                    <li>Home</li>
+                    <li style="text-transform: capitalize">
+
+                    </li>
+                </ul>
+            </div>
+            <div>
+            </div>
+            <div class="contents">
+                <form action="add-product" method="post" enctype="multipart/form-data">
+                    <div class="productEdit-page grid">
+                        <div class="left card">
+                            <div class="productField-wrap">
+                                <label class="field-title" for="name">Product Name</label>
+                                <input class="productPage-field" type="text" name="name" id="name" required>
+                                <p class="description">Do not exceed 20 character when enteing the product name</p>
+                            </div>
+                            <div class="productField-wrap">
+                                <label class="field-title" for="name">Category</label>
+                                <select class="productPage-field" name="category" id="category" required>
+                                    <option selected="selected" disabled>Select Category</option>
+                                    <% categoryList.forEach(x=>{ %>
+                                        <option value="<%= x._id %>"><%= x.name %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="right card">
+                            <div>
+
+
+                                <input type="file" name="productPictures" id="productPictures" class="upload-file ">
+                                <label for="productPictures" class="upload-label field-title">Upload Image</label>
+
+                                <p class="description">Pay attention to the quality of the pictures that you
+                                    add comply with the background color standers. Picture must be in certain
+                                    dimensions. Notice that the product shows all the details
+                                </p>
+                            </div>
+                            <div class="price flex">
+                                <div class="productField-wrap">
+                                    <label class="field-title" for="stock">Stocks</label>
+                                    <input class="productPage-field" type="number" name="stock" id="stock" required>
+                                </div>
+                                <div class="productField-wrap ">
+                                    <label class="field-title" for="price">Actual Price</label>
+                                    <input class="productPage-field" type="number" name="price" id="price" required>
+                                </div>
+                                <div class="productField-wrap">
+                                    <label class="field-title" for="offer">Offer</label>
+                                    <input class="productPage-field" type="number" name="offer" id="offer" required>
+                                </div>
+                                <div class="productField-wrap">
+                                    <label class="field-title" for="singleQty">Single Qty <span style="font-size: 10px;">(in grams)</span></label>
+                                    <input class="productPage-field" type="number" name="singleQty" id="singleQty" required>
+                                </div>
+                                
+                            </div>
+                            <div class="productField-wrap">
+                                <p class="field-title" for="name">Payment Methods</p>
+                                <input type="checkbox" name="paymentMethod" value="cashOnDelivery" id="cashOnDelivery"
+                                    required>
+                                <label for="cashOnDelivery">Cash on delivery</label>
+                                <input type="checkbox" name="paymentMethod" value="onlinePayment" id="onlinePayment"
+                                    required>
+                                <label for="onlinePayment">Online Payment</label>
+                            </div>
+                            <div class="btns-wrap">
+                                <a href="/admin" class="btn cancel">Cancel</a>
+                                <input type="submit" value="Add New Product" class="btn confirm">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </main>
+        <%- include('../includes/bottom') %>

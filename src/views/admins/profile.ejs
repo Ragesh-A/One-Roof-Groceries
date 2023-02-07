@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="icon" href="/images/logo/icon.png" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+
+    <%- include('../includes/adminNavbar.ejs') %>
+        <main class="main" id="adminMain">
+            <div class="flex">
+                <div class="">
+                    <div class="page-title">
+                        <h1 style="text-transform: capitalize">
+                            Employees
+                        </h1>
+                    </div>
+                    <div class="direction">
+                        <ul class="flex">
+                            <li>Home</li>
+                            <li style="text-transform: capitalize">
+                                Employees
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="condtents">
+
+                <div class=" profile-page">
+                    <div class="left">
+                        <div class="card profile-card grid">
+                            <div class="profile-left flex">
+                                <div class="profile-img-wrap flex" style="width: 100px;height:100px">
+                                    <img src="/uploads/profiles/<% if(user.profilePicture){ %><%= user.profilePicture %><% }else{ %>avatar.jpg<% } %>" width="100%" />
+                                </div>
+                                <p class="profile-name"><%= user.name %></p>
+                                <p class="position"><%= user.role %></p>
+                                <a href="/admin/delete/<%= user._id %> " class="crud-btn" onclick="return confirm('Do you want to delete?')">DELETE</a>
+                            </div>
+                            <div class="profile-right grid">
+                                <div class="flex">
+                                    <p>Age</p>
+                                    <p><%= user.age %></p>
+                                </div>
+                                <div class="flex">
+                                    <p>Branch</p>
+                                    <p><%= user.branch %></p>
+                                </div>
+                                <div class="flex">
+                                    <p>Salary</p>
+                                    <p><%= user.salary %></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">hf</div>
+                    </div>
+                    <div class="user-details-wrap card">
+                        <ul class="">
+                            <li class="tab">
+                                <a class="profile-btn active"  data-switcher data-tab="1">Overview</a>
+                            </li>
+                            <li class="tab">
+                                <a class="profile-btn" data-switcher data-tab="2">Edit Profile</a>
+                            </li>
+                            <!-- <li class="tab">
+                                <a class="profile-btn" data-switcher data-tab="3">Edit Password</a>
+                            </li> -->
+                        </ul>
+                        <div class="user-details page active" data-page="1">
+                            <p class="user-profile-title">About</p>
+                            <p class="about">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero
+                                non est unde veniam est qui
+                                dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at
+                                unde.</p>
+                            <p class="user-profile-title">Profile Details</p>
+                            <div class="profile-field">
+                                <p class="field-title">Full Name</p>
+                                <p class="field-value"><%= user.name %></p>
+                            </div>
+                            <div class="profile-field">
+                                <p class="field-title">Branch</p>
+                                <p class="field-value"><%= user.branch %></p>
+                            </div>
+                            <div class="profile-field">
+                                <p class="field-title">Role</p>
+                                <p class="field-value"><%= user.role %></p>
+                            </div>
+                            <% if(user.address){ %>
+                            <div class="profile-field">
+                                <p class="field-title">Address</p>
+                                <p class="field-value"><%= user.address %></p>
+                            </div>
+                            <% } %>
+                            <div class="profile-field">
+                                <p class="field-title">Phone</p>
+                                <p class="field-value"><%= user.phone %></p>
+                            </div>
+                            <div class="profile-field">
+                                <p class="field-title">Email</p>
+                                <p class="field-value"><%= user.email %></p>
+                            </div>
+                        </div>
+                        <div class="user-details page" data-page="2">
+                            <form action="/admin/edit-employees/<%= user._id %>" method="post">
+                                <div class="profile-field">
+                                    <p class="field-title">Profile Image</p>
+                                    <div>
+                                        <img src="images/profile/avatar.jpg" alt="" width="75px">
+                                        <div>
+                                            <input type="file" class="profile-btn" style="color: #fff;background-color: blue;">
+                                            
+                                            <button class="profile-btn" style="color: #fff;background-color: red;">
+                                                <i class='bx bx-x-circle'></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                
+                                <div class="profile-field ">
+                                    <label class="field-title" for="name">Full Name</label>
+                                    <input class="form-inp" type="text" name="name" id="name" value="<%= user.name %>">
+                                </div>
+                                <div class="profile-field">
+                                    <label class="field-title" for="branch">Branch</label>
+                                    <input class="form-inp" type="text" name="branch" id="branch" value="<%= user.branch %>">
+                                </div>
+                                <div class="profile-field">
+                                    <label class="field-title" for="role">Role</label>
+                                    <input class="form-inp" type="text" name="role" id="role" value="<%= user.role %>">
+                                </div>
+                                <div class="profile-field">
+                                    <label class="field-title" for="name">Address</label>
+                                    <textarea name="address" id="" cols="10" rows="5"></textarea>
+                                </div>
+                                <div class="profile-field">
+                                    <label class="field-title" for="phone">Phone</label>
+                                    <input class="form-inp" type="number" name="phone" id="phone" value="<%= user.phone %>">
+                                </div>
+                                <div class="profile-field">
+                                    <label class="field-title" for="email">Email</label>
+                                    <input class="form-inp" type="email" name="email" id="email" value="<%= user.email %>">
+                                </div>
+                                <input type="submit" value="Save Changes" class="profile-btn" style="background-color: #0080ff; color: white">
+                            </form>
+                        </div>
+                        <div class="user-details page" data-page="3">
+                            <form action="pass" method="post">
+                                <div class="profile-field">
+                                    <label class="field-title" for="oldpassword">Old Password</label>
+                                    <input type="password" name="oldpassword" id="oldpassword">
+                                </div>
+                                <div class="profile-field">
+                                    <label class="field-title" for="newpassword">New Password</label>
+                                    <input type="password" name="newpassword" id="newpassword">
+                                </div>
+                                <div class="profile-field">
+                                    <label class="field-title" for="confirmpassword">Confirm Password</label>
+                                    <input type="password" name="confirmpassword" id="confirmpassword">
+                                </div>
+                                <input type="submit" value="Change Password" class="profile-btn" style="background-color: #0080ff; color: #fff">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+        </main>
+
+        <script src="https://kit.fontawesome.com/6819033383.js" crossorigin="anonymous"></script>
+        <script src="/js/main.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.3.js"
+            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+</body>
+
+
+</html>

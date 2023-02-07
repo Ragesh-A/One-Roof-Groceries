@@ -1,0 +1,63 @@
+<div class="content-section card" id="users">
+
+    <div class="userBox">
+
+        <h3 class="userBox-title">Employees</h3>
+
+        <table id="table_id">
+            <thead>
+                <tr style="font-weight: 800; background-color: var(--blue); color: var(--white);">
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>BRANCH</th>
+                    <th>POSTION</th>
+                    <th>AGE</th>
+                    <th>SALARY</th>
+                    <th>SELECT</th>
+                </tr>
+            </thead>
+            <tbody >
+
+                <tr class="users">
+                    <td>1</td>
+                    <td>ragesh</td>
+                    <td>kochi</td>
+                    <td>admin</td>
+                    <td>21</td>
+                    <td>2100000</td>
+                    <td><a class="crud-btn">select</a></td>
+                </tr>
+                <tr class="users">
+                    <td>1</td>
+                    <td>ragesh</td>
+                    <td>kochi</td>
+                    <td>admin</td>
+                    <td>21</td>
+                    <td>2000001</td>
+                    <td><a class="crud-btn">select</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+    });
+</script>

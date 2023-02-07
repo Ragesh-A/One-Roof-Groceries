@@ -1,0 +1,108 @@
+<%- include('../includes/adminHead') %>
+
+    <%- include('../includes/adminNavbar.ejs') %>
+        <main class="main" id="adminMain">
+            <div class="flex">
+                <div class="">
+                    <div class="page-title">
+                        <h1 style="text-transform: capitalize">
+                            Add-Employees
+                        </h1>
+                    </div>
+                    <div class="direction">
+                        <ul class="flex">
+                            <li>Home</li>
+                            <li style="text-transform: capitalize">
+                               Add-Employees
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="condtents">
+
+                <div class="addUser-section card" id="users">
+
+                    <form action="/admin/add-employee" method="post" class="edit-wrap" enctype="multipart/form-data">
+                        <h1 align="center" style="margin: 1rem;color: var(--blue); text-transform:capitalize">Add Employee</h1>
+                        <ul class="flex">
+                            
+                            <div class="upload-with-name">
+                                <li class="flex">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" style="width: 100%;padding: .5rem; text-transform: capitalize;" required value="" >
+                                </li>
+                                <div class="flex" style="align-items: center;">
+                                    <div class="card account-image" style="width: 100px;">
+                                        <img src="/uploads/profiles/avatar.jpg"
+                                            alt="" id="preview" style="width: 100%;">
+                                    </div>
+                                    <div class="btn-wra">
+                                        <label for="profilePicture" class=" btn confirm">Upload</label>
+                                        <input type="file" accept="image/*" name="profilePicture" id="profilePicture"
+                                            class="upload-file" style="visibility: hidden;" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <li class="flex">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-inp" required value="" >
+                            </li>
+                           
+                            <li class="flex">
+                                <label for="password">Password</label>
+                                <input type="password" name="password" id="password" class="form-inp" required value="">
+                            </li>
+                            <li class="flex">
+                                <label for="age">Age</label>
+                                <input type="number" name="age" id="age" class="form-inp" required value="">
+                            </li>
+                            <li class="flex">
+                                <label for="salary">Salary</label>
+                                <input type="number" name="salary" id="salary" class="form-inp" required value="">
+                            </li>
+                            <li class="flex">
+                                <label for="branch">Branch</label>
+                                <input type="text" name="branch" id="branch" class="form-inp" required value="">
+                            </li>
+                            <div class="access-wrap flex" style="margin-top: 1rem;">
+                               <div><input type="radio" name="role" value="user" id="userAccess"><label for="userAccess" >User</label></div>
+                               <div><input type="radio" name="role" value="branchManager" id="managerAccess"><label for="managerAccess">Branch Manager</label></div>
+                               <div><input type="radio" name="role" value="salesManager" id="salesAccess"><label for="salesAccess">Sales Manager</label></div>
+                               <div><input type="radio" name="role" value="purchaseManager" id="purchaseAccess"><label for="purchaseAccess">Purchase Manager</label></div>
+                               <div><input type="radio" name="role" value="supportTeam" id="supportTeam"><label for="supportTeam">Support Team</label></div>
+                            </div>
+                            <% if(message){ %>
+                            <li style="text-align: center;"><%= message %></li>
+                            <% } %>
+                            <li class="flex"><input type="submit" value="submit"></li>
+                        </ul>
+                
+                
+                
+                
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        
+        
+        <script>
+            const selectBtn = document.getElementById('select-btn')
+            const fileBtn = document.getElementById('profilePicture')
+            fileBtn.addEventListener('change', function (event) {
+                const image = this.files[0]
+                const reader = new FileReader();
+                const url = URL.createObjectURL(event.target.files[0])
+                document.getElementById('preview').src = url
+                reader.onload = () => {
+                    const imgUrl = reader.result
+                }
+         })
+        </script>
+
+<%- include('../includes/bottom') %>

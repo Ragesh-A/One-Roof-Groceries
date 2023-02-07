@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Roof Groceries</title>
+    <link rel="icon" href="/images/logo/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<style>
+    h2{
+        color: #008cff;
+    }
+    .login-container .left{
+        background-color: #fff;
+    }
+    .form-input{
+        background-color: #008cff25;
+        border-bottom-color: #008cff;
+    }
+    .confirm{
+        background-color: #008cff;
+    }
+</style>
+
+</head>
+
+<body>
+    <section class="login-section flex"  style="background: linear-gradient(45deg, rgb(252, 252, 252), rgb(47, 142, 231));">
+
+        <div class="login-container">
+            <div class="left flex">
+                <img src="/images/backgrounds/5124556.jpg" alt="" class="login-bg">
+            </div>
+            <div class="right flex">
+                <div class="login-wrap col ">
+                    <h2 class="form-title">Contact</h2>
+                    <div class="form-wrap">
+                        <form action="message" method="post">
+                            <div class="input-container">
+                                <div class="input-feild">
+                                    <label for="name">Name</label>
+                                    <input type="name" name="name" id="name" class="form-input" required>
+                                </div>
+                                <div class="input-feild">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" id="email" class="form-input" required>
+                                </div>
+                                <div class="input-feild">
+                                    <textarea name="" id="" cols="30" rows="10" style="width: 100%;" class="form-input"></textarea>
+                                </div>
+                            </div>
+                            <div class="btns-wrap">
+                                <a href="/" class="btn cancel" value="Cancel">Cancel</a>
+                                <input type="submit" class="btn confirm" value="Confirm">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <script>
+        let closeBtn = document.getElementById('close-btn')
+        let alertBox = document.getElementById('alert-box')
+        closeBtn.addEventListener('click', () => {
+            alertBox.style.display = 'none  '
+        })
+    </script>
+</body>
+
+</html>

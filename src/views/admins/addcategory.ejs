@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <link rel="icon" href="/images/logo/icon.png" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+
+    <%- include('../includes/adminNavbar.ejs') %>
+        <main class="main" id="adminMain">
+            <div class="flex">
+                <div class="">
+                    <div class="page-title">
+                        <h1 style="text-transform: capitalize">
+                            Category
+                        </h1>
+                    </div>
+                    <div class="direction">
+                        <ul class="flex">
+                            <li>Home</li>
+                            <li style="text-transform: capitalize">
+                                Category
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="condtents">
+
+                <section class="home grid">
+                    <div class="left card">
+                        <form action="/admin/category/create" enctype="multipart/form-data" method="post">
+                            <div class="add-category-form">
+                                <div class="form-sec grid">
+                                    <ul>
+                                        <li class="flex">
+                                            <label for="name">Name</label>
+                                            <input type="name" name="name" id="name" class="form-inp" required value="">
+                                        </li>
+                                        <li class="flex">
+                                            <label for="description">Description</label>
+                                            <textarea name="description" id="description" class="form-inp" required
+                                                value=""></textarea>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div class="image-sec flex">
+                                    <div class="card account-image">
+                                        <img src="" alt="" id="preview">
+                                    </div>
+                                    <div class="btn-wra">
+                                        <label for="image" class=" btn confirm">Upload</label>
+                                        <input type="file" accept="image/*" name="image" id="image" class="upload-file"
+                                            style="display: none;" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="btns-wrap flex">
+                                <a href="/admin/category/list" class="btn cancel">cancel</a>
+                                <input type="submit" value="add category" class="btn confirm">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="right card">
+                        <h3 class="admin-title">Existing Categories</h3>
+                        <ul>
+                            <% categoryList.forEach(category=>{ %>
+
+                                <li style="margin: 1rem 0 0 1rem;">
+                                    <%= category.name %>
+                                </li>
+
+                                <% }) %>
+                        </ul>
+
+                    </div>
+                </section>
+                <div>
+                    <div class="category-wrap flex card">
+                        <div class="image">
+                            <img src="" alt="" id="categoryPreview">
+                        </div>
+                        <div class="category-body">
+                            <h4 class="category-name" id="preview-title">Title</h4>
+                            <p class="category-description" id="preview-description">Description</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+
+        <script src="https://kit.fontawesome.com/6819033383.js" crossorigin="anonymous"></script>
+        <script src="/js/main.js"></script>
+        <script>
+            const selectBtn = document.getElementById('select-btn')
+            const fileBtn = document.getElementById('image')
+            fileBtn.addEventListener('change', function (event) {
+                const image = this.files[0]
+                const reader = new FileReader();
+                const url = URL.createObjectURL(event.target.files[0])
+                document.getElementById('preview').src = url
+                document.getElementById('categoryPreview').src = url
+                reader.onload = () => {
+                    const imgUrl = reader.result
+                }
+            })
+            let title = document.getElementById('name')
+            let description = document.getElementById('description')
+            let preTitle = document.getElementById('preview-title')
+            let preDescription = document.getElementById('preview-description')
+
+            title.addEventListener('keypress', function () {
+                preTitle.innerText = this.value
+            })
+            description.addEventListener('keypress', function () {
+                preDescription.innerText = this.value
+            })
+
+        </script>
+
+</body>
+
+
+</html>

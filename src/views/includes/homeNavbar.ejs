@@ -1,0 +1,78 @@
+<header id="header">
+    <div class="py-3 pe-xl-3 navBar align-items-center">
+        <div class="col nav-menu">
+            <nav>
+                <ul class="d-flex justify-content-around">
+                    <li class="nav-item d-flex">
+                        <a class="nav-link d-flex ac" href="/">
+                            <i class='bx bxs-home d-none'></i>
+                            <span class="nav-name">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex">
+                        <a class="nav-link d-flex" href="/category">
+                            <i class='bx bxs-category d-none'></i>
+                            <span class="nav-name">Category</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-about">
+                        <a class="nav-link" href="/about">
+                            <span class="nav-name">About</span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex">
+                        <a class="nav-link d-flex" href="/contact">
+                            <i class='bx bxs-comment-dots d-none'></i>
+                            <span class="nav-name">Contact</span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex d-none mobile-nav">
+                        <a class="nav-link d-flex" href="/cart">
+                            <i class='bx bxs-basket d-none'></i>
+                            <span class="nav-name">Cart</span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex d-none mobile-nav">
+                        <a class="nav-link d-flex" href="/account">
+                            <i class='bx bxs-user-circle d-none'></i>
+                            <span class="nav-name">Account</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="logo-wrap d-flex col justify-content-center">
+            <a href="/"><img src="/images/logo/logo.png" alt="logo"></a>
+        </div>
+        <div class="col d-flex justify-content-around align-items-center">
+            <div class="search-wrap border px-3 rounded-1 mt-2 d-flex">
+                <form action="/search" method="post" class="d-flex align-items-center w-100">
+                    <input type="search" name="search" placeholder="search..">
+                    <button type="submit" class="border-0 bg-white h-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-search" viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            <div class="nav-right-account">
+
+                <a href="/cart">
+                    <i class='bx bxs-basket'></i>
+                </a>
+            </div>
+            <div class="nav-right-account">
+
+                <a href="/account">
+                    <i class='bx bxs-user-circle'></i>
+                </a>
+
+            </div>
+        </div>
+    </div>
+    <div class="d-none nav-bg">
+        <img src="/images/logo/bg-header-4.png" width="100%">
+    </div>
+</header>
