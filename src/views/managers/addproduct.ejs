@@ -12,79 +12,137 @@
                 <ul class="flex">
                     <li>Home</li>
                     <li style="text-transform: capitalize">
-
+                        add product
                     </li>
                 </ul>
             </div>
             <div>
             </div>
             <div class="contents">
+                <div class=" flex message-wrap" id="message-wrap">
+                    <p id="messagevalue" class="alert-meassage danger"></p>
+                </div>
                 <form action="add-product" method="post" enctype="multipart/form-data">
-                    <div class="productEdit-page grid">
-                        <div class="left card">
-                            <div class="productField-wrap">
-                                <label class="field-title" for="name">Product Name</label>
-                                <input class="productPage-field" type="text" name="name" id="name" required>
-                                <p class="description">Do not exceed 20 character when enteing the product name</p>
-                            </div>
-                            <div class="productField-wrap">
-                                <label class="field-title" for="name">Category</label>
-                                <select class="productPage-field" name="category" id="category" required>
-                                    <option selected="selected" disabled>Select Category</option>
-                                    <% categoryList.forEach(x=>{ %>
-                                        <option value="<%= x._id %>"><%= x.name %></option>
-                                    <% }) %>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="right card">
-                            <div>
-
-
-                                <input type="file" name="productPictures" id="productPictures" class="upload-file ">
-                                <label for="productPictures" class="upload-label field-title">Upload Image</label>
-
-                                <p class="description">Pay attention to the quality of the pictures that you
-                                    add comply with the background color standers. Picture must be in certain
-                                    dimensions. Notice that the product shows all the details
-                                </p>
-                            </div>
-                            <div class="price flex">
+                    <%- include ('../includes/confirm') %>
+                        <div class="productEdit-page grid">
+                            <div class="left card">
                                 <div class="productField-wrap">
-                                    <label class="field-title" for="stock">Stocks</label>
-                                    <input class="productPage-field" type="number" name="stock" id="stock" required>
-                                </div>
-                                <div class="productField-wrap ">
-                                    <label class="field-title" for="price">Actual Price</label>
-                                    <input class="productPage-field" type="number" name="price" id="price" required>
+                                    <label class="field-title" for="name">Product Name</label>
+                                    <input class="productPage-field form-feild" type="text" name="name" id="name">
+                                    <p class="description">Do not exceed 20 character when enteing the product name</p>
                                 </div>
                                 <div class="productField-wrap">
-                                    <label class="field-title" for="offer">Offer</label>
-                                    <input class="productPage-field" type="number" name="offer" id="offer" required>
+                                    <label for="shortName" class="field-title">Short Name</label>
+                                    <input type="text" name="shortName" id="shortName" maxlength="10"
+                                        class="productPage-field form-feild">
+                                    <p class="description">Do not exceed 10 character when enteing the short name</p>
                                 </div>
                                 <div class="productField-wrap">
-                                    <label class="field-title" for="singleQty">Single Qty <span style="font-size: 10px;">(in grams)</span></label>
-                                    <input class="productPage-field" type="number" name="singleQty" id="singleQty" required>
+                                    <label class="field-title" for="name">Category</label>
+                                    <select class="productPage-field" name="category" id="category">
+
+                                        <% categoryList.forEach(x=>{ %>
+                                            <option value="<%= x._id %>">
+                                                <%= x.name %>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="right card">
+                                <div>
+
+
+                                    <input type="file" name="productPictures" id="productPictures"
+                                        class="upload-file form-feild">
+                                    <label for="productPictures" class="upload-label field-title">Upload Image</label>
+
+                                    <p class="description">Pay attention to the quality of the pictures that you
+                                        add comply with the background color standers. Picture must be in certain
+                                        dimensions. Notice that the product shows all the details
+                                    </p>
+                                </div>
+                                <div class="price flex">
+                                    <div class="productField-wrap">
+                                        <label class="field-title" for="stock">Stocks</label>
+                                        <input class="productPage-field form-feild" type="number" name="stock"
+                                            id="stock">
+                                    </div>
+                                    <div class="productField-wrap ">
+                                        <label class="field-title" for="price">Actual Price</label>
+                                        <input class="productPage-field form-feild" type="number" name="price"
+                                            id="price">
+                                    </div>
+                                    <div class="productField-wrap">
+                                        <label class="field-title" for="offer">Offer</label>
+                                        <input class="productPage-field form-feild" type="number" name="offer"
+                                            id="offer">
+                                    </div>
+                                    <div class="productField-wrap">
+                                        <label class="field-title" for="singleQty">Single Qty</label>
+                                        <input class="productPage-field form-feild" type="text" name="singleQty"
+                                            id="singleQty">
+                                    </div>
+
+                                </div>
+                                <div class="productField-wrap">
+                                    <p class="field-title" for="name">Payment Methods</p>
+                                    <input type="checkbox" name="paymentMethod" value="cashOnDelivery"
+                                        id="cashOnDelivery">
+                                    <label for="cashOnDelivery">Cash on delivery</label>
+                                    <input type="checkbox" class=" form-feild" name="paymentMethod"
+                                        value="onlinePayment" id="onlinePayment">
+                                    <label for="onlinePayment">Online Payment</label>
+                                </div>
+                                <div class="preview-grid">
+                                    <div class="">
+                                        <input type="color" name="theme" id="primary-clr" class="form-feild" >
+                                        <input type="color" name="theme" id="secondary-clr" class="form-feild">
+                                    </div>
+                                    <div class="preview-side" id="preview-side">
+                                        <div class="preview-wrap" id="previewBg">
+                                            <img src="/images/profile/avatar.jpg" alt="" id="preview-image">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum, quasi!</p>
+                                        </div>
+                                    </div>
                                 </div>
                                 
+                                
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="productField-wrap">
+                                <label for="productInfo" class="field-title">Product info</label>
+                                <input type="text" name="productInfo" id="productInfo"
+                                    class="productPage-field form-feild">
                             </div>
                             <div class="productField-wrap">
-                                <p class="field-title" for="name">Payment Methods</p>
-                                <input type="checkbox" name="paymentMethod" value="cashOnDelivery" id="cashOnDelivery"
-                                    required>
-                                <label for="cashOnDelivery">Cash on delivery</label>
-                                <input type="checkbox" name="paymentMethod" value="onlinePayment" id="onlinePayment"
-                                    required>
-                                <label for="onlinePayment">Online Payment</label>
+                                <label for="productFact" class="field-title">Product fact</label>
+                                <input type="text" name="productFact" id="productFact"
+                                    class="productPage-field form-feild">
                             </div>
                             <div class="btns-wrap">
                                 <a href="/admin" class="btn cancel">Cancel</a>
-                                <input type="submit" value="Add New Product" class="btn confirm">
+                                <input type="button" value="Add New Product" class="btn confirm" id="validate-btn">
                             </div>
                         </div>
-                    </div>
                 </form>
             </div>
 
         </main>
-        <%- include('../includes/bottom') %>
+        <script>
+            let previewSide = document.querySelector(".preview-side");
+            let previrewsideBefore = previewSide.previousElementSibling;
+            let previewBg = document.getElementById('previewBg')
+            let primaryClr = document.getElementById('primary-clr');
+            let secondaryClr = document.getElementById('secondary-clr');
+            
+            primaryClr.onchange = ()=>{
+                    previewSide.style.setProperty('--after', `${primaryClr.value}`)
+            }
+            secondaryClr.onchange = ()=>{
+                previewSide.style.backgroundColor = secondaryClr.value
+            }
+        </script>
+
+        <%- include('../includes/adminBottom') %>

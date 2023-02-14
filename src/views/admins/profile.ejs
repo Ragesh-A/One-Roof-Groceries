@@ -41,33 +41,48 @@
                         <div class="card profile-card grid">
                             <div class="profile-left flex">
                                 <div class="profile-img-wrap flex" style="width: 100px;height:100px">
-                                    <img src="/uploads/profiles/<% if(user.profilePicture){ %><%= user.profilePicture %><% }else{ %>avatar.jpg<% } %>" width="100%" />
+                                    <img src="/uploads/profiles/<% if(user.profilePicture){ %><%= user.profilePicture %><% }else{ %>avatar.jpg<% } %>"
+                                        width="100%" />
                                 </div>
-                                <p class="profile-name"><%= user.name %></p>
-                                <p class="position"><%= user.role %></p>
-                                <a href="/admin/delete/<%= user._id %> " class="crud-btn" onclick="return confirm('Do you want to delete?')">DELETE</a>
+                                <p class="profile-name">
+                                    <%= user.name %>
+                                </p>
+                                <p class="position">
+                                    <%= user.role %>
+                                </p>
+                                <div class="flex">
+                                    <a href="/admin/delete/<%= user._id %> " class="crud-btn mx-1" id="delete-btn">DELETE</a>
+                                    <a href="/admin/delete/<%= user._id %> " class="crud-btn"
+                                        onclick="return confirm('Do you want to delete?')" id="block-btn">Block</a>
+                                </div>
                             </div>
                             <div class="profile-right grid">
                                 <div class="flex">
                                     <p>Age</p>
-                                    <p><%= user.age %></p>
+                                    <p>
+                                        <%= user.age %>
+                                    </p>
                                 </div>
                                 <div class="flex">
                                     <p>Branch</p>
-                                    <p><%= user.branch %></p>
+                                    <p>
+                                        <%= user.branch %>
+                                    </p>
                                 </div>
                                 <div class="flex">
                                     <p>Salary</p>
-                                    <p><%= user.salary %></p>
+                                    <p>
+                                        <%= user.salary %>
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                        <div class="card">hf</div>
+                        <div class="card"></div>
                     </div>
                     <div class="user-details-wrap card">
                         <ul class="">
                             <li class="tab">
-                                <a class="profile-btn active"  data-switcher data-tab="1">Overview</a>
+                                <a class="profile-btn active" data-switcher data-tab="1">Overview</a>
                             </li>
                             <li class="tab">
                                 <a class="profile-btn" data-switcher data-tab="2">Edit Profile</a>
@@ -78,37 +93,51 @@
                         </ul>
                         <div class="user-details page active" data-page="1">
                             <p class="user-profile-title">About</p>
-                            <p class="about">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero
+                            <p class="about">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus.
+                                Tempora libero
                                 non est unde veniam est qui
-                                dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at
+                                dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed
+                                ea saepe at
                                 unde.</p>
                             <p class="user-profile-title">Profile Details</p>
                             <div class="profile-field">
                                 <p class="field-title">Full Name</p>
-                                <p class="field-value"><%= user.name %></p>
+                                <p class="field-value">
+                                    <%= user.name %>
+                                </p>
                             </div>
                             <div class="profile-field">
                                 <p class="field-title">Branch</p>
-                                <p class="field-value"><%= user.branch %></p>
+                                <p class="field-value">
+                                    <%= user.branch %>
+                                </p>
                             </div>
                             <div class="profile-field">
                                 <p class="field-title">Role</p>
-                                <p class="field-value"><%= user.role %></p>
+                                <p class="field-value">
+                                    <%= user.role %>
+                                </p>
                             </div>
                             <% if(user.address){ %>
-                            <div class="profile-field">
-                                <p class="field-title">Address</p>
-                                <p class="field-value"><%= user.address %></p>
-                            </div>
-                            <% } %>
-                            <div class="profile-field">
-                                <p class="field-title">Phone</p>
-                                <p class="field-value"><%= user.phone %></p>
-                            </div>
-                            <div class="profile-field">
-                                <p class="field-title">Email</p>
-                                <p class="field-value"><%= user.email %></p>
-                            </div>
+                                <div class="profile-field">
+                                    <p class="field-title">Address</p>
+                                    <p class="field-value">
+                                        <%= user.address %>
+                                    </p>
+                                </div>
+                                <% } %>
+                                    <div class="profile-field">
+                                        <p class="field-title">Phone</p>
+                                        <p class="field-value">
+                                            <%= user.phone %>
+                                        </p>
+                                    </div>
+                                    <div class="profile-field">
+                                        <p class="field-title">Email</p>
+                                        <p class="field-value">
+                                            <%= user.email %>
+                                        </p>
+                                    </div>
                         </div>
                         <div class="user-details page" data-page="2">
                             <form action="/admin/edit-employees/<%= user._id %>" method="post">
@@ -117,22 +146,24 @@
                                     <div>
                                         <img src="images/profile/avatar.jpg" alt="" width="75px">
                                         <div>
-                                            <input type="file" class="profile-btn" style="color: #fff;background-color: blue;">
-                                            
+                                            <input type="file" class="profile-btn"
+                                                style="color: #fff;background-color: blue;">
+
                                             <button class="profile-btn" style="color: #fff;background-color: red;">
                                                 <i class='bx bx-x-circle'></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                
+
                                 <div class="profile-field ">
                                     <label class="field-title" for="name">Full Name</label>
                                     <input class="form-inp" type="text" name="name" id="name" value="<%= user.name %>">
                                 </div>
                                 <div class="profile-field">
                                     <label class="field-title" for="branch">Branch</label>
-                                    <input class="form-inp" type="text" name="branch" id="branch" value="<%= user.branch %>">
+                                    <input class="form-inp" type="text" name="branch" id="branch"
+                                        value="<%= user.branch %>">
                                 </div>
                                 <div class="profile-field">
                                     <label class="field-title" for="role">Role</label>
@@ -144,16 +175,19 @@
                                 </div>
                                 <div class="profile-field">
                                     <label class="field-title" for="phone">Phone</label>
-                                    <input class="form-inp" type="number" name="phone" id="phone" value="<%= user.phone %>">
+                                    <input class="form-inp" type="number" name="phone" id="phone"
+                                        value="<%= user.phone %>">
                                 </div>
                                 <div class="profile-field">
                                     <label class="field-title" for="email">Email</label>
-                                    <input class="form-inp" type="email" name="email" id="email" value="<%= user.email %>">
+                                    <input class="form-inp" type="email" name="email" id="email"
+                                        value="<%= user.email %>">
                                 </div>
-                                <input type="submit" value="Save Changes" class="profile-btn" style="background-color: #0080ff; color: white">
+                                <input type="submit" value="Save Changes" class="profile-btn"
+                                    style="background-color: #0080ff; color: white" id="update-btn">
                             </form>
                         </div>
-                        <div class="user-details page" data-page="3">
+                        <!-- <div class="user-details page" data-page="3">
                             <form action="pass" method="post">
                                 <div class="profile-field">
                                     <label class="field-title" for="oldpassword">Old Password</label>
@@ -169,7 +203,7 @@
                                 </div>
                                 <input type="submit" value="Change Password" class="profile-btn" style="background-color: #0080ff; color: #fff">
                             </form>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -190,11 +224,16 @@
             </div>
 
         </main>
+        <script>
+            const deleteBtn = document.getElementById('delete-btn');
+            const blockBtn = document.getElementById('block-btn');
+            const updateBtn = document.getElementById('update-btn');
+        </script>
+
+        
 
         <script src="https://kit.fontawesome.com/6819033383.js" crossorigin="anonymous"></script>
         <script src="/js/main.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.3.js"
-            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
 
 </body>
 

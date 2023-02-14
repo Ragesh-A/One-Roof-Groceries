@@ -21,50 +21,58 @@
     <%- include('./includes/homeNavbar.ejs') %>
         <!-- all content shuld be inside div  -->
         <div id="home-body">
+            <% if(products=='' ){%>
+                <section class="flex empty-cart">
 
-            <section id="productsPage">
-                <div>
-                    <p>The products are waiting for you</p>
-                </div>
-                <div class="products grid">
-                    <% products.forEach(product=>{ %>
-
-                        <div class="card-wrap">
-                            <% if( product.offer > 0){ %> 
-                            <span class="offer">
-                                <%= product.offer %>% off
-                            </span>
-                            <% } %>
-                            <a href="">
-                                <div class="img">
-                                    <img src="/uploads/product/<%= product.category %>/<%= product.productPictures[0].img %>" alt="<%= product.name %> image">
-                                </div>
-                            </a>
-                            <div class="card-body">
-                                <h3 class="product-title">
-                                    <%= product.name %>
-                                </h3>
-                                <div class="weight">
-                                    <%= product.singleQty%> Gm
-                                </div>
-                                <div class="price flex">
-                                    <p class="new">RS <%= (product.price - (product.price * product.offer / 100)).toFixed(2); %><span></span></p>
-                                    <strike class="old">
-                                        <%= product.price %>.<span>00</span>
-                                    </strike>
-                                </div>
-                                <div class="cart-btns">
-                                    <div class="buy-btn flex">
-                                        <i class='bx bxs-cart-download'></i>
-                                        <p>ADD TO CART</p>
-                                    </div>
-                                </div>
-                            </div>
+                    <img src="/images/backgrounds/no_result.gif" alt="no result" style="max-width: 500px;">
+                </section>
+                <%}else{%>
+                    <section id="productsPage">
+                        <div>
+                            <p>The products are waiting for you</p>
                         </div>
-                        <% }) %>
-                </div>
+                        <div class="products grid">
+                            <% products.forEach(product=>{ %>
 
-            </section>
+                                <div class="card-wrap">
+                                    <% if( product.offer> 0){ %>
+                                        <span class="offer">
+                                            <%= product.offer %>% off
+                                        </span>
+                                        <% } %>
+                                            <a href="/product/<%= product._id %>">
+                                                <div class="img">
+                                                    <img src="/uploads/product/<%= product.category._id %>/<%= product.productPictures[0].img %>"
+                                                        alt="<%= product.name %> image">
+                                                </div>
+                                            </a>
+                                            <div class="cards-body">
+                                                <h3 class="product-title">
+                                                    <%= product.name %>
+                                                </h3>
+                                                <div class="weight">
+                                                    <%= product.singleQty%>
+                                                </div>
+                                                <div class="price flex">
+                                                    <p class="new">RS <%= (product.price - (product.price *
+                                                            product.offer / 100)).toFixed(2); %><span></span></p>
+                                                    <strike class="old">
+                                                        <%= product.price %>.<span>00</span>
+                                                    </strike>
+                                                </div>
+                                                <div class="cart-btns">
+                                                    <a href="/cart/add/<%= product._id %>" class="buy-btn flex">
+                                                        <i class='bx bxs-cart-download'></i>
+                                                        <p>ADD TO CART</p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                </div>
+                                <% }) %>
+                        </div>
+
+                    </section>
+                    <%} %>
 
         </div>
 

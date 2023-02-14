@@ -1,0 +1,123 @@
+<%- include('../includes/homehead') %>
+    <% if(cartList=='' || null || undefined ){ %>
+        <section class="flex empty-cart">
+            <img src="/images/backgrounds/70917839016995.gif" alt="cart is empty">
+            <hr>
+            <h2>------- Empty cart -------</h2>
+        </section>
+        <% } else { %>
+            <section class="cart-sec flex">
+
+
+                <div class="left">
+
+
+                    <h2>Shopping Cart <span class="green-text cart-count"><span class="count"></span> items</span></h2>
+
+                    <% cartList.Items.forEach(item=>{ %>
+
+                        <figure class="cart-item flex">
+                            <div class="left flex">
+                                <div class="cart__img ">
+                                    <a href="/product/test/<%= item.product.slug %>">
+                                        <img src="/uploads/product/<%= item.product.category._id %>/<%= item.product.productPictures[0].img %>"
+                                            alt="" width="100%">
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="right">
+                                <div class="cart__title-box">
+                                    <p class="cart__title">
+                                        <%= item.product.name %>
+                                    </p>
+                                </div>
+                                <p class="unit-price">
+                                    <%= item.product.price %> <span>per <%=item.product.singleQty%> </span>
+                                </p>
+                                <div class="qty-wrap" data-id="<%= item.product._id %>">
+                                    <button class="qty-btn dec" value="-">-</button>
+                                    <input type="text" value="<%= item.quantity %>" disabled>
+                                    <button class="qty-btn inc" value="+">+</button>
+
+                                </div>
+                                <p class="sub-total">₹<span>
+                                        <%= item.product.price * item.quantity - (item.product.price * item.quantity * 
+                                            item.product.offer/100) %>
+                                    </span>
+                                </p>
+
+                            </div>
+
+                        </figure>
+
+
+                        <% }) %>
+
+                </div>
+                <div>
+                    <div class="cart-right">
+                        <div class="place-order-btn-wrap">
+                            <a href="/cart/buy/address" class="btn place-order-btn">CHECK OUT</a>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+            </section>
+
+
+            <script>
+                let incrementBtn = document.getElementsByClassName('inc');
+                let decrementBtn = document.getElementsByClassName('dec');
+
+                for (let i = 0; i < incrementBtn.length; i++) {
+                    incrementBtn[i].addEventListener('click', function (e) {
+                        let input = e.target.parentElement.children[1]
+                        input.value = parseInt(input.value) + 1
+                        // let pricep = e.target.parentElement
+                        // let price = pricep
+                        // console.log(price);
+                        console.log();
+                        fetch(`/cart/update/${e.target.parentElement.dataset.id}`,
+                            {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    action: 'inc'
+                                })
+                            }).then(res => res.json())
+                            .then(data => console.log(data))
+                            .catch(err => console.log(err))
+
+                    })
+                }
+                for (let i = 0; i < decrementBtn.length; i++) {
+                    decrementBtn[i].addEventListener('click', function (e) {
+                        let input = e.target.parentElement.children[1]
+                        if (input.value > 0) {
+
+                            input.value = parseInt(input.value) - 1
+                            fetch(`/cart/update/${e.target.parentElement.dataset.id}`,
+                                {
+                                    method: 'post',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        action: 'dec'
+                                    })
+                                }).then(res => res.json())
+                                .then(data => {
+                                    console.log(data.message);
+                                    if (data.message === "cart deleted successfully") {
+                                        location.reload()
+                                    }
+                                })
+                                .catch(err => console.log(err))
+                        }
+                    })
+                }
+            </script>
+            <%- include('../includes/homebottom') %>

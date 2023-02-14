@@ -11,10 +11,40 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(45deg, #5e9cce, #213a79);
+        }.banpage{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+            
+        }img{
+            width: 100%;
+        }
+        h1{
+            font-size: 5rem;
+            font-weight: 800;
+            color: white;   
+        }
+        @media screen and (max-width:786px){
+            .banpage {
+                grid-template-columns: 1fr;
+            }
+            .right{
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <h1 style="color: red;">Banned!</h1>
+    <div class="banpage">
+        <div class="left">
+            <img src="/images/backgrounds/ban2.png" alt="">
+        </div>
+        <div class="right">
+            <h1>You are banned </h1>
+        </div>
+    </div>
 </body>
 </html>

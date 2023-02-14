@@ -32,7 +32,7 @@ const bcrypt = require('bcrypt');
 // };
 
 exports.signup = async (req, res) => {
-  if(req.message) return res.render('signup', { message: req.message.err })
+  if (req.message) return res.render('signup', { message: req.message.err });
   let user = await User.findOne({ email: req.body.email });
   if (user) {
     req.session.message = 'user already registered';
@@ -45,41 +45,35 @@ exports.signup = async (req, res) => {
   res.render('otp', { message: req.session.message });
 };
 
-exports.createAccount = (req, res)=>{
+exports.createAccount = (req, res) => {
   try {
-    if(req.session.user.otp == req.body.otp){
+    if (req.session.user.otp == req.body.otp) {
       const _user = new User({
-        name : req.session.user.name,
+        name: req.session.user.name,
         phone: req.session.user.phone,
         email: req.session.user.email,
-        password : req.session.user.password,
+        password: req.session.user.password,
         role: 'user',
-        active: true
+        active: true,
       });
       _user.save();
       const token = createToken(_user);
       res.cookie('Authorization', `Bearer ${token}`).status(200).redirect('/');
     }
-
   } catch (error) {
     console.log(error);
-    res.redirect('/err')
+    res.redirect('/err');
   }
-}
-
-
-
+};
 
 //signin validation
 exports.signin = async (req, res) => {
- 
   if (req.message) {
     res.render('signin', { message: req.message.err });
   } else {
     User.findOne({ email: req.body.email }).exec((err, user) => {
       if (err) res.status(400).json({ err });
       if (user) {
-        console.log(user);
         if (user.authenticate(req.body.password)) {
           if (user.active) {
             const token = createToken(user);
@@ -115,13 +109,11 @@ exports.signout = (req, res) => {
 exports.updateOtp = async (req, res) => {
   User.findOne({ email: req.body.email }).exec((err, user) => {
     if (user) {
-      
       generateOtp(req.body.email).then((otp) => {
         console.log(otp);
-        req.session.otp = otp
-      
-             res.status(201).json({ message: 'otp send' });
-        
+        req.session.otp = otp;
+
+        res.status(201).json({ message: 'otp send' });
       });
     } else {
       res.status(400).json({ message: 'No user Found' });
@@ -129,13 +121,11 @@ exports.updateOtp = async (req, res) => {
   });
 };
 
-
 exports.verifyPassword = async (req, res) => {
   User.findOne({ email: req.body.email }).exec((err, user) => {
     if (user) {
-      
       if (req.session.otp == req.body.otp) {
-        req.session.email = req.body.email
+        req.session.email = req.body.email;
         res.render('changepassword');
       } else {
         req.query.message = 'invalid otp';
@@ -149,26 +139,24 @@ exports.verifyPassword = async (req, res) => {
   });
 };
 
-exports.changePassword = async(req, res) => {
-  
-  if(req.body.password.length > 7 ){
+exports.changePassword = async (req, res) => {
+  if (req.body.password.length > 7) {
     let password = bcrypt.hashSync(req.body.password, 10);
-    User.updateOne({ email: req.session.email }, { hash_password: password })
-    .exec((err, data) => {
-        if(err){
-          res.status(400).redirect('/err')
-        }
-        if(data){
-          
-          res.status(201).redirect('/account/signin')
-        }
-      });
+    User.updateOne(
+      { email: req.session.email },
+      { hash_password: password }
+    ).exec((err, data) => {
+      if (err) {
+        res.status(400).redirect('/err');
+      }
+      if (data) {
+        res.status(201).redirect('/account/signin');
+      }
+    });
+  } else {
+    console.log('false');
+    res.redirect('/err');
   }
-  else{
-    console.log("false");
-    res.redirect('/err')
-  }
-
 };
 /*---------------- CREATON OF TOKEN ------------------------*/
 let createToken = (user) => {

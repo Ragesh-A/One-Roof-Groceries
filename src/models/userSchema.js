@@ -56,23 +56,23 @@ const userSchema = new mongoose.Schema(
     active: {
       type: Boolean,
       default: false,
-      
     },
-    otp: {
-      type: Number
+    cartQuantity:{
+      type: Number,
+      default: 0,
     }
   },
   { timestamps: true }
 );
 
 userSchema.virtual("password").set(function (password) {
-  this.hash_password = bcrypt.hashSync(password, 10);
+  this.hash_password = bcrypt.hash(password, 10);
 });
 
 userSchema.methods = {
-  authenticate: function (password) {
-    return bcrypt.compareSync(password, this.hash_password);
+  authenticate: async function(password) {
+    return await bcrypt.compare(password, this.hash_password);
   },
-};
+}; 
 
 module.exports = mongoose.model("user", userSchema);

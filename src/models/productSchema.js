@@ -7,6 +7,11 @@ const productSchema = new  mongoose.Schema({
         required: true,
         trim: true
     },
+    shortName: {
+        type: String,
+        required: true,
+        trim: true
+    },
     slug: {
         type: String,
         required: true,
@@ -17,7 +22,7 @@ const productSchema = new  mongoose.Schema({
         required: true
     },
     singleQty: {
-        type: Number,
+        type: String,
         required: true
     },
     stock: {
@@ -33,6 +38,22 @@ const productSchema = new  mongoose.Schema({
         ref: 'category',
         required: true
     },
+    productInfo:{
+        type: String,
+        trim : true,
+        required: true
+    },
+    productFact:{
+        type: String,
+        trim : true,
+        required: true
+    },
+    theme:{
+        type: [{
+            type: String,
+            trim: true
+        }]
+    },
     paymentMethod: [{
         type: String,
         trim: true,
@@ -43,9 +64,16 @@ const productSchema = new  mongoose.Schema({
         ref: 'User',
         required: true
     },
-    
 },
 {timestamps : true})
 
+productSchema.index({
+    name: 'text',
+    shortName: 'text',
+    price: 'text',
+    productInfo : 'text',    
+},{
+    name: 'product-index'
+})
 
 module.exports = mongoose.model('product', productSchema)

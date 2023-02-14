@@ -1,0 +1,194 @@
+<%- include('../includes/homehead') %>
+
+  <form id="form">
+    <section class="cart-sec address-sec flex">
+
+      <div class="left">
+        <h2 class="address-sec-title">Address</h2>
+        <div class="address-wrap">
+
+          <div class="address-input-wrap">
+            <label for="name" class="address-label">Name</label>
+            <input readonly type="text" class="address-inputs" name="name" id="name" value="<%= user.name %>">
+          </div>
+          <div class="address-input-wrap">
+            <label for="place" class="address-label">Place</label>
+            <input readonly type="text" class="address-inputs" name="place" id="Place"
+              value="<%= user.address.place %>">
+          </div>
+          <div class="address-input-wrap">
+            <label for="pin" class="address-label">Pincode</label>
+            <input readonly type="number" class="address-inputs" name="pin" id="pin"
+              value="<%= user.address.pincode %>">
+          </div>
+          <div class="address-input-wrap">
+            <label for="city" class="address-label">City</label>
+            <input readonly type="text" class="address-inputs" name="city" id="city" value="<%= user.address.city %>">
+          </div>
+          <div class="address-input-wrap">
+            <label for="district" class="address-label">District</label>
+            <input readonly type="text" class="address-inputs" name="district" id="district"
+              value="<%= user.address.district %>">
+          </div>
+          <div class="address-input-wrap">
+            <label for="email" class="address-label">Email</label>
+            <input readonly type="email" class="address-inputs" name="email" id="email" value="<%= user.email %>">
+          </div>
+          <div class="address-input-wrap">
+            <label for="phone" class="address-label">Phone</label>
+            <input type="number" class="address-inputs" name="phone" id="phone" value="<%= user.phone %>">
+          </div>
+          <div class="address-input-wrap">
+            <label for="phone" class="address-label"><br></label>
+            <input type="button" id="edit-address" value="Use another address or edit address">
+          </div>
+
+        </div>
+
+        <div class=" flex message-wrap" id="message-wrap">
+          <p id="messagevalue" class="alert-meassage danger"></p>
+        </div>
+
+      </div>
+      <div class="right">
+        <div class="right-t">
+          <div class="product-mini-invoice">
+            <div>
+
+              <!--  -->
+              <% var discount=0 %>
+                <% var totalAmount=0 %>
+                  <% var total=0 %>
+                    <!--  -->
+
+                    <p class="title">Product</p>
+                    <% cartList.forEach(product=> { %>
+                      <p>
+                        <%=product.product.shortName%> (x <%=product.quantity%>)
+                      </p>
+                      <%})%>
+                        <p>discount</p>
+                        <p>shipping fee</p>
+                        <br>
+                        <p class="title">Total</p>
+            </div>
+            <div style="text-align: center;">
+              <p class="title">Amount</p>
+              <% cartList.forEach(product=> { %>
+                <p>
+                  <%=product.product.price * product.quantity %>
+                </p>
+                <% totalAmount +=product.product.price * product.quantity%>
+                  <% discount +=product.product.offer %>
+                    <%})%>
+                      <% total=totalAmount - ( totalAmount* discount/100) %>
+                        <p style="color: var(--green)">
+                          <%= discount %>%
+                        </p>
+                        <p style="color: var(--green)">
+                          <% if(total> 500){ %> free <%}else{%>50<%}%>
+                        </p>
+                        <hr>
+                        <p class="title">
+                          <%= total %>
+                        </p>
+            </div>
+          </div>
+          <div class="coupon-wrap">
+            <p class="title">Do you have any discount coupon?</p>
+            <p class="description">Only one discount code per order can be applied</p>
+            <div class="coupon-input-wrap">
+              <input type="text" name="couponcode">
+              <input type="button" value="APPLY" class="apply-btn">
+            </div>
+          </div>
+          <div class="payment-option">
+            <div>
+              <input type="radio" name="paymentMethod" id="cod" value="cash-on-delivery">
+              <label for="cod">cash on delivery</label>
+            </div>
+            <div>
+              <input checked type="radio" name="paymentMethod" id="op" value="online-payment">
+              <label for="op">Online Payment</label>
+            </div>
+          </div>
+          <div>
+            <input type="button" id="submitBtn" class="btn place-order-btn" value="CHECK OUT">
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </form>
+
+
+  <script>
+    let form = document.getElementById('form');
+    let labels = document.querySelectorAll('label');
+    let editAddressBtn = document.getElementById('edit-address');
+    let addressInputs = document.querySelectorAll('.address-inputs');
+    let checkoutBtn = document.getElementById('submitBtn');
+    let messageWrap = document.getElementById('message-wrap');
+    let errMessage = document.getElementById('messagevalue')
+
+
+    //MESSAGE WRAPPER
+    messageWrap.style.display = 'none';
+
+    editAddressBtn.onclick = () => {
+      if (editAddressBtn.value == "save address") {
+        editAddressBtn.value = "edit address"
+      } else {
+
+        editAddressBtn.value = "save address"
+      }
+      addressInputs.forEach(inputs => {
+        if (inputs.readOnly) {
+          inputs.readOnly = false;
+        }
+        else {
+          inputs.readOnly = true;;
+        }
+      })
+    }
+
+  
+
+
+
+    //CRATION OF VALIDATION MESSAGE
+    checkoutBtn.onclick = () => {
+      let messages = [];
+      addressInputs.forEach(inputs => {
+        console.log(inputs.value);
+        if (inputs.value == '') {
+          messages.push(inputs.labels[0].innerText);
+        }
+      })
+      
+      sendMessage(messages);
+    }
+    //DISPLAY MESSAGE  FUNCTION
+    function sendMessage(messages) {
+      if (messages != '') {
+        messageWrap.style.display = 'block';
+        errMessage.innerText = messages[0] + " should not be empty";
+      } else {
+        form.action = '/cart/buy/address';
+        form.method = 'POST';
+        messageWrap.style.display = 'none';
+        errMessage.innerText = '';
+        submitBtn.style.display = 'block';
+        submitBtn.type = 'submit';
+       
+      }
+    }
+
+
+
+
+
+    let url = '/cart/buy/thankyou'
+
+  </script>
+  <%- include('../includes/homebottom') %>

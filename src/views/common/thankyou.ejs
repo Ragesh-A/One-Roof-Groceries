@@ -1,0 +1,79 @@
+<%- include('../includes/homehead') %>
+
+
+<section id="thankyou-page px-3">
+    <div class="thanks-grid p-3">
+      <div class="left flex flex-column" style="background-color: #fcfcff;">
+
+        <div class="flex confirm-message">
+          <img src="/images/backgrounds/confirmed.gif" alt="">
+          <h2>RDER <span> placed, thank you!</span></h2>
+        </div>
+        <br>
+        <div>
+          <address>
+            <span><b> Shipping to <%= order.billingAddress.name %></b>,</span>
+            <p><%= order.billingAddress.place %>, <%= order.billingAddress.city %>, <%= order.billingAddress.district %></p>
+            <p><%= order.billingAddress.email %>, ph: <%= order.billingAddress.phone %></p>
+          </address>
+          <hr>
+        </div>
+        <div>
+          Products
+        </div>
+        <div class="place-order-btn-wrap" style="margin-top: auto;">
+          <a href="/" class="btn place-order-btn">Shop more</a>
+      </div>
+
+      </div>
+      <div class="right" ">
+        <img src="/images/backgrounds/delivery.gif" alt="" width="100%">
+      </div>
+    </div>
+</section>
+<section class="latest-product-wrap">
+  <% latestProducts.forEach( product=>{ %>
+    <div class="card-wrap">
+        <% if( product.offer> 0){ %>
+            <span class="offer">
+                <%= product.offer %>% off
+            </span>
+            <% } %>
+                <a href="product/<%= product._id %>">
+                    <div class="img">
+                        <img src="/uploads/product/<%= product.category %>/<%= product.productPictures[0].img %>"
+                            alt="<%= product.name %> image">
+                    </div>
+                </a>
+                <div class="cards-body">
+                    <h3 class="product-title">
+                        <%= product.name %>
+                    </h3>
+                    <div class="weight">
+                        <%= product.singleQty%>
+                    </div>
+                    <div class="price flex">
+                        <p class="new">RS <%= (product.price - (product.price * product.offer /
+                                100)).toFixed(2); %><span></span></p>
+                        <strike class="old">
+                            <%= product.price %>.<span>00</span>
+                        </strike>
+                    </div>
+                    <div class="cart-btns">
+                        <a href="/cart/add/<%= product._id %>" class="buy-btn flex">
+                            <i class='bx bxs-cart-download'></i>
+                            <p>ADD TO CART</p>
+                        </a>
+                    </div>
+                </div>
+    </div>
+    <% }) %>
+</section>
+
+
+
+
+<script>
+</script>
+
+<%- include('../includes/homebottom') %>

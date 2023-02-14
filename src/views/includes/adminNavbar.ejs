@@ -3,7 +3,7 @@
 
     <div class="logo-wrap flex">
         <div class="logo flex">
-            <img src="/images/logo/logo.png" alt="logo">
+            <a href="/"><img src="/images/logo/logo.png" alt="logo"></a>
 
         </div>
         <div class="toggle-btn" id="toggle-btn">
@@ -31,17 +31,10 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link " href="/">
-                <i class='bx bxs-home'></i>
-                <span>Home</span>
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link <% if(page=='dashboard'){ %>active <%} %>" href="/admin">
                 <i class='bx bxs-category'></i>
                 <span>Dashboard</span>
             </a>
-    
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed  <% if(page=='expenses'){ %>active <%} %>" href="/admin/expenses">

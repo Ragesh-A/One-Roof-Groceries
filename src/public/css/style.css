@@ -31,7 +31,7 @@ html {
 body {
   font-family: 'poppins', Arial, Helvetica, sans-serif;
   /* background: linear-gradient(to right, #e7e3da, var(--var(--white))); */
-  min-height: 100vh;
+  /* min-height: 100vh; */
   position: relative;
 }
 a {
@@ -92,6 +92,18 @@ section {
   width: 70px;
   cursor: pointer;
   border-radius: 10px;
+}
+.d-none{
+  display: none;
+}
+.align-center{
+  align-items: center;
+}
+.justify-center{
+  justify-content: center;
+}
+.mx-1{
+  margin: 0 1rem;
 }
 /*---------------------- BUTTONS ---------------------------------*/
 .btns-wrap {
@@ -158,7 +170,7 @@ form p {
 footer {
   background-color: #3ba66b;
   grid-template-columns: repeat(3, 1fr);
-  color: var(--var(--white));
+  color: var(--white);
   padding: 3rem 2rem;
   position: relative;
   width: 100%;

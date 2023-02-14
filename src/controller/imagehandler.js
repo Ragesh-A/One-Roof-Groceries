@@ -1,5 +1,6 @@
 const path = require('path');
 const multer = require('multer');
+const sharp = require('sharp');
 const fs = require('fs');
 
 const profileDestination = path.join(__dirname, '../public/uploads/profiles');
@@ -20,51 +21,45 @@ const categoryImageStorage = multer.diskStorage({
     cb(null, categoryDestination);
   },
   filename: (req, file, cb) => {
-    
-    const name = req.body.name.replace(/ /g, "-")
+    const name = req.body.name.replace(/ /g, '-');
     cb(null, `${name}-${file.originalname}`);
   },
 });
 
-
 const productImageStorage = multer.diskStorage({
-  destination: (req, file, cb) => {  
+  destination: (req, file, cb) => {
     const productPath = path.join(productDestination, req.body.category);
     cb(null, productPath);
   },
   filename: (req, file, cb) => {
-    const name = req.body.name.replace(/ /g, "-");
+    const name = req.body.name.replace(/ /g, '-');
     const fileName = `${name}-${file.originalname}`;
     cb(null, fileName);
   },
 });
 
 const poductImageUpadate = multer.diskStorage({
-  destination: (req, file, cb)=>{
+  destination: (req, file, cb) => {
     const productPath = path.join(productDestination, req.body.category);
     cb(null, productPath);
   },
-  filename: (req, file, cb)=>{
+  filename: (req, file, cb) => {
     console.log(req.body);
     console.log(file.originalname);
-  }
-})
-
-
-
-
-
-
-
-
-
+  },
+});
 
 const uploadProfileImage = multer({ storage: profileImageStorage });
 const uploadCategoryImage = multer({ storage: categoryImageStorage });
 const uploadProductImage = multer({ storage: productImageStorage });
 
+// const resizeImage = (req, res, next) => {
+//   if (!req.file) return next();
+//   sharp
+// };
+
 module.exports = {
   uploadProfileImage,
   uploadCategoryImage,
-  uploadProductImage
+  uploadProductImage,
 };

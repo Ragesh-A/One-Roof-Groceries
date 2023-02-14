@@ -1,18 +1,17 @@
-const express = require('express')
-const { requireSignin } = require('../commonMiddleware')
-const router = express.Router()
+const express = require("express");
+const { requireSignin } = require("../commonMiddleware");
+const { latestProducts } = require("../controller/product");
+const router = express.Router();
 
-let accountRouter = require('./account')
+let accountRouter = require("./account");
 
+router.get("/", latestProducts, (req, res) => {
+   res.render("index", { latestProducts: req.latestProducts });
+});
 
-router.get('/', (req, res) => {
-
-    res.render('index',{user : 'admin'})
-})
-
-
-router.use('/account', accountRouter)
-
-
+router.use("/account", accountRouter);
+router.get("/singleproduct", (req, res) => {
+   res.render("common/singleproduct");
+});
 
 module.exports = router;

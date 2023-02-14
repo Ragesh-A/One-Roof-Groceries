@@ -1,16 +1,16 @@
 <header id="header">
-    <div class="py-3 pe-xl-3 navBar align-items-center">
+    <div class="nav-wrap flex">
         <div class="col nav-menu">
             <nav>
-                <ul class="d-flex justify-content-around">
-                    <li class="nav-item d-flex">
-                        <a class="nav-link d-flex ac" href="/">
+                <ul class="flex nav-link-wrap">
+                    <li class="nav-item flex">
+                        <a class="nav-link flex ac" href="/">
                             <i class='bx bxs-home d-none'></i>
                             <span class="nav-name">Home</span>
                         </a>
                     </li>
-                    <li class="nav-item d-flex">
-                        <a class="nav-link d-flex" href="/category">
+                    <li class="nav-item flex">
+                        <a class="nav-link flex" href="/category">
                             <i class='bx bxs-category d-none'></i>
                             <span class="nav-name">Category</span>
                         </a>
@@ -20,20 +20,21 @@
                             <span class="nav-name">About</span>
                         </a>
                     </li>
-                    <li class="nav-item d-flex">
-                        <a class="nav-link d-flex" href="/contact">
+                    <li class="nav-item flex">
+                        <a class="nav-link flex" href="/contact">
                             <i class='bx bxs-comment-dots d-none'></i>
                             <span class="nav-name">Contact</span>
                         </a>
                     </li>
-                    <li class="nav-item d-flex d-none mobile-nav">
-                        <a class="nav-link d-flex" href="/cart">
+                    <li class="nav-item flex d-none mobile-nav">
+                        <a class="nav-link flex" href="/cart" style="position: relative">
+                            <!-- <div class="badge">2</div> -->
                             <i class='bx bxs-basket d-none'></i>
                             <span class="nav-name">Cart</span>
                         </a>
                     </li>
-                    <li class="nav-item d-flex d-none mobile-nav">
-                        <a class="nav-link d-flex" href="/account">
+                    <li class="nav-item flex d-none mobile-nav">
+                        <a class="nav-link flex" href="/account">
                             <i class='bx bxs-user-circle d-none'></i>
                             <span class="nav-name">Account</span>
                         </a>
@@ -41,11 +42,11 @@
                 </ul>
             </nav>
         </div>
-        <div class="logo-wrap d-flex col justify-content-center">
+        <div class="logo-wrap flex col justify-content-center">
             <a href="/"><img src="/images/logo/logo.png" alt="logo"></a>
         </div>
-        <div class="col d-flex justify-content-around align-items-center">
-            <div class="search-wrap border px-3 rounded-1 mt-2 d-flex">
+        <div class="col flex justify-content-around align-items-center">
+            <div class="search-wrap border px-3 rounded-1 mt-2 flex">
                 <form action="/search" method="post" class="d-flex align-items-center w-100">
                     <input type="search" name="search" placeholder="search..">
                     <button type="submit" class="border-0 bg-white h-100">
@@ -59,7 +60,14 @@
             </div>
             <div class="nav-right-account">
 
+                <a href="/wishlist">
+                    <i class='bx bxs-heart-circle'></i>
+                </a>
+            </div>
+            <div class="nav-right-account" style="position: relative;">
+
                 <a href="/cart">
+                    <!-- <div class="badge">2</div> -->
                     <i class='bx bxs-basket'></i>
                 </a>
             </div>

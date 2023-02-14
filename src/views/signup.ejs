@@ -53,34 +53,25 @@
                                             class="form-input">
                                     </div>
                                 </div>
-
-
-                                <% if(message){ %>
-
-                                    <div id="alert-box" class="flex">
-        
-                                        <p class="alertmessage">
+                                <div id="alert-box" style="display:<%= (message)? 'flex' : 'none' %>">
+                                    <p class="alertmessage" id="alertmessage">
+                                        <% if(message){ %>
                                             <%= message %>
-                                        </p>
-                                        <div id="close-btn">
-                                            <i class='bx bx-x-circle'></i>   
-                                        </div>
-                                    </div>  
-                                    <% } %>
-                                
-                                <label for="signup"><a href="signin">Already have account?</a></label>
+                                                <% } %>
+                                    </p>
+                                    <div id="close-btn">
+                                        <i class='bx bx-x-circle'></i>
+                                    </div>
+                                </div>
+
+
+                                <label><a href="signin">Already have account?</a></label>
                                 <div class="btns-wrap ">
                                     <a href="/" class="btn cancel">Cancel</a>
-                                    <input type="submit" class="btn confirm" value="Confirm">
+                                    <input type="button" class="btn confirm" value="Confirm" id="submitBtn">
                                 </div>
                             </div>
-                            <div id="otpForm" style="display: none;">
-                                <div class="input-feild">
-                                    <label for="otp">OTP</label>
-                                    <input type="number" name="otp" id="otp" class="form-input">
-                                    
-                                </div>
-                            </div>
+                            
 
                         </form>
                     </div>
@@ -93,57 +84,61 @@
     <script>
 
 
-//         let closeBtn = document.getElementById('close-btn')
-//         let alertBox = document.getElementById('alert-box')
-//         let otpBtn = document.getElementById('otpBtn')
-//         let messageDisplay = document.getElementById('alertmessage')
-//         function messageSend(message) {
-
-//             messageDisplay.innerText = message
-//             alertBox.style.display = 'flex'
-//         }
-
-//         otpBtn.addEventListener('click', () => {
-//             let name = document.getElementById('name').value
-//             let pass = document.getElementById('password').value
-//             let email = document.getElementById('email').value
-//             let phone = document.getElementById('phoneNumber').value
-//             let heading = document.getElementById('form-title')
-//             let otpForm = document.getElementById('otpForm')
-//             let confPass = document.getElementById('confirmpassword').value
-//             let signupForm = document.getElementById('signupForm')
-// console.log();
-//             if (name && email && phone && pass != '') {
-//                 if(pass.length < 8){
-//                     return messageSend("password should be minimum  8 charater")
-//                 }
-//                 if (pass != confPass){
-//                     return messageSend("Both password should be equal")
-//                 }
-//                 signupForm.style.display = 'none'
-//                 otpForm.style.display = 'flex'
-//                 heading.innerText = 'OTP Verification'
-
-//                 fetch('/otp', {
-//                     method: 'post',
-//                     headers: {
-//                         'Content-Type': 'application/json'
-//                     },
-//                     body: JSON.stringify({
-//                         email: email
-//                     })
-//                 });
-//             } else {
-//                 return messageSend("all feild should be filled")
-//             }
-
-//         })
+        let closeBtn = document.getElementById('close-btn')
+        let alertBox = document.getElementById('alert-box')
+        let submitBtn = document.getElementById('submitBtn')
+        let messageDisplay = document.getElementById('alertmessage')
 
 
+        function sendMessage(message) {
 
-//         closeBtn.addEventListener('click', () => {
-//             alertBox.style.display = 'none  '
-//         })
+            alertBox.style.display = 'flex'
+            messageDisplay.innerText = message[0]
+
+        }
+        // form  validation
+        submitBtn.onclick = () => {
+            let formInputs = document.querySelectorAll('.form-input')
+            let messageArray = []
+            console.log(formInputs);
+            formInputs.forEach(element => {
+                if (element.value == '') {
+                    messageArray.push(`${element.id} should not be empty`)
+                } else if (element.value == 'phone' && element.value.length < 4) {
+                    messageArray.unshift('name should not be atleast five characters')
+                } else if (element.id == 'phone' && element.value.length > 9) {
+                    messageArray.unshift('phone should be valid');
+                } else if (element.id == 'email') {
+                    let emailvalidationResponse = validateEmail(element.value)
+                    if (!emailvalidationResponse) {
+                        messageArray.unshift('email should be valid');
+                    }
+                } else if (element.id == 'password' && element.value.length < 7) {
+                    messageArray.push('password should be atleast 8 character')
+                }
+            })
+            if(messageArray != ''){
+
+                sendMessage(messageArray);
+            }
+            if (messageArray == '') {
+                submitBtn.type = 'submit'
+            }
+        }
+
+        //email validation
+        function validateEmail(email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+        //ERROR message
+        function sendMessage(message) {
+            alertBox.style.display = 'flex'
+            alertmessage.innerText = message[0]
+        }
+        closeBtn.addEventListener('click', () => {
+            alertBox.style.display = 'none  '
+        })
     </script>
 </body>
 

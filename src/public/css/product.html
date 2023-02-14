@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="home.css">
+</head>
+
+<body>
+
+
+    <header id="header">
+        <div class="nav-wrap flex">
+            <div class="col nav-menu flex">
+                <div class="logo-wrap flex col justify-content-center">
+                    <a href="/"><img src=".././images/logo/logo.png" alt="logo" width></a>
+                </div>
+                <nav>
+                    <ul class="flex nav-link-wrap">
+                        <li class="nav-item flex">
+                            <a class="nav-link flex ac" href="/">
+                                <i class='bx bxs-home d-none'></i>
+                                <span class="nav-name">Home</span>
+                            </a>
+                        </li>
+                        <li class="nav-item flex">
+                            <a class="nav-link flex" href="/category">
+                                <i class='bx bxs-category d-none'></i>
+                                <span class="nav-name">Category</span>
+                            </a>
+                        </li>
+                        <li class="nav-item nav-about">
+                            <a class="nav-link" href="/about">
+                                <span class="nav-name">About</span>
+                            </a>
+                        </li>
+                        <li class="nav-item flex">
+                            <a class="nav-link flex" href="/contact">
+                                <i class='bx bxs-comment-dots d-none'></i>
+                                <span class="nav-name">Contact</span>
+                            </a>
+                        </li>
+                        <li class="nav-item flex d-none mobile-nav">
+                            <a class="nav-link flex" href="/cart">
+                                <i class='bx bxs-basket d-none'></i>
+                                <span class="nav-name">Cart</span>
+                            </a>
+                        </li>
+                        <li class="nav-item flex d-none mobile-nav">
+                            <a class="nav-link flex" href="/account">
+                                <i class='bx bxs-user-circle d-none'></i>
+                                <span class="nav-name">Account</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+            <div class="col flex justify-content-around align-items-center">
+                <div class="search-wrap border px-3 rounded-1 mt-2 flex">
+                    <form action="/search" method="post" class="d-flex align-items-center w-100">
+                        <input type="search" name="search" placeholder="search..">
+                        <button type="submit" class="border-0 bg-white h-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+                <div class="nav-right-account">
+
+                    <a href="/cart">
+                        <i class='bx bxs-basket'></i>
+                    </a>
+                </div>
+                <div class="nav-right-account">
+
+                    <a href="/account">
+                        <i class='bx bxs-user-circle'></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <div class="d-none nav-bg">
+            <img src=".././images/logo/bg-header-4.png" width="100%">
+        </div>
+    </header>
+
+
+
+
+
+
+
+
+
+    <div id="product-section-wrap">
+        <section class="product-section">
+            <!-- <div class=""> -->
+            <div class="product">
+                <div class="img-wrap" id="img-wrap">
+                    <img src=".././uploads/product/63de012951a7a7985fb94218/Orange-19.png" id="productImage">
+                </div>
+                <div>
+                    <div class="name-wrap">
+                        <h2 class="main-name">orange</h2>
+                        <p class="name">fruit</p>
+                    </div>
+                    <div class="description">
+                        <ul class="flex description-navigation">
+                            <li><a data-switcher data-tab="1" class="tab active">Product info</a></li>
+                            <li><a data-switcher data-tab="2" class="tab">facts</a></li>
+                        </ul>
+                        <div class="details">
+                            <p data-page="1" class="page active"> cxLorem ipsum dolor sit amet consectetur, adipisicing
+                                elit.
+                                Doloribus, illo, obcaecati
+                                minus
+                                cupiditate magnam porro natus quasi, expedita perferendis omnis sit minima dolores eaque
+                                placeat iusto eius nisi tempore asperiores amet non maxime quia? Facilis, velit. Velit
+                                tempore quia molestias sapiente non, porro atque quaerat, reiciendis laudantium
+                                consequatur
+                                corporis aspernatur.
+                            </p>
+                            <p data-page="2" class="page"> Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                Doloribus, illo,
+                                obcaecati
+                                minus
+                                cupiditate magnam porro natus quasi, expedita perferendis omnis sit minima dolores eaque
+                                placeat iusto eius nisi tempore asperiores amet non maxime quia? Facilis, velit. Velit
+                                tempore quia molestias sapiente non, porro atque quaerat, reiciendis laudantium
+                                consequatur
+                                corporis aspernatur.
+                            </p>
+                        </div>
+                        <div class="product-selection-wrap">
+                            <div class="btn-wrap">
+                                <a href="" class="add-to-cart-btn">Add To Card</a>
+
+                            </div>
+
+                            <div class="quantity-wrap flex">
+                                <div class="flex">
+                                    <input type="button" value="-">
+                                    <input type="text" value="0">
+                                    <input type="button" value="+">
+                                </div>
+                            </div>
+
+                            <p id="testing"></p>
+                            <div class="btn-wrap">
+                                <a href="" class="add-to-cart-btn">Add To wish</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- </div> -->
+            <div class="right">
+
+                <h3 class="related-product-title">Related Products</h3>
+                <div class="related-product-wrap">
+                    <div class="">
+                        <div class="card-wrap flex">
+                            <div class="img">
+                                <img src=".././uploads/product/63de012951a7a7985fb94218/Orange-19.png" alt="" id="">
+                            </div>
+                            <div class="cards-body">
+                                <h3 class="product-title">Raw Mango</h3>
+                                <div class="price flex">
+                                    <p class="new">RS 50.00</p>
+                                    <strike class="old">60.00</strike>
+                                </div>
+                                <div class="cart-btns">
+                                    <div class="buy-btn flex">
+                                        <i class='bx bxs-cart-download'></i>
+                                        <p>ADD TO CART</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="card-wrap flex">
+                            <div class="img">
+                                <img src=".././uploads/product/63de012951a7a7985fb94218/Orange-19.png" alt="" id="">
+                            </div>
+                            <div class="cards-body">
+                                <h3 class="product-title">Raw Mango</h3>
+                                <div class="price flex">
+                                    <p class="new">RS 50.00</p>
+                                    <strike class="old">60.00</strike>
+                                </div>
+                                <div class="cart-btns">
+                                    <div class="buy-btn flex">
+                                        <i class='bx bxs-cart-download'></i>
+                                        <p>ADD TO CART</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="card-wrap flex">
+                            <div class="img">
+                                <img src=".././uploads/product/63de012951a7a7985fb94218/Orange-19.png" alt="" id="">
+                            </div>
+                            <div class="cards-body">
+                                <h3 class="product-title">Raw Mango</h3>
+                                <div class="price flex">
+                                    <p class="new">RS 50.00</p>
+                                    <strike class="old">60.00</strike>
+                                </div>
+                                <div class="cart-btns">
+                                    <div class="buy-btn flex">
+                                        <i class='bx bxs-cart-download'></i>
+                                        <p>ADD TO CART</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="card-wrap flex">
+                            <div class="img">
+                                <img src=".././uploads/product/63de012951a7a7985fb94218/Orange-19.png" alt="" id="">
+                            </div>
+                            <div class="cards-body">
+                                <h3 class="product-title">Raw Mango</h3>
+                                <div class="price flex">
+                                    <p class="new">RS 50.00</p>
+                                    <strike class="old">60.00</strike>
+                                </div>
+                                <div class="cart-btns">
+                                    <div class="buy-btn flex">
+                                        <i class='bx bxs-cart-download'></i>
+                                        <p>ADD TO CART</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="card-wrap flex">
+                            <div class="img">
+                                <img src=".././uploads/product/63de012951a7a7985fb94218/Orange-19.png" alt="" id="">
+                            </div>
+                            <div class="cards-body">
+                                <h3 class="product-title">Raw Mango</h3>
+                                <div class="price flex">
+                                    <p class="new">RS 50.00</p>
+                                    <strike class="old">60.00</strike>
+                                </div>
+                                <div class="cart-btns">
+                                    <div class="buy-btn flex">
+                                        <i class='bx bxs-cart-download'></i>
+                                        <p>ADD TO CART</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="card-wrap flex">
+                            <div class="img">
+                                <img src=".././uploads/product/63de012951a7a7985fb94218/Orange-19.png" alt="" id="">
+                            </div>
+                            <div class="cards-body">
+                                <h3 class="product-title">Raw Mango</h3>
+                                <div class="price flex">
+                                    <p class="new">RS 50.00</p>
+                                    <strike class="old">60.00</strike>
+                                </div>
+                                <div class="cart-btns">
+                                    <div class="buy-btn flex">
+                                        <i class='bx bxs-cart-download'></i>
+                                        <p>ADD TO CART</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+    <section>
+
+    </section>
+    <script>
+        const imagWrap = document.getElementById('img-wrap');
+        const productImage = document.getElementById('productImage');
+        let test = document.getElementById('testing');
+
+        imagWrap.addEventListener('mousemove', (e) => {
+            const x = e.clientX - e.target.offsetLeft;
+            const y = e.clientY - e.target.offsetTop;
+            test.innerText = `${x} ${y}`
+            console.log(x, y);
+
+            productImage.style.transformOrigin = `${x}px ${y}px`;
+            productImage.style.transform = 'scale(2)'
+        })
+        imagWrap.addEventListener('mouseleave', () => {
+            productImage.style.transformOrigin = 'center';
+            productImage.style.transform = 'scale(1)';
+        })
+        window.onload = () => {
+            let tabSwitchers = document.querySelectorAll('[data-switcher]');
+            for (let i = 0; i < tabSwitchers.length; i++) {
+                let tabSwitcher = tabSwitchers[i];
+                let pageId = tabSwitcher.dataset.tab;
+
+                tabSwitcher.addEventListener('click', () => {
+                    document.querySelector('.tab.active').classList.remove('active');
+                    tabSwitcher.classList.add('active');
+                    PageSwitcher(pageId)
+                })
+            }
+        }
+
+        function PageSwitcher(page) {
+            let currentPage = document.querySelector('.page.active');
+            currentPage.classList.remove('active');
+            const newPage = document.querySelector(`.page[data-page="${page}"]`);
+            newPage.classList.add('active');
+        }
+
+    </script>
+</body>
+
+</html>

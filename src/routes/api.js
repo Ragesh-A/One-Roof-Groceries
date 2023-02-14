@@ -18,6 +18,7 @@ router.get(
   getemployees,
   dashboard
 );
+
 router.get('/coupon/:id', requireSignin, adminMiddleware, getCoupon);
 router.get(
   '/userauth/:id',
@@ -25,6 +26,7 @@ router.get(
   supportMiddleware,
   changeAuthorization
 );
+
 router.post('/getOtp', updateOtp);
 
 

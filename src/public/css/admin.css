@@ -37,6 +37,9 @@ li a:hover {
   font-weight: 600;
   padding: 10px 0;
 }
+#confirm-wrap {
+  display: none;
+}
 /*----------*/
 .card {
   box-shadow: 0px 0px 20px rgb(1 41 112 / 10%);
@@ -47,6 +50,9 @@ li a:hover {
 }
 .delete {
   background-color: red;
+}
+form {
+  position: relative;
 }
 /*------------ HEADER ---------------*/
 .header {
@@ -303,10 +309,10 @@ li a:hover {
   .sidebar {
     top: 120px;
   }
-  .logo-wrap{
+  .logo-wrap {
     margin-bottom: 10px;
   }
-  .search-wrap{
+  .search-wrap {
     width: 100%;
   }
 }
@@ -458,7 +464,7 @@ li a:hover {
   padding: 0.3rem 0.75rem;
   display: block;
   text-align: center;
-  margin: 5px auto;
+  /* margin: 5px auto; */
   border-radius: 1rem;
   text-decoration: none;
   font-weight: 800;
@@ -534,6 +540,7 @@ li a:hover {
   margin: auto;
   display: flex;
   align-items: center;
+  border: none;
 }
 .add-btn .bx {
   display: none;
@@ -784,9 +791,8 @@ li a:hover {
   visibility: visible;
 }
 
-
 /*--------- ALERT BOX -----------*/
-#confirm-wrap{
+#confirm-wrap {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -796,48 +802,84 @@ li a:hover {
   justify-content: center;
   top: 0;
   left: 0;
+  z-index: 10;
 }
-.confirm-box{
+.confirm-box {
   flex-direction: column;
-  justify-content: space-between  ;
+  justify-content: space-between;
   align-items: center;
   max-width: 350px;
   height: 250px;
 }
-.confirm-box .btn{
+.confirm-box .btn {
   margin: 0 10px;
-}@media screen and (max-width: 768px ){
-  .productEdit-page{
+}
+@media screen and (max-width: 768px) {
+  .productEdit-page {
     grid-template-columns: 1fr;
   }
 }
 
 /*-------- COUPON ---------*/
-.condtents{
+.condtents {
   position: relative;
 }
-#createCoupon{
+#createCoupon {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
 }
-#createCoupon .edit-wrap ul li label{
+#createCoupon .edit-wrap ul li label {
   min-width: 150px;
 }
-#createCoupon .message-wrap{
+#createCoupon .message-wrap {
   margin-top: 1rem;
 }
 
-
 /*-------- SUPPORT TEAM -----------*/
-.customerImage{
-  width: 50PX;
+.customerImage {
+  width: 50px;
   height: 50px;
   border-radius: 50%;
   border: 1px solid white;
   overflow: hidden;
 }
-#customer thead{
-  display: none  ;
+#customer thead {
+  display: none;
+}
+/*-----product preview---------*/
+.preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+#preview-side {
+  max-width: 250px;
+  margin: 0 auto;
+  min-height: 100px;
+  position: relative;
+  overflow: hidden;
+  
+}
+#preview-side::before {
+  content: '';
+  position: absolute;
+  top: -38px;
+  left: -50px;
+  width: 40%;
+  height: 150%;
+  background-color: var(--after, red);
+  transform: rotate(25deg);
+}
+.preview-wrap{
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.preview-wrap #preview-image{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
 }

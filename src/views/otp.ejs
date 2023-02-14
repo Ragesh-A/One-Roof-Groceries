@@ -34,21 +34,23 @@
                                     <input type="number" name="otp" id="otp" class="form-input" required>
                                 </div>
                             </div>
-                            <% if(message){ %>
-                            <div id="alert-box" class="flex">
 
+                            <div id="alert-box" style="display:<%= (message) ? 'flex' : 'none' %>">
+                                
                                 <p class="alertmessage">
+                                    <% if(message){ %>
                                     <%= message %>
+                                    <% } %>
                                 </p>
                                 <div id="close-btn">
                                     <i class='bx bx-x-circle'></i>
                                 </div>
                             </div>
-                            <% } %>
+                            
                         
                             <div class="btns-wrap">
                                 <a href="/" class="btn cancel" value="Cancel">Cancel</a>
-                                <input type="submit" class="btn confirm" value="Confirm">
+                                <input type="button" class="btn confirm" value="Confirm" id="otpBtn">
                             </div>
                         </form>
                     </div>
@@ -60,10 +62,17 @@
 
     </section>
     <script>
-        let closeBtn = document.getElementById('close-btn')
-        let alertBox = document.getElementById('alert-box')
+        let closeBtn = document.getElementById('close-btn');
+        let alertBox = document.getElementById('alert-box');
+        let otpBtn = document.getElementById('otpBtn');
+        
+        otpBtn.onclick = () =>{
+            if(document.getElementById('otp').value > 2){
+                otpBtn.type = 'submit';
+            }
+        }
         closeBtn.addEventListener('click', () => {
-            alertBox.style.display = 'none  '
+            alertBox.style.display = 'none';
         })
     </script>
 </body>
