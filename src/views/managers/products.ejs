@@ -39,6 +39,9 @@
                     <div class="userBox">
 
                         <table id="table_id">
+                            <p class="green text-center server-response">
+                                <%= success %>
+                            </p>
                             <thead>
                                 <tr style="font-weight: 800; background-color: var(--blue); color: var(--white);">
                                     <th>Image</th>
@@ -62,7 +65,14 @@
                                             <%= product.price %>
                                         </td>
                                         <td>
-                                            <%= product.stock %>
+                                            <% if(product.stock> 10){%>
+                                                <%= product.stock %>
+                                                    <%}else{%>
+                                                        <div
+                                                            class="<% if(product.stock < 5){%>danger <%}else{%> warning<%}%>">
+                                                            <%= product.stock %>
+                                                        </div>
+                                                        <%}%>
                                         </td>
                                         <td>
                                             <%= product.category.name %>

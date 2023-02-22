@@ -1,33 +1,56 @@
 const express = require('express');
-const {
-  requireSignin,
-  adminMiddleware,
-  supportMiddleware,
-} = require('../commonMiddleware');
+const { get } = require('mongoose');
+const userAuth = require('../commonMiddleware');
 const { changePassword, updateOtp } = require('../controller/auth');
-const { getCoupon } = require('../controller/coupon');
-const { dashboard } = require('../controller/fetch');
-const { getemployees, changeAuthorization } = require('../controller/test');
+const cart = require('../controller/cart');
+const coupon = require('../controller/coupon');
+const { dashboard, getaddress } = require('../controller/fetch');
+const order = require('../controller/order');
+const { getemployees, changeAuthorization, getUserCount, getEmCount } = require('../controller/test');
 const { generateOtp } = require('../controller/validators/otp');
 const router = express.Router();
 
 router.get(
   '/adminDashboard',
-  requireSignin,
-  adminMiddleware,
-  getemployees,
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  getUserCount,
+  getEmCount,
+  order.getAllDelivered,
   dashboard
 );
 
-router.get('/coupon/:id', requireSignin, adminMiddleware, getCoupon);
+router.get(
+  '/coupon/:id',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  coupon.getCoupon
+);
+router.post(
+  '/check-coupon',
+  userAuth.requireSignin,
+  cart.getCart,
+  cart.getCartAmount,
+  coupon.checkCoupon
+)
 router.get(
   '/userauth/:id',
-  requireSignin,
-  supportMiddleware,
+  userAuth.requireSignin,
+  userAuth.supportMiddleware,
   changeAuthorization
 );
+//GET ADDRESS
+router.get(
+  '/test-address/:id',
+  userAuth.requireSignin,
+  getaddress
+);
 
-router.post('/getOtp', updateOtp);
+//GET OTP
+router.post('/getOtp', updateOtp)
 
-
+//ADD TO WISHLIST
+router.put('/wishlist/:id', userAuth.requireSignin,cart.addToWishlist)
+//remove from wishlist
+router.get('/wishlist/:id', userAuth.requireSignin)
 module.exports = router;

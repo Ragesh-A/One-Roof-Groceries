@@ -27,9 +27,29 @@
                 <section class="product-section">
                     <div class="">
                         <div class="product">
-                            <div class="img-wrap" id="img-wrap">
-                                <img src="/uploads/product/<%= product.category %>/<%= product.productPictures[0].img %>"
-                                    id="productImage">
+                            <div class="img-wrap flex">
+                                <div class="main-image" id="main-image">
+                                    <img src="/uploads/product/<%= product.category %>/<%= product.productPictures[0].img %>"
+                                        id="productImage">
+                                </div>
+                                <div class="multiple-img-wrap flex">
+                                    <div class="multiple-images">
+                                        <img src="/uploads/product/<%= product.category %>/<% if(product.productPictures.length > 1){%><%= product.productPictures[1].img %><%}else{%><%= product.productPictures[0].img %><%}%>"
+                                            alt="" class="p-1">
+                                    </div>
+                                    <div class="multiple-images">
+                                        <img src="/uploads/product/<%= product.category %>/<% if(product.productPictures.length > 2){%><%= product.productPictures[2].img %><%}else{%><%= product.productPictures[0].img %><%}%>"
+                                            alt="" class="p-1">
+                                    </div>
+                                    <div class="multiple-images">
+                                        <img src="/uploads/product/<%= product.category %>/<% if(product.productPictures.length > 3){%><%= product.productPictures[3].img %><%}else{%><%= product.productPictures[0].img %><%}%>"
+                                            alt="" class="p-1">
+                                    </div>
+                                    <div class="multiple-images">
+                                        <img src="/uploads/product/<%= product.category %>/<% if(product.productPictures.length > 4){%><%= product.productPictures[4].img %><%}else{%><%= product.productPictures[0].img %><%}%>"
+                                            alt="" class="p-1">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <div class="name-wrap">
@@ -73,15 +93,23 @@
                                     <p>Availability :
                                         <font color="<% if(product.stock > 5){%>green<%}else{%>red<%}%>">
                                             <% if(product.stock>5){ %>IN STOCK <% }else{ %> only <%=product.stock %>
+                                                        unit
                                                         left <%}%>
                                         </font>
                                     </p>
                                 </div>
                             </div>
-                            <div class="btn-wrap">
-                                <a href="/cart/add/<%= product._id %>" class="add-to-cart-btn">Add To Cart</a>
+                            <% if(product.stock>0){%>
+                                <div class="btn-wrap">
+                                    <a href="/cart/add/<%= product._id %>" class="add-to-cart-btn">Add To Cart</a>
 
-                            </div>
+                                </div>
+                                <%}else{%>
+                                    <div class="btn-wrap">
+                                        <a style="background-color: red;" class="add-to-cart-btn">Out of stock</a>
+
+                                    </div>
+                                    <%}%>
                         </div>
 
                     </div>
@@ -109,7 +137,9 @@
                                                 <p class="new">RS <%= relatedProduct.price - (relatedProduct.price *
                                                         relatedProduct.offer / 100 ) %>
                                                 </p>
-                                                <strike class="old"><%= relatedProduct.price %></strike>
+                                                <strike class="old">
+                                                    <%= relatedProduct.price %>
+                                                </strike>
                                             </div>
                                             <!-- <div class="cart-btns">
                                                 <div class="cart-btns">
@@ -141,7 +171,7 @@
         <script>
             const te = document.querySelector('[data-bgClr]');
             console.log(te.dataset);
-            const imagWrap = document.getElementById('img-wrap');
+            const imagWrap = document.getElementById('main-image');
             const productImage = document.getElementById('productImage');
             let test = document.getElementById('testing');
             const productSectionWrap = document.getElementById('product-section-wrap');

@@ -26,7 +26,7 @@
       </div>
 
       </div>
-      <div class="right" ">
+      <div class="right">
         <img src="/images/backgrounds/delivery.gif" alt="" width="100%">
       </div>
     </div>
@@ -39,7 +39,7 @@
                 <%= product.offer %>% off
             </span>
             <% } %>
-                <a href="product/<%= product._id %>">
+                <a href="/product/<%= product._id %>">
                     <div class="img">
                         <img src="/uploads/product/<%= product.category %>/<%= product.productPictures[0].img %>"
                             alt="<%= product.name %> image">
@@ -59,12 +59,20 @@
                             <%= product.price %>.<span>00</span>
                         </strike>
                     </div>
+                    <% if( product.stock >0){%>
                     <div class="cart-btns">
                         <a href="/cart/add/<%= product._id %>" class="buy-btn flex">
                             <i class='bx bxs-cart-download'></i>
                             <p>ADD TO CART</p>
                         </a>
                     </div>
+                    <%}else{%>
+                      <div class="cart-btns">
+                        <a class="stock-out-btn flex">
+                            <p>OUT OF STOCK</p>
+                        </a>
+                    </div>
+                    <%}%>
                 </div>
     </div>
     <% }) %>

@@ -2,6 +2,7 @@ const Category = require("../models/categorySchema");
 const slugify = require("slugify");
 const fs = require("fs");
 const path = require("path");
+const { log } = require("console");
 
 let addCategories = (categories, parentId = null) => {
    const categoryList = [];
@@ -23,11 +24,13 @@ let addCategories = (categories, parentId = null) => {
    return categoryList;
 };
 
-exports.createCategory = (req, res) => {
+const createCategory = (req, res) => {
    try {
+      let name = req.body.name.toLowerCase();
+      
       const categoryObj = {
-         name: req.body.name,
-         slug: slugify(req.body.name),
+         name: name,
+         slug: slugify(name),
          categoryImage: req.file.filename,
          description: req.body.description,
       };
@@ -37,7 +40,10 @@ exports.createCategory = (req, res) => {
       }
       const cat = new Category(categoryObj);
       cat.save((err, category) => {
-         if (err) res.status(400).json({ err });
+         if (err){ 
+            req.flash('cat-error', "Category Already Exists");
+            res.redirect('/admin/category/create');
+         }
          if (category) {
             let folderPath = path.join(
                __dirname,
@@ -46,6 +52,7 @@ exports.createCategory = (req, res) => {
             fs.mkdir(folderPath, (err) => {
                if (err) return console.log(err);
             });
+            req.flash('success',"category created successfully")
             res.status(201).redirect("/admin/category/list");
          }
       });
@@ -54,7 +61,7 @@ exports.createCategory = (req, res) => {
    }
 };
 
-exports.getCategories = async (req, res, next) => {
+const getCategories = async (req, res, next) => {
    try {
       let categoryList = await Category.find({});
       req.categoryList = categoryList;
@@ -64,7 +71,7 @@ exports.getCategories = async (req, res, next) => {
    next();
 };
 
-exports.getCategory = async (req, res, next) => {
+const getCategory = async (req, res, next) => {
    try {
       let _category = await Category.findOne({ _id: req.params.id });
       req.category = _category;
@@ -74,20 +81,73 @@ exports.getCategory = async (req, res, next) => {
    }
 };
 
-exports.updateCategory = async (req, res) => {
+const updateCategory = async (req, res) => {
    try {
       if (req.file) {
          req.body.categoryImage = req.file.filename;
       }
       let data = await Category.updateOne({ _id: req.params.id }, req.body);
+      req.flash('success', "category updated successfully");
       res.redirect("/admin/category/list");
    } catch (error) {
       console.log(error);
+      req.flash('up-cate-err', "category already exist")
+      res.redirect(`/admin/category/edit/${req.params.id}`)
    }
 };
 
-exports.deleteCategory = async (req, res) => {
+const deleteCategory = async (req, res) => {
    Category.deleteOne({ _id: req.params.id })
-      .then(() => res.redirect("/admin/category/list"))
+      .then(() => {
+         req.flash('success', "category deleted successfully");
+         res.redirect("/admin/category/list")
+      })
       .catch((err) => console.error(err));
 };
+
+
+
+/*------------------- RENDER PAGE-------------------- */
+
+const renderCategories = (req, res) => {
+   res.render("category", { categories: req.categoryList , page: "category" });
+}
+
+const adminRenderCategories = (req, res) => {
+   res.render("admins/categories", {
+      user: req.user,
+      page: "category",
+      categories: req.categoryList,
+      success: req.flash('success')
+   });
+}
+
+const renderCreateCategory = (req, res) => {
+   res.render("admins/addcategory", {
+      user: req.user,
+      page: "category",
+      categoryList: req.categoryList,
+      err: req.flash('cat-error')
+   });
+}
+const renderEditCategory = (req, res) => {
+   res.render("admins/editCategory", {
+      user: req.user,
+      page: "category",
+      categoryList: req.categoryList,
+      category: req.category,
+      err: req.flash('up-cate-err')
+   });
+};
+
+module.exports= {
+   renderCategories,
+   createCategory,
+   getCategories,
+   getCategory,
+   updateCategory,
+   deleteCategory,
+   adminRenderCategories,
+   renderCreateCategory,
+   renderEditCategory,
+}

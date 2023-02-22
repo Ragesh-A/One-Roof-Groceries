@@ -1,0 +1,39 @@
+<%- include('../includes/adminHead.ejs') %>
+  <%- include('../includes/adminNavbar.ejs') %>
+    <main id="adminMain" class="main">
+      <div class="">
+        <form action="/admin/edit-order/<%= order._id %>" method="post">
+
+         <div class="update-card-wrap">
+          <div class="card card3">
+            <i class='bx bxs-color'></i>
+            <div>
+              <label for="status">Status</label>
+              <select name="status" id="status" class="update-inputs">
+                <option value="confirmed">confirmed</option>
+                <option value="shipped">shipped</option>
+                <option value="delivered">delivered</option>
+              </select>
+            </div>
+          </div>
+          <div class="card card3">
+            <i class='bx bx-timer'></i>
+            <div>
+              <label for="expectedDeliveryDate">Expected Date</label>
+              <input class="update-inputs" type="date" name="expectedDeliveryDate" id="expectedDeliveryDate" required>
+            </div>
+          </div>
+          <div class="card card3">
+            <i class='bx bxs-package'></i>
+            <div>
+              <label for="deliveryDate">Delivery Date</label>
+              <input class="update-inputs" type="date" name="deliveryDate" id="deliveryDate">
+            </div>
+          </div>
+         </div>
+
+          <input type="submit" value="update order" class="update-btn">
+        </form>
+      </div>
+    </main>
+    <%- include('../includes/adminBottom.ejs') %>

@@ -58,6 +58,15 @@
                 <span>Balancesheet</span>
             </a>
         </li>
+        <% if(user.role == 'admin'){ %>
+        <li class="nav-item">
+            <a class="nav-link <% if(page=='dashboard'){ %>active <%} %>" href="/admin">
+                <i class='bx bxs-category'></i>
+                <span>ADMIN</span>
+            </a>
+    
+        </li>
+        <%}%>
     </ul>
 
 </aside>

@@ -1,48 +1,153 @@
 <%- include('../includes/homehead') %>
-
-  <form id="form">
-    <section class="cart-sec address-sec flex">
-
-      <div class="left">
-        <h2 class="address-sec-title">Address</h2>
-        <div class="address-wrap">
-
+  <div class="newAddress-bg" id="newAddress">
+    <form action="/account/new-address" method="post">
+      <div class="newAddress-wrap card2 p-5">
+       
+        <div class="d-flex flex-end">
+          <h3>New address</h3>
+          <i class='bx bx-x fs-3 addr-close' id="addr-close"></i>
+        </div>
+        <div class="newAddress-wrap-grid">
           <div class="address-input-wrap">
             <label for="name" class="address-label">Name</label>
-            <input readonly type="text" class="address-inputs" name="name" id="name" value="<%= user.name %>">
+            <input type="text" class="address-inputs2" name="name" id="name">
           </div>
           <div class="address-input-wrap">
             <label for="place" class="address-label">Place</label>
-            <input readonly type="text" class="address-inputs" name="place" id="Place"
-              value="<%= user.address.place %>">
+            <input type="text" class="address-inputs2" name="place" id="place">
           </div>
           <div class="address-input-wrap">
-            <label for="pin" class="address-label">Pincode</label>
-            <input readonly type="number" class="address-inputs" name="pin" id="pin"
-              value="<%= user.address.pincode %>">
+            <label for="pincode" class="address-label">Pincode</label>
+            <input type="number" class="address-inputs2" name="pincode" id="pincode">
           </div>
           <div class="address-input-wrap">
             <label for="city" class="address-label">City</label>
-            <input readonly type="text" class="address-inputs" name="city" id="city" value="<%= user.address.city %>">
+            <input type="text" class="address-inputs2" name="city" id="city">
           </div>
           <div class="address-input-wrap">
             <label for="district" class="address-label">District</label>
-            <input readonly type="text" class="address-inputs" name="district" id="district"
-              value="<%= user.address.district %>">
+            <input type="text" class="address-inputs2" name="district" id="district">
           </div>
           <div class="address-input-wrap">
             <label for="email" class="address-label">Email</label>
-            <input readonly type="email" class="address-inputs" name="email" id="email" value="<%= user.email %>">
+            <input type="email" class="address-inputs2" name="email" id="email">
           </div>
           <div class="address-input-wrap">
             <label for="phone" class="address-label">Phone</label>
-            <input type="number" class="address-inputs" name="phone" id="phone" value="<%= user.phone %>">
+            <input type="number" class="address-inputs2" name="phone" id="phone">
           </div>
           <div class="address-input-wrap">
-            <label for="phone" class="address-label"><br></label>
-            <input type="button" id="edit-address" value="Use another address or edit address">
+            <div class="text-center" id="err-mes" style="min-height: 28px;"></div>
+            <input type="button" id="new-add-sub-btn" class="btn place-order-btn" value="SAVE ADDRESS">
           </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- slider -->
 
+  <div class="address-listSlider-wrap p-3" style="position: absolute;" id="addr-slide">
+    <div class="p-3 " id="slider-close">
+      <i class='bx bx-x fs-3 p-2'  ></i>
+    </div>
+    <div class="address-grid">
+      <% userCart.user.address.forEach(address=>{ %> 
+      <div class="card2 address" id="<%= address._id %>">
+        <div class="address-list-input hover-green">
+          <p class="title"><i class='bx bxs-user-rectangle me-1' ></i>NAME</p>
+          <p class="value"><%= address.name %></p>
+        </div>
+        <div class="address-list-input ">
+          <p class="title"><i class='bx bxs-edit-location me-1 hover-green' ></i>Place</p>
+          <p class="value"><%= address.place %></p>
+        </div>
+        <div class="address-list-input hhover-green">
+          <p class="title"><i class='bx bxs-edit-location me-1' ></i>City</p>
+          <p class="value"><%= address.city %></p>
+        </div>
+        <div class="address-list-input hover-green">
+          <p class="title"><i class='bx bxs-map-pin me-1' ></i>Pincode</p>
+          <p class="value"><%= address.pincode %></p>
+        </div>
+        <div class="address-list-input hover-green">
+          <p class="title"><i class='bx bxs-edit-location me-1' ></i>District</p>
+          <p class="value"><%= address.district %></p>
+        </div>
+        <div class="address-list-input hover-green">
+          <p class="title"><i class='bx bxs-phone me-1' ></i>Phone</p>
+          <p class="value"><%= address.phone %></p>
+        </div>
+        <div class="address-list-input hhover-green">
+          <p class="title"><i class='bx bxl-gmail me-1' ></i>Email</p>
+          <p class="value"><%= address.email %></p>
+        </div>
+        <div class="hover-green">
+          <i class='bx bx-check-double me-1' ></i>
+          <input type="button" value="Select" class="bg-transparent
+          border-0 hover-green selection-btn" id="<%= address._id %>-btn">
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+
+
+
+
+
+  <form id="form">
+    <section class="cart-sec address-sec flex">
+      <div class="left">
+        <p><%= success %></p>
+        
+        <div class="flex justify-content-between px-4">
+          <h2 class="address-sec-title">Shipping Address</h2>
+          <div class="flex align-center">
+            <i class='bx bxs-book-add me-2'></i>
+            <input type="button" value="add address"  id="newaddressbtn" class="border-0 bg-transparent">
+          </div>
+        </div>
+        <div>
+          
+          <div class="address-wrap">
+
+            <div class="address-input-wrap">
+              <label for="newname" class="address-label">Name</label>
+              <input readonly type="text" class="address-inputs" name="newname" id="newname" value="<%=userCart.user.address[0].name %>">
+            </div>
+            <div class="address-input-wrap">
+              <label for="newplace" class="address-label">Place</label>
+              <input readonly type="text" class="address-inputs" name="newplace" id="newplace" value="<%=userCart.user.address[0].place %>">
+            </div>
+            <div class="address-input-wrap">
+              <label for="newpincode" class="address-label">Pincode</label>
+              <input readonly type="number" class="address-inputs" name="newpincode" id="newpincode" value="<%=userCart.user.address[0].pincode %>">
+            </div>
+            <div class="address-input-wrap">
+              <label for="newcity" class="address-label">City</label>
+              <input readonly type="text" class="address-inputs" name="newcity" id="newcity" value="<%=userCart.user.address[0].city %>">
+            </div>
+            <div class="address-input-wrap">
+              <label for="newdistrict" class="address-label">District</label>
+              <input readonly type="text" class="address-inputs" name="newdistrict" id="newdistrict" value="<%=userCart.user.address[0].district %>">
+            </div>
+            <div class="address-input-wrap">
+              <label for="newemail" class="address-label">Email</label>
+              <input readonly type="email" class="address-inputs" name="newemail" id="newemail" value="<%=userCart.user.address[0].email %>">
+            </div>
+            <div class="address-input-wrap">
+              <label for="newphone" class="address-label">Phone</label>
+              <input readonly type="number" class="address-inputs" name="newphone" id="newphone" value="<%=userCart.user.address[0].phone %>">
+            </div>
+            <div class="address-input-wrap">
+              <label for="phone" class="address-label"><br></label>
+              <div class="flex">
+                <input type="button" id="edit-address" value="edit address" class="me-2">
+              <input type="button" id="addr-slide-btn" value="Use another address">
+              </div>
+            </div>
+
+          </div>
         </div>
 
         <div class=" flex message-wrap" id="message-wrap">
@@ -62,35 +167,34 @@
                     <!--  -->
 
                     <p class="title">Product</p>
-                    <% cartList.forEach(product=> { %>
+                    <% userCart.Items.forEach(product=> { %>
                       <p>
                         <%=product.product.shortName%> (x <%=product.quantity%>)
                       </p>
                       <%})%>
-                        <p>discount</p>
-                        <p>shipping fee</p>
+                       
+                        <!-- <p>shipping fee</p> -->
                         <br>
                         <p class="title">Total</p>
             </div>
             <div style="text-align: center;">
               <p class="title">Amount</p>
-              <% cartList.forEach(product=> { %>
+              <% userCart.Items.forEach(product=> { %>
                 <p>
-                  <%=product.product.price * product.quantity %>
+                  <%= product.product.price * product.quantity - (product.product.price * product.quantity * product.product.offer/100)%>
                 </p>
                 <% totalAmount +=product.product.price * product.quantity%>
-                  <% discount +=product.product.offer %>
-                    <%})%>
-                      <% total=totalAmount - ( totalAmount* discount/100) %>
-                        <p style="color: var(--green)">
-                          <%= discount %>%
-                        </p>
-                        <p style="color: var(--green)">
+                <% discount +=product.product.offer %>
+                <% total += product.product.price * product.quantity - (product.product.price * product.quantity * product.product.offer/100)%>
+              <%})%>
+                      <% total %>
+                        
+                        <!-- <p style="color: var(--green)">
                           <% if(total> 500){ %> free <%}else{%>50<%}%>
-                        </p>
+                        </p> -->
                         <hr>
                         <p class="title">
-                          <%= total %>
+                          <%= total.toFixed(2) %>
                         </p>
             </div>
           </div>
@@ -98,19 +202,24 @@
             <p class="title">Do you have any discount coupon?</p>
             <p class="description">Only one discount code per order can be applied</p>
             <div class="coupon-input-wrap">
-              <input type="text" name="couponcode">
-              <input type="button" value="APPLY" class="apply-btn">
+              <input type="text" name="couponcode"  id="c-code">
+              <input type="button" value="APPLY" class="apply-btn" id="c-btn">
             </div>
+            <p id="server-res"></p>
           </div>
           <div class="payment-option">
             <div>
-              <input type="radio" name="paymentMethod" id="cod" value="cash-on-delivery">
+              <input checked type="radio" name="paymentMethod" id="cod" value="cash-on-delivery">
               <label for="cod">cash on delivery</label>
             </div>
             <div>
-              <input checked type="radio" name="paymentMethod" id="op" value="online-payment">
+              <input  type="radio" name="paymentMethod" id="op" value="online-payment">
               <label for="op">Online Payment</label>
             </div>
+          </div>
+          <div class=" p-2">
+            <input type="checkbox" name="wallet" id="wallet" >
+            <label for="wallet">Use wallet amount</label><span> rs : <%= wallet %></span>
           </div>
           <div>
             <input type="button" id="submitBtn" class="btn place-order-btn" value="CHECK OUT">
@@ -120,27 +229,39 @@
 
     </section>
   </form>
-
-
+  
   <script>
     let form = document.getElementById('form');
     let labels = document.querySelectorAll('label');
     let editAddressBtn = document.getElementById('edit-address');
     let addressInputs = document.querySelectorAll('.address-inputs');
+    let addressInputs2 = document.querySelectorAll('.address-inputs2');
     let checkoutBtn = document.getElementById('submitBtn');
     let messageWrap = document.getElementById('message-wrap');
     let errMessage = document.getElementById('messagevalue')
-
+    let newAddress = document.getElementById('newAddress');
+    let newaddressbtn = document.getElementById('newaddressbtn');
+    let addrClose = document.getElementById('addr-close');
+    let newAddressSubmit = document.getElementById('new-add-sub-btn');
+    let errMess = document.getElementById('err-mes');
+    let addrSlide = document.getElementById('addr-slide');
+    let addrSlideBtn = document.getElementById('addr-slide-btn');
+    let sliderClose = document.getElementById('slider-close');
+    let selectionsBtns = document.querySelectorAll('.selection-btn');
+    let couponCode = document.getElementById('c-code');
+    let cBtn = document.getElementById('c-btn');
+    let response = document.getElementById('server-res')
 
     //MESSAGE WRAPPER
     messageWrap.style.display = 'none';
 
+    //disable inputs
     editAddressBtn.onclick = () => {
-      if (editAddressBtn.value == "save address") {
+      if (editAddressBtn.value == "use address") {
         editAddressBtn.value = "edit address"
       } else {
 
-        editAddressBtn.value = "save address"
+        editAddressBtn.value = "use address"
       }
       addressInputs.forEach(inputs => {
         if (inputs.readOnly) {
@@ -152,20 +273,15 @@
       })
     }
 
-  
-
-
-
     //CRATION OF VALIDATION MESSAGE
     checkoutBtn.onclick = () => {
       let messages = [];
       addressInputs.forEach(inputs => {
-        console.log(inputs.value);
         if (inputs.value == '') {
           messages.push(inputs.labels[0].innerText);
         }
       })
-      
+
       sendMessage(messages);
     }
     //DISPLAY MESSAGE  FUNCTION
@@ -174,19 +290,99 @@
         messageWrap.style.display = 'block';
         errMessage.innerText = messages[0] + " should not be empty";
       } else {
-        form.action = '/cart/buy/address';
+        form.action = '/cart/buy/order';
         form.method = 'POST';
         messageWrap.style.display = 'none';
         errMessage.innerText = '';
         submitBtn.style.display = 'block';
         submitBtn.type = 'submit';
-       
+
       }
     }
 
+    newaddressbtn.onclick = function () {
+      newAddress.classList.add('active');
+    }
+    addrClose.onclick = function () {
+      newAddress.classList.remove('active');
+    }
 
+    addrSlideBtn.onclick = ()=>{
+      addrSlide.classList.add('active');
+    }
+    sliderClose.onclick = function () {
+      addrSlide.classList.remove('active');
+    }
 
+    //ADDRESS SELECTIONS
+    for(let i=0; i<selectionsBtns.length; i++) {
+      let addId;
+      selectionsBtns[i].onclick = function(e){
+        addId = this.id.split('-')[0];
+        addrSlide.classList.remove('active');
+        console.log(addId);
+        getAddress(addId);
 
+        
+      }
+      
+    }
+    
+
+    newAddressSubmit.onclick = function () {
+      let mess = [];
+      addressInputs2.forEach( function(inputs){
+       if(inputs.value == ''){
+        mess.push(`${inputs.labels[0].innerText} should not be empty`);
+      }
+    });
+    errMess.style.color = 'red';
+      errMess.innerText = mess[0]
+      if(mess.length  == 0){
+        newAddressSubmit.type = 'submit';
+      }
+    }
+
+    //GET ADDRESS
+    function getAddress(id) {
+      fetch(`/api/test-address/${id}`,{
+        method: 'GET',
+      })
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data);
+      addressInputs.forEach( inputs => {
+      let field = inputs.id.substring(3);
+        inputs.value = data.address[field];
+      })
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+    }
+
+    //COUPON CHECKASDASDAS
+    cBtn.onclick = () => {
+      if(couponCode.value != ''){
+        let code = couponCode.value.toLowerCase();
+        fetch(
+          '/api/check-coupon',{
+             method: 'post',
+             headers: {
+              'Content-Type': 'application/json'
+             },
+             body: JSON.stringify({
+              code: code,
+             })
+            }
+          )
+        .then(res=> res.json())
+        .then((data)=> {
+          response.innerText = data.message;
+        })
+        .catch((err)=> console.log(err))
+      }
+    }
 
     let url = '/cart/buy/thankyou'
 

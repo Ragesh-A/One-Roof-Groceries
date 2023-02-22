@@ -19,7 +19,7 @@ const couponSchema = new mongoose.Schema({
         type : Number,
         required: true
     },
-    claimed_user: {
+    maxdiscountedAmount: {
         type: Number
     },
     expiry:{

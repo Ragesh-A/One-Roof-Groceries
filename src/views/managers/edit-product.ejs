@@ -25,6 +25,7 @@
                 </div>
                 <form action="/manager/product/<%= product._id %>" method="post" enctype="multipart/form-data">
                     <%- include ('../includes/confirm') %>
+                    <p class="server-response red"><%= err %></p>
                         <div class="productEdit-page grid">
                             <div class="left card">
                                 <div class="productField-wrap">

@@ -37,6 +37,7 @@
                             <li style="text-transform: capitalize">
                                 Total Coupons
                             </li>
+                           
                         </ul>
                     </div>
                 </div>
@@ -53,6 +54,8 @@
                     <div class="userBox">
 
                         <table id="table_id">
+                            <p class="server-response red"><%= err %></p>
+                            <p class="server-response green"><%= success %></p>
                             <thead>
                                 <tr style="font-weight: 800; background-color: var(--blue); color: var(--white);">
                                     <th>Code</th>
@@ -115,17 +118,14 @@
                                             style="width: 100%;padding: .5rem; text-transform: capitalize;" required
                                             value="" class="form-inp">
                                     </li>
-                                    <!-- <div class="flex" style="align-items: center;">
-                                        <div class="card account-image" style="width: 100px;">
-                                            <img src="/uploads/profiles/avatar.jpg" alt="" id="preview"
-                                                style="width: 100%;">
-                                        </div>
-                                        <div class="btn-wra">
-                                            <label for="image" class=" btn confirm">Upload</label>
-                                            <input type="file" accept="image/*" name="image" id="image"
-                                                class="upload-file" style="display: none;">
-                                        </div>
-                                    </div> -->
+                                    <li class="flex">
+                                        <label for="status">Staus</label>
+                                        <select name="status" id="status" style="width: 100%;padding: .5rem; text-transform: capitalize;">
+                                            <option value="listed">listed</option>
+                                            <option value="unlisted">unlisted</option>
+                                        </select>
+                                    </li>
+                                    
                                 </div>
 
                                 <li class="flex">
@@ -145,6 +145,11 @@
                                 <li class="flex">
                                     <label for="discount">Discount</label>
                                     <input type="number" name="discount" id="discount" class="form-inp" required
+                                        value="">
+                                </li>
+                                <li class="flex">
+                                    <label for="maxdiscountedAmount">maximum discounted Amount</label>
+                                    <input type="number" name="maxdiscountedAmount" id="maxdiscountedAmount" class="form-inp" required
                                         value="">
                                 </li>
 
@@ -178,7 +183,7 @@
                             </ul>
                         </form>
                         <div class=" flex message-wrap" id="message-wrap">
-                            <p id="messagevalue" class="alert-meassage danger">fsdfs</p>
+                            <p id="messagevalue" class="alert-meassage danger"> </p>
                         </div>
                     </div>
                 </section>
@@ -219,6 +224,7 @@
             let user_allowed = document.getElementById('user_allowed');
             let minimum_purchase = document.getElementById('minimum_purchase');
             let expiry = document.getElementById('expiry');
+            let maxAmt = document.getElementById('maxdiscountedAmount');
             var ID;
             messageBox.style.display = 'none'
             confirmBox.style.display = 'none'
@@ -284,14 +290,21 @@
                 fetch(`/api/coupon/${id}`)
                     .then(res => res.json())
                     .then(coupon => {
+                        const date = new Date(coupon.coupon.expiry);
+                        const day = date.getDay();
+                        const month = date.getMonth();
+                        
+                        const year = date.getFullYear();
                         codeInp.value = coupon.coupon.code
                         discountInp.value = coupon.coupon.discount
                         user_allowed.value = coupon.coupon.user_allowed
                         minimum_purchase.value = coupon.coupon.minimum_purchase
-                        expiry.value = coupon.coupon.expiry
+                        expiry.value = `${year}-0${month}-0${day}`
+                        maxAmt.value = coupon.coupon.maxdiscountedAmount
                         form.action = `/admin/coupon/update/${coupon.coupon._id}`
                     })
                     .catch(err => {
+                        console.log(err)
                         sendMessage(['server error'])
                     })
             }

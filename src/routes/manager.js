@@ -1,88 +1,66 @@
-const express = require("express");
-const { getCategories } = require("../controller/category");
-const { uploadProductImage } = require("../controller/imagehandler");
-const {
-   createProduct,
-   updateProduct,
-   getAllProducts,
-   getProduct,
-   deleteProduct,
-} = require("../controller/product");
-const { requireSignin, managerMiddleware } = require("../commonMiddleware");
+const express = require('express');
 const router = express.Router();
+const admin = require('../controller/admin');
+const userAuth = require('../commonMiddleware');
+const product = require('../controller/product');
+const { getCategories } = require('../controller/category');
+const { uploadProductImage, resizeProductImage } = require('../controller/imagehandler');
+const multer = require('../controller/imagehandler');
 
-
-router.get("/", requireSignin, managerMiddleware, (req, res) => {
-   res.render("managers/index", { user: req.user, page: "d" });
-});
-
+//mANAGER DASHBOARD
+router.get('/',
+ userAuth.requireSignin, 
+ userAuth.managerMiddleware, 
+ admin.renderMangerDashboard);
+//RENDER ALL PRODUCTS
 router.get(
-   "/add-product",
-   requireSignin,
-   managerMiddleware,
+   '/products',
+   userAuth.requireSignin,
+   userAuth.managerMiddleware,
+   product.getAllProducts,
    getCategories,
-   (req, res) => {
-      res.render("managers/addproduct", {
-         user: req.user,
-         page: "",
-         categoryList: req.categoryList,
-      });
-   }
-);
-
+   admin.renderAdminProducts
+ );
+//ADD PRODUCT
+router.get(
+   '/add-product',
+   userAuth.requireSignin,
+   userAuth.managerMiddleware,
+   getCategories,
+   admin.renderAddProduct
+ );
 router.post(
-   "/add-product",
-   requireSignin,
-   managerMiddleware,
-   uploadProductImage.array("productPictures"),
-   createProduct
+  '/add-product',
+  userAuth.requireSignin,
+  userAuth.managerMiddleware,
+  multer.uploadProductImage.array('productPictures'),
+  multer.resizeProductImage,
+  product.createProduct
 );
-
+//RENDER EDIT PRODUCT
 router.get(
-   "/products",
-   requireSignin,
-   managerMiddleware,
-   getAllProducts,
-   getCategories,
-   (req, res) => {
-      res.render("managers/products", {
-         user: req.user,
-         page: "products",
-         products: req.products,
-         categoryList: req.categoryList,
-      });
-   }
-);
-
-router.get(
-   "/product/:id",
-   requireSignin,
-   managerMiddleware,
-   getProduct,
-   getCategories,
-   (req, res) => {
-      res.render("managers/edit-product", {
-         user: req.user,
-         product: req.product,
-         categoryList: req.categoryList,
-         page: "product",
-      });
-   }
+  '/product/:id',
+  userAuth.requireSignin,
+  userAuth.managerMiddleware,
+  product.getProduct,
+  getCategories,
+  admin.renderEditProduct
 );
 // UPDATE PRODUCT
 router.post(
-   "/product/:id",
-   requireSignin,
-   managerMiddleware,
-   uploadProductImage.array("productPictures"),
-   updateProduct
+  '/product/:id',
+  userAuth.requireSignin,
+  userAuth.managerMiddleware,
+  uploadProductImage.array('productPictures'),
+  product.updateProduct
 );
 
+//DELDETE PRODUCT
 router.get(
-   "/product/delete/:id",
-   requireSignin,
-   managerMiddleware,
-   deleteProduct
+  '/product/delete/:id',
+  userAuth.requireSignin,
+  userAuth.managerMiddleware,
+  product.deleteProduct
 );
 
 module.exports = router;

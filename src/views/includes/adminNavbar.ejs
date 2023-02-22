@@ -10,14 +10,14 @@
             <i class='bx bx-menu'></i>
         </div>
     </div>
-    <div class="search-wrap">
+    <!-- <div class="search-wrap">
         <form action="/search" method="post" class="flex">
             <input type="search" name="search" placeholder="Search" style="width:100%">
             <button type="submit" id="search-icon">
                 <i class='bx bx-search-alt-2'></i>
             </button>
         </form>
-    </div>
+    </div> -->
     <div class="header-profile">
         <a href="/account">
             <div class="profile-logo flex">
@@ -36,7 +36,7 @@
                 <span>Dashboard</span>
             </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link collapsed  <% if(page=='expenses'){ %>active <%} %>" href="/admin/expenses">
                 <i class='bx bxs-down-arrow-square'></i>
                 <span>Total Expenses</span>
@@ -47,11 +47,17 @@
                 <i class='bx bxs-up-arrow-square'></i>
                 <span>Total Sales</span>
             </a>
-        </li>
+        </li> -->
         <li class="nav-item">
             <a class="nav-link collapsed  <% if(page=='employees'){ %>active <%} %>" href="/admin/employees">
                 <i class='bx bxs-group'></i>
                 <span>Employees</span>
+            </a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link collapsed  <% if(page=='orders'){ %>active <%} %>" href="/admin/orders">
+            <i class='bx bxs-package'></i>
+                <span>Order</span>
             </a>
         </li>
         <li class="nav-item">
@@ -79,11 +85,25 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link <% if(page=='dashboard'){ %>active <%} %>" href="/manager">
+                <i class='bx bxs-category'></i>
+                <span>Manager</span>
+            </a>
+    
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <% if(page=='dashboard'){ %>active <%} %>" href="/support">
+                <i class='bx bxs-category'></i>
+                <span>support</span>
+            </a>
+    
+        </li>
+        <!-- <li class="nav-item">
             <a class="nav-link collapsed  <% if(page=='balancesheet'){ %>active <%} %>" href="/admin/balancesheet">
                 <i class='bx bxs-spreadsheet'></i>
                 <span>Balancesheet</span>
             </a>
-        </li>
+        </li> -->
     </ul>
 
 </aside>

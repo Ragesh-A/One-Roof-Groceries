@@ -28,54 +28,98 @@
                 </section>
                 <%}else{%>
                     <section id="productsPage">
-                        <div>
-                            <p>The products are waiting for you</p>
-                        </div>
-                        <div class="products grid">
-                            <% products.forEach(product=>{ %>
 
-                                <div class="card-wrap">
-                                    <% if( product.offer> 0){ %>
-                                        <span class="offer">
-                                            <%= product.offer %>% off
-                                        </span>
-                                        <% } %>
-                                            <a href="/product/<%= product._id %>">
-                                                <div class="img">
-                                                    <img src="/uploads/product/<%= product.category._id %>/<%= product.productPictures[0].img %>"
-                                                        alt="<%= product.name %> image">
-                                                </div>
-                                            </a>
-                                            <div class="cards-body">
-                                                <h3 class="product-title">
-                                                    <%= product.name %>
-                                                </h3>
-                                                <div class="weight">
-                                                    <%= product.singleQty%>
-                                                </div>
-                                                <div class="price flex">
-                                                    <p class="new">RS <%= (product.price - (product.price *
-                                                            product.offer / 100)).toFixed(2); %><span></span></p>
-                                                    <strike class="old">
-                                                        <%= product.price %>.<span>00</span>
-                                                    </strike>
-                                                </div>
-                                                <div class="cart-btns">
-                                                    <a href="/cart/add/<%= product._id %>" class="buy-btn flex">
-                                                        <i class='bx bxs-cart-download'></i>
-                                                        <p>ADD TO CART</p>
-                                                    </a>
-                                                </div>
-                                            </div>
+                        <!-- <aside class="filter-aside">
+                            <div class="filter-wrap">
+                                <div class="toggle-wrap">
+                                    <i class='bx bxs-arrow-from-left toggle' ></i>
                                 </div>
+                                <div class="filter-items">
+                                    <h5 class="fiter-name">CATEGORY</h5>
+                                    <ul>
+                                        <li class="category-item"><a href="&filter=text"><span>text</span><i class='bx bx-chevrons-right'></i></a></li>
+                                        <li class="category-item"><a href=""><span>text</span><i class='bx bx-chevrons-right'></i></a></li>
+                                        <li class="category-item"><a href=""><span>text</span><i class='bx bx-chevrons-right'></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="filter-items">
+                                    <h5 class="fiter-name">PRICE</h5>
+                                    <div class="filter-price-dispaly-wrap flex">
+                                        <label for="min">min</label>
+                                        <input type="number" name="min" id="min">
+                                    <label for="max">max</label>
+                                    <input type="number" name="max" id="max">
+                                    </div>
+                                    <div class="slider">
+                                        <div class="progres"></div>
+                                    </div>
+                                    <input type="range" name="price-range" id="price-range">
+                                </div>
+                            </div>
+                        </aside> -->
+                        <div class="products-wrap">
+                            <div>
+                                <p>The products are waiting for you</p>
+                                 <hr>
+                            </div>
+                            <div class="products grid">
+                                <% products.forEach(product=>{ %>
+
+                                    <div class="card-wrap">
+                                        <% if( product.offer> 0){ %>
+                                            <span class="offer">
+                                                <%= product.offer %>% off
+                                            </span>
+                                            <% } %>
+                                                <a href="product/<%= product._id %>">
+                                                    <div class="img">
+                                                        <img src="/uploads/product/<%= product.category %>/<%= product.productPictures[0].img %>"
+                                                            alt="<%= product.name %> image">
+                                                    </div>
+                                                </a>
+                                                <div class="cards-body">
+                                                    <h3 class="product-title">
+                                                        <%= product.name %>
+                                                    </h3>
+                                                    <div class="weight">
+                                                        <%= product.singleQty%>
+                                                    </div>
+                                                    <div class="price flex">
+                                                        <p class="new">RS <%= (product.price - (product.price * product.offer /
+                                                                100)).toFixed(2); %><span></span></p>
+                                                        <strike class="old">
+                                                            <%= product.price %>.<span>00</span>
+                                                        </strike>
+                                                    </div>
+                                                    <% if( product.stock >0){%>
+                                                        <div class="cart-btns">
+                                                            <a href="/cart/add/<%= product._id %>" class="buy-btn flex">
+                                                                <i class='bx bxs-cart-download'></i>
+                                                                <p>ADD TO CART</p>
+                                                            </a>
+                                                        </div>
+                                                        <%}else{%>
+                                                          <div class="cart-btns">
+                                                            <a class="stock-out-btn flex">
+                                                                <p>OUT OF STOCK</p>
+                                                            </a>
+                                                        </div>
+                                                        <%}%>
+                                                </div>
+                                    </div>                                    
                                 <% }) %>
+                            </div>
                         </div>
 
                     </section>
                     <%} %>
 
         </div>
-
+        <script>
+            let minDisplay = document.getElementById('min')
+            let maxDisplay = document.getElementById('max')
+            let range
+        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"

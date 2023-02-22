@@ -1,19 +1,21 @@
 const express = require('express');
-const { supportMiddleware, requireSignin } = require('../commonMiddleware');
+const admin = require('../controller/admin');
+const userAuth = require('../commonMiddleware');
 const { getAllUser } = require('../controller/user');
-const router = express.Router()
+const router = express.Router();
 
-router.get('/', requireSignin,supportMiddleware, (req,res)=>{
-    res.render('supportive/index',{user: req.user, page:'dashboard'})
-})
-router.get('/users', requireSignin,supportMiddleware, getAllUser, (req,res)=>{
-    res.render('supportive/users',{user: req.user, page:'users', usersList: req.usersList})
-})
-
-
-
-
-
-
+router.get(
+  '/',
+  userAuth.requireSignin,
+  userAuth.supportMiddleware,
+  admin.renderSupportDashboard
+);
+router.get(
+  '/users',
+  userAuth.requireSignin,
+  userAuth.supportMiddleware,
+  getAllUser,
+  admin.renderUsermanagement
+);
 
 module.exports = router;

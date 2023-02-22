@@ -1,141 +1,174 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { requireSignin, adminMiddleware } = require("../commonMiddleware/index");
-const {
-   createCoupon,
-   getAllCoupons,
-   deleteCoupon,
-   updateCoupon,
-} = require("../controller/coupon");
-const { dashboard } = require("../controller/fetch");
-const { uploadProfileImage } = require("../controller/imagehandler");
-const { getemployees, getOneUser } = require("../controller/test");
-const { addUser, deleteUser, updateEmployee } = require("../controller/user");
+const userAuth = require('../commonMiddleware/index');
+const coupon = require('../controller/coupon');
+const admin = require('../controller/admin');
+const orders = require('../controller/order');
+const { dashboard } = require('../controller/fetch');
+const { uploadProfileImage } = require('../controller/imagehandler');
+const { getemployees, getOneUser } = require('../controller/test');
+const user = require('../controller/user');
+const product = require('../controller/product');
 
 /*----------------- ROUTES ----------------*/
-const categoryRouter = require("./category");
-
+const categoryRouter = require('./category');
 /*-----------------------------------------*/
-router.get(
-   "/dashboard",
-   requireSignin,
-   adminMiddleware,
-   getemployees,
-   dashboard
-);
-router.get("/", requireSignin, adminMiddleware, (req, res) => {
-   if (!req.query.page) {
-      req.query.page = "dashboard";
-   }
-   res.render("layout/adminLayout", { user: req.user, page: "dashboard" });
-});
-router.get("/sales", requireSignin, adminMiddleware, (req, res) => {
-   res.render("admins/totalSales", { user: req.user, page: "sales" });
-});
-router.get("/expenses", requireSignin, adminMiddleware, (req, res) => {
-   res.render("admins/totalExpenses", { user: req.user, page: "expenses" });
-});
 
 router.get(
-   "/employees",
-   requireSignin,
-   adminMiddleware,
-   getemployees,
-   (req, res) => {
-      res.render("admins/employees", {
-         user: req.user,
-         employees: req.employees,
-         page: "employees",
-      });
-   }
+  '/dashboard',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  getemployees,
+  dashboard
 );
-
+//ADMIN PAGE RENDER
 router.get(
-   "/edit-employees/:_id",
-   requireSignin,
-   adminMiddleware,
-   getOneUser,
-   (req, res) => {
-      res.render("admins/profile", {
-         user: req.user,
-         page: "employees",
-      });
-   }
+  '/',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  product.checkStock,
+  admin.renderAdminPage
 );
 
+//SALES REPORTS RENDER
+router.get(
+  '/sales',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  orders.getAllDelivered,
+  admin.renderSalesPage
+);
+
+//EXPENSES REPORTS RENDER
+router.get(
+  '/expenses',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  admin.renderExpensesPage
+);
+
+//EMPLOYEES PAGE RENDER
+router.get(
+  '/employees',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  getemployees
+);
+
+//UPDATE EMPLOYEES
+router.get(
+  '/edit-employees/:_id',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  getOneUser,
+  admin.renderEditEmployeePage
+);
 router.post(
-   "/edit-employees/:_id",
-   requireSignin,
-   adminMiddleware,
-   updateEmployee,
-   (req, res) => {
-      res.redirect("/admin/employees/");
-   }
+  '/edit-employees/:_id',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  user.updateEmployee
 );
 
-router.get("/add-employee", requireSignin, adminMiddleware, (req, res) => {
-   res.render("admins/addEmployee", {
-      user: req.user,
-      message: req.flash("addmessage"),
-      page: "employees",
-   });
-});
-
-router.post(
-   "/add-employee",
-   requireSignin,
-   adminMiddleware,
-   uploadProfileImage.single("profilePicture"),
-   addUser
-);
-
-router.get("/delete/:id", deleteUser);
-router.use("/category", categoryRouter);
-router.get("/message", requireSignin, adminMiddleware, (req, res) => {
-   res.render("admins/message", {
-      user: req.user,
-      page: "message",
-   });
-});
-
-router.get("/layouts", requireSignin, adminMiddleware, (req, res) => {
-   res.render("admins/layout", { user: req.user, page: "layouts" });
-});
-
+//RENDER ADD EMPLOYEE PAGE
 router.get(
-   "/coupon",
-   requireSignin,
-   adminMiddleware,
-   getAllCoupons,
-   (req, res) => {
-      res.render("admins/coupon", {
-         user: req.user,
-         page: "coupons",
-         couponsList: req.coupons,
-      });
-   }
+  '/add-employee',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  admin.renderAddEmployess
 );
 
-router.post("/coupon", requireSignin, adminMiddleware, createCoupon);
+//CREATE NEW EMPLOYEE
 router.post(
-   "/coupon/update/:id",
-   requireSignin,
-   adminMiddleware,
-   updateCoupon,
-   (req, res) => {
-      res.redirect("/admin/coupon");
-   }
+  '/add-employee',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  uploadProfileImage.single('profilePicture'),
+  user.addUser
 );
 
+//DELETE EMPLOYEE
+router.get('/delete/:id', user.deleteUser);
+
+// RENDER ORDERs PAGE
 router.get(
-   "/coupon/delete/:id",
-   (req, res, next) => {
-      console.log(req.params.id + "sdgsdgfsdjhbjsd");
-      next();
-   },
-   requireSignin,
-   adminMiddleware,
-   deleteCoupon
+  '/orders',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  orders.getTotalOrders,
+  admin.renderOrdersPage
 );
+
+//view SINGLE order page
+router.get(
+  '/view-order/:id',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  orders.getOrder,
+  admin.renderViewOrder
+);
+
+//RENDER EDIT ORDER
+router.get(
+  '/edit-order/:id',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  orders.getOrder,
+  admin.renderEditOrder
+);
+
+//UPDATE ORDER STATUS
+router.post(
+  '/edit-order/:id',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  orders.updateOrder
+);
+//MESSAGE SECTION
+router.get(
+  '/message',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  admin.renderMesssagePage
+);
+
+//RENDER LAYOUTS
+router.get(
+  '/layouts',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  admin.renderLayout
+);
+
+//COUPONS
+router.get(
+  '/coupon',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  coupon.getAllCoupons
+);
+//CREATE COUPONS
+router.post(
+  '/coupon',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  coupon.createCoupon
+);
+//UPDATE COUPONS
+router.post(
+  '/coupon/update/:id',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  coupon.updateCoupon
+);
+//DELETE COUPONS
+router.get(
+  '/coupon/delete/:id',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  coupon.deleteCoupon
+);
+//CATEGORY ROUTER
+router.use('/category', categoryRouter);
 
 module.exports = router;

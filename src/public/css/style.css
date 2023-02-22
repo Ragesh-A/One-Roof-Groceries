@@ -33,6 +33,8 @@ body {
   /* background: linear-gradient(to right, #e7e3da, var(--var(--white))); */
   /* min-height: 100vh; */
   position: relative;
+  width: 100vw;
+  overflow-x: hidden;
 }
 a {
   text-decoration: none;
@@ -105,6 +107,25 @@ section {
 .mx-1{
   margin: 0 1rem;
 }
+.text-center{
+  text-align: center;
+}
+.red{
+  color: red;
+}
+.green{
+  color: #00ff2f; 
+}
+.server-response{
+  text-transform: uppercase;
+  padding: 10px;
+  font-weight: 800;
+}
+.update-inputs{
+  padding: .5rem .5rem;
+  border: none;
+  outline: none;
+}
 /*---------------------- BUTTONS ---------------------------------*/
 .btns-wrap {
   display: flex;
@@ -154,10 +175,10 @@ section {
 .form-container {
   position: relative;
 }
-form p {
-  /* margin-top: 1rem; */
-  padding: 10px;
-}
+/* form p {
+   margin-top: 1rem; 
+   padding: 10px; 
+} */
 #otp {
   background-color: transparent;
   color: var(--dark-green);
@@ -328,4 +349,15 @@ footer address span {
   color: #000;
   cursor: pointer;
 
+}
+/*------------------ card2 -----------------*/
+.card2 {
+  border-radius: 1rem;
+  min-height: 125px;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }

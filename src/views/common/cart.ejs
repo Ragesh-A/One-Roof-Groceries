@@ -16,7 +16,7 @@
 
                     <% cartList.Items.forEach(item=>{ %>
 
-                        <figure class="cart-item flex">
+                        <figure class="cart-item flex" id="<%= item.product._id %>">
                             <div class="left flex">
                                 <div class="cart__img ">
                                     <a href="/product/test/<%= item.product.slug %>">
@@ -36,13 +36,13 @@
                                     <%= item.product.price %> <span>per <%=item.product.singleQty%> </span>
                                 </p>
                                 <div class="qty-wrap" data-id="<%= item.product._id %>">
-                                    <button class="qty-btn dec" value="-">-</button>
+                                    <button class="qty-btn dec" value="-" id="dec">-</button>
                                     <input type="text" value="<%= item.quantity %>" disabled>
-                                    <button class="qty-btn inc" value="+">+</button>
+                                    <button class="qty-btn inc" value="+" id="inc">+</button>
 
                                 </div>
                                 <p class="sub-total">₹<span>
-                                        <%= item.product.price * item.quantity - (item.product.price * item.quantity * 
+                                        <%= item.product.price * item.quantity - (item.product.price * item.quantity *
                                             item.product.offer/100) %>
                                     </span>
                                 </p>
@@ -53,6 +53,7 @@
 
 
                         <% }) %>
+                        <p class="server-response"><%= err %></p>
 
                 </div>
                 <div>
@@ -70,54 +71,46 @@
                 let incrementBtn = document.getElementsByClassName('inc');
                 let decrementBtn = document.getElementsByClassName('dec');
 
+                //INCREMENT CART
                 for (let i = 0; i < incrementBtn.length; i++) {
-                    incrementBtn[i].addEventListener('click', function (e) {
+                    incrementBtn[i].onclick = function (e) {
                         let input = e.target.parentElement.children[1]
                         input.value = parseInt(input.value) + 1
-                        // let pricep = e.target.parentElement
-                        // let price = pricep
-                        // console.log(price);
-                        console.log();
-                        fetch(`/cart/update/${e.target.parentElement.dataset.id}`,
-                            {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    action: 'inc'
-                                })
-                            }).then(res => res.json())
-                            .then(data => console.log(data))
-                            .catch(err => console.log(err))
-
-                    })
+                        updateCart(this.id, e);
+                    }
                 }
+
+                //DECREAMENT CARt
                 for (let i = 0; i < decrementBtn.length; i++) {
-                    decrementBtn[i].addEventListener('click', function (e) {
+                    decrementBtn[i].onclick = function (e) {
                         let input = e.target.parentElement.children[1]
                         if (input.value > 0) {
-
                             input.value = parseInt(input.value) - 1
-                            fetch(`/cart/update/${e.target.parentElement.dataset.id}`,
-                                {
-                                    method: 'post',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify({
-                                        action: 'dec'
-                                    })
-                                }).then(res => res.json())
-                                .then(data => {
-                                    console.log(data.message);
-                                    if (data.message === "cart deleted successfully") {
-                                        location.reload()
-                                    }
-                                })
-                                .catch(err => console.log(err))
+                            updateCart(this.id, e);
+                        }if (input.value == 0) {
+                            let product = document.getElementById(e.target.parentElement.dataset.id)
+                            product.style.display = 'none';
                         }
-                    })
+                    }
                 }
+
+                //UPDATE CART REQUEST
+                function updateCart(reqaction, e) {
+                    fetch(`/cart/update/${e.target.parentElement.dataset.id}`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                action: reqaction
+                            })
+                        }).then(res => res.json())
+                        .then(data => console.log(data))
+                        .catch(err => {
+                            window.location.reload();
+                        })
+                }
+               
             </script>
             <%- include('../includes/homebottom') %>

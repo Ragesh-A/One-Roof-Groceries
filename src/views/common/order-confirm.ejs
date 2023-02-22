@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body>
+  <%- include('../includes/homeNavbar.ejs') %>
+
+
+    <section class="confirm-invoice" id="home-body">
+      <div class="bg-color"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="invoice-wrapper">
+              <div class="invoice-top p-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="invoice-top-left">
+                      <img src="/images/logo/transparent-logo.png" class="img-responsive logo" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="invoice-bottom">
+                <% orderDetails.products.forEach(product=> {%>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <h2 class="service-title">
+                        <%= product.shortName %>
+                      </h2>
+                      <h5 class="service-subtitle">
+                        <%= product.name %>.
+                      </h5>
+                    </div>
+                    <div class="col-sm-4">
+                      <h3 class="service-price">₹<%= (product.price * product.quantity) - (product.price *
+                          product.quantity * product.offer/100)%>
+                      </h3>
+                    </div>
+                  </div>
+                  <hr>
+                  <%})%>
+                    <div class="footer">
+                      <div class="left">
+                        <address>
+                          <b>
+                            <%= orderDetails.billingAddress.name %>
+                          </b>
+                          <p>
+                            <%= orderDetails.billingAddress.place %>,
+                          </p>
+                          <p>
+                            <%= orderDetails.billingAddress.city %>,
+                          </p>
+                          <p>
+                            <%= orderDetails.billingAddress.district %>, <%= orderDetails.billingAddress.pincode %>
+                          </p>
+                          <p>
+                            <%= orderDetails.billingAddress.email %>, <%= orderDetails.billingAddress.phone %>
+                          </p>
+                        </address>
+                      </div>
+                      <div class="right">
+                        <div class="amount-wrap">
+                          <h3 class="sub-total">SUB TOTAL</h3>
+                          <h3 class="sub-total-price">₹<%= orderDetails.subtotal %>
+                          </h3>
+                          <h4 class="discount">WALLET Amt Balance</h4>
+                          <h3 class="discount-price">₹<%= orderDetails.wallet%>
+                          </h3>
+                          <h4 class="discount">DISCOUNT</h4>
+                          <h3 class="discount-price">-₹<%= orderDetails.subtotal - orderDetails.totalPrice.toFixed(2)%>
+                          </h3>
+                          <h4 class="total-due">TOTAL DUE</h4>
+                          <h3 class="total-due-price">₹ <%= orderDetails.totalPrice.toFixed(2) %> Rupees</h3>
+                        </div>
+                      </div>
+                    </div>
+              </div>
+              <div class="flex">
+                <a href="/cart/buy/address" class="btn text-black border-top border-2" >cancel</a>
+                
+                  <a href="/cart/buy/order/confirm" class="btn place-order-btn" >confirm </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

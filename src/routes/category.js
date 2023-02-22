@@ -1,85 +1,67 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
+const category = require('../controller/category');
+const { requireSignin, adminMiddleware } = require('../commonMiddleware/index');
+const { uploadCategoryImage } = require('../controller/imagehandler');
+const product = require('../controller/product');
 
-const {
-   createCategory,
-   getCategories,
-   getCategory,
-   updateCategory,
-   deleteCategory,
-} = require("../controller/category");
-const { requireSignin, adminMiddleware } = require("../commonMiddleware/index");
-const { uploadCategoryImage } = require("../controller/imagehandler");
-const { getProducts, categoryWiseProduct } = require("../controller/product");
+router.get('/', category.getCategories, category.renderCategories);
 
-router.get("/", getCategories, (req, res) => {
-   res.render("category", { categories: req.categoryList });
+//ADMIN PAGE CATEGORY RENDER
+router.get(
+  '/list',
+  requireSignin,
+  adminMiddleware,
+  category.getCategories,
+  category.adminRenderCategories
+);
+
+//CREATE CATEGORY PAGE RENDER
+router.get(
+  '/create',
+  requireSignin,
+  adminMiddleware,
+  category.getCategories,
+  category.renderCreateCategory
+);
+//CREATE CATEGORY
+router.post(
+  '/create',
+  requireSignin,
+  adminMiddleware,
+  uploadCategoryImage.single('image'),
+  category.createCategory
+);
+
+//EDIT CATEGORY PAGE RENDER
+router.get(
+  '/edit/:id',
+  requireSignin,
+  adminMiddleware,
+  category.getCategory,
+  category.getCategories,
+  category.renderEditCategory
+);
+
+//EDIT CATEGORY
+router.post(
+  '/:id',
+  requireSignin,
+  adminMiddleware,
+  uploadCategoryImage.single('image'),
+  category.updateCategory
+);
+
+//DELETE CATEGORY
+router.get(
+  '/delete/:id',
+  requireSignin,
+  adminMiddleware,
+  category.deleteCategory
+);
+
+router.get('/product', product.categoryWiseProduct, (req, res) => {
+  res.render('product', { products: req.productsList });
 });
-
-router.get(
-   "/list",
-   requireSignin,
-   adminMiddleware,
-   getCategories,
-   (req, res) => {
-      res.render("admins/categories", {
-         user: req.user,
-         page: "category",
-         categories: req.categoryList,
-      });
-   }
-);
-
-router.get(
-   "/create",
-   requireSignin,
-   adminMiddleware,
-   getCategories,
-   (req, res) => {
-      res.render("admins/addcategory", {
-         user: req.user,
-         page: "category",
-         categoryList: req.categoryList,
-      });
-   }
-);
-
-router.post(
-   "/create",
-   requireSignin,
-   adminMiddleware,
-   uploadCategoryImage.single("image"),
-   createCategory
-);
-
-router.get(
-   "/edit/:id",
-   requireSignin,
-   adminMiddleware,
-   getCategory,
-   getCategories,
-   (req, res) => {
-      res.render("admins/editCategory", {
-         user: req.user,
-         page: "category",
-         categoryList: req.categoryList,
-         category: req.category,
-      });
-   }
-);
-
-router.post(
-   "/:id",
-   requireSignin,
-   adminMiddleware,
-   uploadCategoryImage.single("image"),
-   updateCategory
-);
-
-router.get("/delete/:id", requireSignin, adminMiddleware, deleteCategory);
-
-router.get('/product', categoryWiseProduct, (req, res) => {
-   res.render('product', {products: req.productsList})
-})
 
 module.exports = router;

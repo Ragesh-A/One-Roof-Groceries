@@ -1,23 +1,94 @@
-const express = require("express");
-const { requireSignin, siginOrNot } = require("../commonMiddleware");
-const { addToCart, getCart, updateCart, checkout } = require("../controller/cart");
-const { createOrder } = require("../controller/order");
-const { getProduct, latestProducts } = require("../controller/product");
-const { getUser } = require("../controller/user");
+const express = require('express');
+const cart = require('../controller/cart');
+const userAuth = require('../commonMiddleware');
+const order = require('../controller/order');
+const product = require('../controller/product');
+const { getUser } = require('../controller/user');
+const user = require('../controller/user');
 const router = express.Router();
 
 //LOGINED USER CART
-router.get("/",requireSignin, getCart, (req, res) => {
-  res.render('common/cart', { cartList: req.cart })
-});
+router.get(
+  '/',
+  userAuth.requireSignin,
+  cart.getCart,
+  cart.renderCart
+  );
+//ADD TO CART
+router.get(
+  '/add/:id',
+  userAuth.requireSignin,
+  product.getProduct,
+  cart.addToCart
+);
+//UPDATE CART
+router.post(
+  '/update/:id',
+  userAuth.requireSignin,
+  product.getProduct,
+  cart.updateCart
+);
+//CHECKOUT PAGE RENDER
+router.get(
+  '/buy/address/',
+  userAuth.requireSignin,
+  cart.getCart,
+  product.stockAvailability,
+  user.getWallet,
+  cart.checkout
+);
+// router.post(
+//   '/buy/address/',
+//   userAuth.requireSignin,
+//   product.latestProducts,
+//   order.createOrder,
+//   product.reduceStock
+// );
 
-router.get("/add/:id", requireSignin, getProduct, addToCart);
-router.post("/update/:id", requireSignin, getProduct, updateCart);
-router.post("/delete/:id", requireSignin, getProduct, );
-router.get('/buy/address/',requireSignin, getCart, checkout)
-router.post('/buy/address/',requireSignin,latestProducts,createOrder) 
-  
-router.get('/buy/thankyou/',requireSignin, latestProducts,(req,res)=>{
-  res.render('common/thankyou',{ cartList: false , latestProducts: req.latestProducts  });
-})
+//CREATING ORDER SESSION
+router.post(
+  '/buy/order/',
+  userAuth.requireSignin,
+  user.getWallet,
+  order.createOrdersession,
+  cart.renderOrderConfirm
+);
+
+router.get(
+  '/buy/order/confirm',
+  userAuth.requireSignin,
+  product.latestProducts,
+  order.createOrder,
+  product.reduceStock
+);
+///cart/order/return/<%=order._id %>
+//RENDER CONFIRMATION PAGE || THANKS PAGE
+router.get(
+  '/buy/thankyou/',
+  userAuth.requireSignin,
+  product.latestProducts,
+  order.getlatestOrder,
+  cart.renderConfirmPurchase
+);
+//CANCEL ORDER
+router.get(
+  '/order/cancel/:id',
+  userAuth.requireSignin,
+  order.getOrder,
+  product.restoreStock,
+  order.checkPaymentMethod,
+  user.updateWallet,
+  order.cancelOrder,
+  )
+//RETURN ORDER
+router.get(
+  '/order/return/:id',
+  userAuth.requireSignin,
+  order.getOrder,
+  product.restoreStock,
+  user.updateWallet,
+  order.returnOrder
+
+)
+// router.post('/delete/:id', userAuth.requireSignin, product.getProduct);
 module.exports = router;

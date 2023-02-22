@@ -1,35 +1,51 @@
 <%- include('../includes/homehead') %>
-
+<% if(items== ''){ %>
+    <img src="/images/backgrounds/" alt="">
+<%}else{ %>
 <section class="wishlist-sec">
     
     <div class="left">
         
-        
-        <h2>WISH LIST <span class="green-text cart-count"><span class="count">5</span> items</span></h2>
-        <figure class="cart-item flex">
+        <h2>WISH LIST <span class="green-text cart-count"><span class="count"></span></span></h2>
+        <% items.forEach(item=>{%> 
+        <figure class="cart-item flex wishlist-item" id="<%= item._id %>">
             <div class="left flex">
                 <div class="cart__img ">
-                    <img src="/uploads/product/63de012951a7a7985fb94218/Orange-19.png" alt="" width="100%">
+                    <img src="/uploads/product/<%= item.category._id %>/<%= item.productPictures[0].img %>" alt="" width="100%">
                 </div>
             </div>
             
             <div class="right flex">
                 <div class="cart__title-box">
-                    <p class="cart__title">TNAME</p>
+                    <p class="cart__title"><%= item.name %></p>
                 </div>
-                <p class="unit-price">150 <span>per kg</span></p>
+                <p class="unit-price"><%= item.price %> <span>per kg</span></p>
                 
                 
-                <div>
-                    <a href="" class="btn confirm">MOVE TO CART</a>
-                </div>
-                <p class="sub-total">₹<span>150</span></p>
+                <p class="sub-total">₹<span><%= item.price - item.price * item.offer /100 %></span></p>
+                <% if( item.stock >0){%>
+                    <div class="cart-btns">
+                        <a href="/cart/add/<%= item._id %>" class="btn confirm">
+                            <p>ADD TO CART</p>
+                        </a>
+                    </div>
+                    <%}else{%>
+                      <div class="cart-btns">
+                        <a class="stock-out-btn flex">
+                            <p>OUT OF STOCK</p>
+                        </a>
+                    </div>
+                <%}%>
+                <a data-id="<%= item._id %>" class="remove-items">
+                    <i class='bx bx-minus-circle' ></i>
+                </a>
             </div>
 
         </figure>
+        <%})%>
         <!--  -->
 
-        <figure class="cart-item flex">
+        <!-- <figure class="cart-item flex">
             <div class="left flex">
                 <div class="cart__img ">
                     <img src="/uploads/product/63de012951a7a7985fb94218/Orange-19.png" alt="" width="100%">
@@ -48,16 +64,33 @@
                 
             </div>
 
-        </figure>
+        </figure> -->
 
         
     </div>
     <div class="right">
-       
-         8 
     </div>
 </section>
 
+<script>
+    let removeBtn = document.querySelectorAll('.remove-items');
 
+    for(let i =0; i< removeBtn.length; i++){
+        removeBtn[i].addEventListener('click', function(e){
+            
+            fetch(`/api/wishlist/${this.dataset.id}`,{
+                        method: 'put',
+                    })
+                    .then(res=> res.json())
+                    .then(data=> {
+                        let parent = document.getElementById(`${this.dataset.id}`)
+                        parent.parentNode.removeChild(parent);
+                        console.log(data)
+                    })
+                    .catch(err=> console.log(err))
 
+        })
+    }
+</script>
+<% } %>
 <%- include('../includes/homebottom') %>

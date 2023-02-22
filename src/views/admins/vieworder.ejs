@@ -1,0 +1,157 @@
+<%- include('../includes/adminHead.ejs') %>
+  <%- include('../includes/adminNavbar.ejs') %>
+    <main class="main" id="adminMain">
+      <div class="invoice-wrap">
+        <div class="left">
+          <div class="info-box">
+            <div class="receipt">
+              Receipt for </br><span>
+                <%= order.billingAddress.name %>
+              </span>
+            </div>
+            <div class="field-wrap flex">
+              <i class='bx bxs-wallet'></i>
+              <p><b>Wallet:</b></br><span><%=order.wallet %> </span></p>
+            </div>
+            <div class="field-wrap flex">
+              <i class='bx bxs-calendar'></i>
+              <p><b>Delivery Date:</b></br><span>
+                <% if(order.deliveryDate){%>
+                  <%= order.deliveryDate.toLocaleString().split(',')[0] %>
+                <%}else{%>
+                  -------
+                <%}%>
+              </span></p>
+            </div>
+            <div class="field-wrap flex">
+              <i class='bx bx-star'></i>
+              <p><b>Email:</b></br><span>
+                  <%= order.billingAddress.email %>
+                </span></p>
+            </div>
+            <div class="field-wrap flex">
+              <i class='bx bx-id-card'></i>
+              <p>Coupon:</br><span>
+                  <%= order.coupon %>
+                </span></p>
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          <div class="">
+            <div class="flex logo-header">
+              <img src="/images/logo/transparent-logo.png">
+              <h4># <%= order._id%></h4>
+            </div>
+          </div>
+
+          <div>
+            <div>
+              <div>
+
+                <div>
+
+
+                  <div class="flex" style="justify-content: space-between;">
+                    <div style="padding: 1rem 0;">
+                      <ul class="invoice-addr">
+                        <li class="flex flex-row align-center"><span>To</span>: 
+                            <%= order.billingAddress.name %>
+                          
+                        </li>
+                        <li class="flex flex-row align-center"><span>City</span>: <%= order.billingAddress.city %>
+                        </li>
+                        <li class="flex flex-row align-center"><span>District</span>: <%= order.billingAddress.district
+                            %>
+                        </li>
+                        <li class="flex flex-row align-center"><span>Phone</span>: <%= order.billingAddress.phone %>
+                        </li>
+                      </ul>
+                    </div>
+                    <div style="padding: 1rem 0;" class="invoice-addr">
+                      <p>Invoice</p>
+                      <ul>
+                        <li class="flex"><span>ID:</span>#123-456</li>
+                        <li class="flex"><span>Cre-Date: </span>
+                          <%= order.orderDate.toLocaleString().split(',')[0] %>
+                        </li>
+                        <li class="flex"><span>exp-Date: </span>
+                          <%= order.expectedDeliveryDate.toLocaleString().split(',')[0] %>
+                        </li>
+                        <li class="flex"><span>Status:</span><span>
+                            <%= order.status %>
+                          </span></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div>
+                    <table class="table2 ">
+                      <thead style="background-color:#00a2ff ;color: #fff;">
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">product</th>
+                          <th scope="col">Qty</th>
+                          <th scope="col">Unit Price</th>
+                          <th scope="col">Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% var total=0 %>
+                          <% order.products.forEach((product, index)=>{%>
+                            <tr>
+                              <th scope="row">
+                                <%= index+1 %>
+                              </th>
+                              <td style="text-align: start;">
+                                <%= product.name %>
+                              </td>
+                              <td>
+                                <%= product.quantity %>
+                              </td>
+                              <td>
+                                <%= product.price %>
+                              </td>
+                              <td>
+                                <%= product.price * product.quantity %>
+                              </td>
+                              <% total +=product.price * product.quantity %>
+                            </tr>
+                            <%}) %>
+                      </tbody>
+
+                    </table>
+                  </div>
+                  <div class="flex" style="justify-content: space-between;">
+                    <div>
+
+
+                      <ul class="flex justify-between" style="justify-content: space-evenly;">
+                        <li style="margin-right: 10px;"><span>SubTotal </span>
+                          <%= total %>
+                        </li>
+                        <li><span><b>discount</b></span> &nbsp;<%= total- order.billAmount.toFixed(2) %></li>
+                      </ul>
+                    </div>
+
+                    <p><span> Total Amount</span><span style="font-size: 25px;"> &nbsp;<%= order.billAmount.toFixed(2)%></span></p>
+                  </div>
+                </div>
+                <hr>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div>
+        <!--<div class="card">
+          <h3></h3>
+        </div>
+         <%= order %> 
+      </div>
+
+      </div>-->
+    </main>
+    <%- include('../includes/adminBottom.ejs') %>

@@ -24,6 +24,7 @@
                 </div>
                 <form action="add-product" method="post" enctype="multipart/form-data">
                     <%- include ('../includes/confirm') %>
+                    <p class="text-center red server-response"><%= err %></p>
                         <div class="productEdit-page grid">
                             <div class="left card">
                                 <div class="productField-wrap">
@@ -54,7 +55,7 @@
 
 
                                     <input type="file" name="productPictures" id="productPictures"
-                                        class="upload-file form-feild">
+                                        class="upload-file form-feild" multiple>
                                     <label for="productPictures" class="upload-label field-title">Upload Image</label>
 
                                     <p class="description">Pay attention to the quality of the pictures that you

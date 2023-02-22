@@ -42,15 +42,15 @@
                             <div class="card my-3">
                                 <div class="account-feild flex p-3">
                                     <label class="account-field-title" for="name">Name</label>
-                                    <input type="text" name="name" id="name" value="<%= user.name %>" style="text-transform: capitalize;">
+                                    <input class="px-2 py-1 rounded border-1" type="text" name="name" id="name" value="<%= user.name %>" style="text-transform: capitalize;">
                                 </div>
                                 <div class="account-feild flex p-3">
                                     <label class="account-field-title" for="phone">Phone no</label>
-                                    <input type="number" name="phone" id="phone" value="<%= user.phone %>">
+                                    <input class="px-2 py-1 rounded border-1" type="number" name="phone" id="phone" value="<%= user.phone %>">
                                 </div>
                                 <div class="account-feild flex p-3">
                                     <label class="account-field-title" for="email">Email</label>
-                                    <input type="email" name="email" id="email" value="<%= user.email %>">
+                                    <input class="px-2 py-1 rounded border-1" type="email" name="email" id="email" value="<%= user.email %>">
                                 </div>
 
                                 <div class="account-feild flex p-3">
@@ -59,21 +59,21 @@
                                         <br>
                                         <div class="account-feild flex p-3">
                                             <label class="account-field-title" for="district">District</label>
-                                            <input type="text" name="district" id="district"
-                                                value="<%= user.address.district %>">
+                                            <input class="px-2 py-1 rounded border-1" type="text" name="district" id="district"
+                                                value="<%= user.address[0].district %>">
                                         </div>
                                         <div class="account-feild flex p-3">
                                             <label class="account-field-title" for="pincode">pincode</label>
-                                            <input type="text" name="pincode" id="pincode"
-                                                value="<%= user.address.pincode %>">
+                                            <input class="px-2 py-1 rounded border-1" type="text" name="pincode" id="pincode"
+                                                value="<%= user.address[0].pincode %>">
                                         </div>
                                         <div class="account-feild flex p-3">
                                             <label class="account-field-title" for="city">city</label>
-                                            <input type="text" name="city" id="city" value="<%= user.address.city %>">
+                                            <input class="px-2 py-1 rounded border-1" type="text" name="city" id="city" value="<%= user.address[0].city %>">
                                         </div>
                                         <div class="account-feild flex p-3">
                                             <label class="account-field-title" for="place">place</label>
-                                            <input type="text" name="place" id="place" value="<%= user.address.city %>">
+                                            <input class="px-2 py-1 rounded border-1" type="text" name="place" id="place" value="<%= user.address[0].city %>">
                                         </div>
                                     </div>
                                 </div>

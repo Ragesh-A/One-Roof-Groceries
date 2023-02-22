@@ -24,6 +24,7 @@
 
 
     <%- include('../includes/adminNavbar.ejs') %>
+    <oneroofid data-id="<%=category.id %>" id="validation-id" ></oneroofid>
         <main class="main" id="adminMain">
             <div class="flex">
                 <div class="">
@@ -47,18 +48,23 @@
 
                 <section class="home grid">
                     <div class="left card">
+                        <div class=" flex message-wrap" id="message-wrap">
+                            <p id="messagevalue" class="alert-meassage danger"></p>
+                        </div>
                         <form action="/admin/category/<%= category._id %>" enctype="multipart/form-data" method="post">
+                            <%- include ('../includes/confirm') %>
+                            <p class="text-center red server-response"><%= err %></p>
                             <div class="add-category-form">
                                 <div class="form-sec grid">
                                     <ul>
                                         <li class="flex">
                                             <label for="name">Name</label>
-                                            <input type="name" name="name" id="name" class="form-inp" required
+                                            <input type="name" name="name" id="name" class="form-inp form-feild" required
                                                 value="<%= category.name %>">
                                         </li>
                                         <li class="flex">
                                             <label for="description">Description</label>
-                                            <textarea name="description" id="description" class="form-inp"
+                                            <textarea name="description" id="description" class="form-inp form-feild"
                                                 required><%= category.description %></textarea>
                                         </li>
 
@@ -85,9 +91,8 @@
 
                             <div class="btns-wrap flex">
                                 <a href="/admin/category/list" class="btn cancel">cancel</a>
-                                <a href="/admin/category/delete/<%= category._id %>" class="btn "
-                                    style="background-color: red;">delete category</a>
-                                <input type="submit" value="edit category" class="btn confirm">
+                                <a class="btn delete" id="deleteBtn">delete category</a>
+                                <input type="button" value="edit category" class="btn confirm" id="validate-btn">
                             </div>
                         </form>
                     </div>
@@ -153,9 +158,17 @@
                 preDescription.innerText = this.value
             })
 
+            let deleteBtn = document.getElementById('deleteBtn');
+            let validationId = document.getElementById('validation-id');
+
+            deleteBtn.onclick = () => {
+                submitBtn.style.display = 'none';
+                confirmBox.style.display = 'flex';
+                deleteConfBtn.style.display = 'block';
+                deleteConfBtn.href = `/admin/category/delete/${validationId.dataset.id}`
+                
+            } 
+
         </script>
 
-</body>
-
-
-</html>
+<%- include('../includes/adminBottom') %>

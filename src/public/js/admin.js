@@ -16,12 +16,10 @@ validateBtn.onclick = ()=>{
     let formFeild = document.querySelectorAll('.form-feild');
     let messages = [];
     formFeild.forEach(inputs=>{
-        console.log(inputs.value);
         if(inputs.value == ''){
             messages.push(inputs.labels[0].innerText);
         }
     })
-    // console.log(messages);
     sendMessage(messages);  
 }
 

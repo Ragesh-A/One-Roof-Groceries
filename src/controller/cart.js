@@ -2,14 +2,13 @@ const { LEGAL_TLS_SOCKET_OPTIONS } = require('mongodb');
 const Cart = require('../models/cartSchema');
 const User = require('../models/userSchema');
 
-exports.addToCart = async (req, res) => {
+const addToCart = async (req, res) => {
   Cart.findOne({ user: req.user._id }).exec((err, cart) => {
     if (err) return res.send(err);
     if (cart) {
       //if cart is already existing
       console.log('cart exist');
       const item = cart.Items.find((c) => c.product.equals(req.product._id));
-      console.log(item);
       if (item) {
         Cart.findOneAndUpdate(
           { user: req.user._id, 'Items.product': req.product._id },
@@ -68,7 +67,7 @@ exports.addToCart = async (req, res) => {
 
 // GET CART
 
-exports.getCart = async (req, res, next) => {
+const getCart = async (req, res, next) => {
   Cart.findOne({ user: req.user._id })
     .populate({
       path: 'Items.product',
@@ -87,105 +86,190 @@ exports.getCart = async (req, res, next) => {
         req.cart = false;
         // res.render('common/cart', { cartList: false });
       }
-      next()
+      next();
     });
 };
 
-//update the cart
+//UPDATE CART
+const updateCart = async (req, res) => {
+  try {
+    let action = 0;
+    req.body.action === 'inc'
+      ? (action = 1)
+      : req.body.action === 'dec'
+      ? (action = -1)
+      : (action = 0);
 
-exports.updateCart = async (req, res) => {
-  if (req.body.action === 'inc') {
-    req.body.action = 1;
-  } else if (req.body.action === 'dec') {
-    req.body.action = -1;
-  } else {
-    req.body.action = 0;
+    let userCart = await Cart.findOneAndUpdate(
+      { user: req.user._id, 'Items.product': req.product._id },
+      { $inc: { 'Items.$.quantity': action } },
+      { new: true }
+    );
+    if (!userCart) return res.status(403).json({ message: 'not found' });
+
+    //IF QUALTITY IS ZERO DELETE PRODUCT
+    if (action == -1) {
+      userCart.Items.forEach(async (item) => {
+        if (item.quantity == 0) {
+          await Cart.findOneAndUpdate(
+            { user: req.user._id },
+            { $pull: { Items: { quantity: 0 } } },
+            { new: true }
+          ).then((result) => {
+            if (result.Items.length == 0) {
+              deleteCart(result.user);
+            }
+          });
+        }
+      });
+    }
+    res.json({ message: 'cart updated' });
+  } catch (error) {
+    res.json({ message: 'error' });
   }
-  Cart.findOneAndUpdate(
-    {
-      user: req.user._id,
-      'Items.product': req.product._id,
-    },
-    {
-      $inc: { 'Items.$.quantity': req.body.action },
-    },
-    {
-      new: true,
-    }
-  ).exec((err, result) => {
-    if (err) {
-      return res.status(err.code).json({ message: err.message });
-    }
-    if (result) {
-      // IF CART IS QUANTITY IS EMPTY DELETE PRODUCT
-      if (req.body.action === -1) {
-        Cart.findOneAndUpdate(
-          {
-            user: req.user._id,
-            'Items.product': req.product._id,
-          },
-          {
-            $pull: { Items: { quantity: 0 } },
-          }
-        ).exec((err, result) => {
-          if (err) {
-            return console.log(err);
-          }
-        });
-
-        //IF CART IS EMPTY DELETE CART
-
-        Cart.findOneAndDelete({ user: req.user._id, Items: [] }).exec(
-          (err, result) => {
-            if (err) {
-              return console.log(err);
-            }
-            if(result){
-              console.log("deleted");
-              res.status(200).json({message: "cart deleted successfully"})
-            }
-          }
-        );
-      }
-    }
-  });
 };
 
-//DELETE CART PRODUCT
-async function deleteCartProduct() {
-  // Cart.findOneAndDe
-  Cart.findOneAndUpdate(
-    { user: user, 'Items.product': productId },
-    { $pull: { 'Items.$.product': productId } }
-  ).exec((err, result) => {
-    if (err) {
-      return console.log(err);
-    }
-    if (result) {
-      return console.log(result);
-    }
+//DELETE CART
+async function deleteCart(user) {
+  await Cart.findOneAndDelete({ user: user }).catch((err) => {
+    console.log(err);
   });
 }
 
+//PLACE ORDERS
+const checkout = async (req, res) => {
+  try {
+    const userCart = await Cart.findOne(
+      { user: req.user._id },
+      { hash_password: 0 }
+    )
+      .populate('user')
+      .populate({
+        model: 'product',
+        path: 'Items.product',
+      });
+    if (!userCart) return res.redirect('/cart');
 
-//place order 
-exports.checkout = async (req, res) => {
-  User.findOne({_id : req.user._id}).exec ((err, result) => {
-    if (err) {
-      console.log(err);
-      res.redirect('/err')
-    }
+    //check availability of products
 
-    if (result) {
-      let user = {
-        name : result.name,
-        address: result.address,
-        phone : result.phone,
-        email : result.email,
-      }
-      console.log(user);
-      console.log(req.cart);
-      res.render('common/checkout',{user, cartList: req.cart.Items});
+    res.render('common/checkout', {
+      userCart,
+      success: req.flash('success'),
+      wallet: req.wallet,
+    });
+  } catch (error) {
+    res.render('common/error', { err: error });
+  }
+};
+
+//CANCEL ORDER
+// const cancelOrder = async(req, res)=>{
+
+// }
+
+//  MIDDLEWARE FOR GETTING THE AMOUNT OF CART ITEMS
+const getCartAmount = (req, res, next) => {
+  try {
+    const userCart = req.cart;
+    let totalAmount = 0;
+
+    // console.log(userCart);
+    userCart.Items.forEach((item) => {
+      totalAmount +=
+        item.product.price * item.quantity -
+        (item.product.price * item.quantity * item.product.offer) / 100;
+    });
+    req.totalAmount = totalAmount;
+    next();
+  } catch (error) {
+    res.redirect('/*');
+  }
+};
+
+//WISHLIST CREATION
+const addToWishlist = async (req, res) => {
+  const userId = req.user._id;
+  const productId = req.params.id;
+  try {
+    const user = await User.findOne({ _id: userId });
+    const allreadyAdded = user.wishlist.find(
+      (id) => id.toString() === productId
+    );
+
+    if (allreadyAdded) {
+      let user = await User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { wishlist: productId } },
+        { new: true }
+      );
+
+      res.json({user})
+    }else{
+      let user = await User.findOneAndUpdate(
+        { _id: userId },
+        { $push: { wishlist: productId } },
+        { new: true }
+      );
+      res.json({user})
     }
-  })
+  } catch (error) {
+    req.json({'err': error.message});
+   
+  }
+};
+
+//GET USER WISHLIST 
+const getWishlist = async (req, res, next) => {
+  const userId = req.user._id;
+
+  try {
+    
+   const user = await User.findOne({_id: userId}).populate("wishlist");
+   if(!user){
+    req.flash('err','user not found')
+    return res.redirect('/err-')
+   }
+
+   req.wishlist = user.wishlist
+   next();
+
+  } catch (error) {
+    req.flash('err','user not found')
+    return res.redirect('/err')
+  }
 }
+
+
+
+/*============== RENDER PAGES ============*/
+const renderCart = (req, res) => {
+  res.render('common/cart', { cartList: req.cart, err: req.flash('err') });
+};
+
+const renderConfirmPurchase = (req, res) => {
+  res.render('common/thankyou', {
+    cartList: false,
+    latestProducts: req.latestProducts,
+    order: req.latestOrder,
+  });
+};
+const renderOrderConfirm = async (req, res) => {
+  res.render('common/order-confirm', { orderDetails: req.session.userOrder });
+};
+//============================================================================
+
+module.exports = {
+  renderCart,
+  checkout,
+  updateCart,
+  updateCart,
+  getCart,
+  addToCart,
+  renderCart,
+  getCartAmount,
+  renderOrderConfirm,
+  renderConfirmPurchase,
+  // cancelOrder
+  getWishlist,
+  addToWishlist
+};

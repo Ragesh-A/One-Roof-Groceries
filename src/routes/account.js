@@ -1,84 +1,74 @@
-const express = require("express");
-const { requireSignin } = require("../commonMiddleware/index");
+const express = require('express');
+const order = require('../controller/order');
+const account = require('../controller/account');
+const userAuth = require('../commonMiddleware/index');
+const auth = require('../controller/auth');
+const validate = require('../controller/validators/userAuth');
+const user = require('../controller/user');
 const {
-   signup,
-   signin,
-   signout,
-   changePassword,
-   verifyPassword,
-   createAccount,
-} = require("../controller/auth");
-const { uploadProfileImage } = require("../controller/imagehandler");
-const { getUser, updateProfile } = require("../controller/user");
+  uploadProfileImage,
+  resizeImage,
+} = require('../controller/imagehandler');
 // const { otpVerification } = require('../controller/validators/otp')
-const {
-   validateSignupRequest,
-   validateSigninRequest,
-   isValidated,
-} = require("../controller/validators/userAuth");
-const { route } = require("./category");
+const { route } = require('./category');
 const router = express.Router();
 
-router.get("/", requireSignin, async (req, res) => {
-   let user = await getUser(req);
-   res.render("account", { user });
-});
+//ACCOUNT PAGE
+router.get('/', userAuth.requireSignin, user.getUser, account.renderAccount);
 
+// ACCOUNT EDIT
 router
-   .route("/edit")
-   .get(requireSignin, async (req, res) => {
-      let user = await getUser(req);
-      res.render("account-edit", { user });
-   })
-   .post(
-      requireSignin,
-      uploadProfileImage.single("profilePicture"),
-      updateProfile
-   );
+  .route('/edit')
+  .get(userAuth.requireSignin, user.getUser, account.renderEditAccount)
+  .post(
+    userAuth.requireSignin,
+    uploadProfileImage.single('profilePicture'),
+    resizeImage,
+    user.updateProfile
+  );
 
-// router.get("/edit", requireSignin, async (req, res) => {
-//    let user = await getUser(req);
-//    res.render("account-edit", { user });
-// });
+// ACCOUNT SIGIN
+router.get('/signin', account.renderLogin);
+router.post(
+  '/signin',
+  validate.validateSigninRequest,
+  validate.isValidated,
+  auth.signin
+);
 
-// router.post(
-//    "/edit",
-//    requireSignin,
-//    uploadProfileImage.single("profilePicture"),
-//    updateProfile
-// );
+//SIGNUP
+router.get('/signup', account.renderSignup);
+router.post(
+  '/signup',
+  validate.validateSignupRequest,
+  validate.isValidated,
+  auth.signup
+);
 
-router.get("/signin", (req, res) => {
-   if (req.cookies.Authorization) {
-      res.redirect("/");
-   } else {
-      if (req.query.message) {
-         console.log(req.query.message);
-         req.query.message = false;
-         res.render("signin", { message: "invalid email or password" });
-      } else {
-         res.render("signin", { message: false });
-      }
-   }
-});
+//OTP VERIFICATION
+router.post('/verify', auth.createAccount);
+router.post('/verifyOtp', auth.verifyPassword);
 
-router.post("/signin", validateSigninRequest, isValidated, signin);
+//CHANGE PASSWORD
+router.post('/password', auth.changePassword);
 
-router.get("/signup", (req, res) => {
-   if (req.cookies.Authorization) {
-      res.redirect("/");
-   } else {
-      res.render("signup", { message: req.message || false });
-      req.session.message = false;
-   }
-});
+//SIGNOUT
+router.get('/signout', userAuth.requireSignin, auth.signout);
+//  ADD NEW ADDRESS
+router.post('/new-address', userAuth.requireSignin, user.newAddress);
+//ORDERS
+router.get(
+  '/my-orders',
+  userAuth.requireSignin,
+  order.getUserOrders,
+  account.renderMyOrder
+);
 
-router.post("/signup", validateSignupRequest, isValidated, signup);
-router.post("/verify", createAccount);
-
-router.post("/verifyOtp", verifyPassword);
-router.post("/password", changePassword);
-// router.post('/signup', validateSignupRequest, isValidated, signup,/* otpVerification*/)
-router.get("/signout", requireSignin, signout);
-// router.post('/verify',otpConfig)
+//WALLET
+router.get(
+  '/my-wallet',
+  userAuth.requireSignin,
+  user.getWallet,
+  account.renderWallet
+);
 module.exports = router;

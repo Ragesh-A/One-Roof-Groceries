@@ -44,22 +44,56 @@ const poductImageUpadate = multer.diskStorage({
     cb(null, productPath);
   },
   filename: (req, file, cb) => {
-    console.log(req.body);
     console.log(file.originalname);
   },
 });
 
 const uploadProfileImage = multer({ storage: profileImageStorage });
 const uploadCategoryImage = multer({ storage: categoryImageStorage });
-const uploadProductImage = multer({ storage: productImageStorage });
+const uploadProductImage = multer({
+  storage: productImageStorage,
+  limits: { files: 5 },
+});
 
-// const resizeImage = (req, res, next) => {
-//   if (!req.file) return next();
-//   sharp
-// };
+const resizeImage = (req, res, next) => {
+  if (!req.file) return next();
+
+  const fileBuffer = fs.readFileSync(req.file.path);
+
+  sharp(fileBuffer)
+    .resize(250, 250)
+    .jpeg({ quality: 80 })
+    .toFile(req.file.path, (err, info) => {
+      if (info) {
+        next();
+      }
+      if (err) {
+        req.flash('err', 'connot set image: ' + err.message);
+        res.redirect('/err');
+      }
+    });
+};
+
+const resizeProductImage = (req, res, next) => {
+  if (!req.files){
+    req.flash('err', 'connot set images ');
+    res.redirect('/err');
+  };
+
+  req.files.forEach(file => {
+    let fileBuffer = fs.readFileSync(file.path)
+    sharp(fileBuffer)
+    .resize(500, 500)
+    .toFile(file.path)
+  })
+  next();
+};
 
 module.exports = {
+  
   uploadProfileImage,
   uploadCategoryImage,
   uploadProductImage,
+  resizeImage,
+  resizeProductImage,
 };

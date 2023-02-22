@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo/icon.png" type="image/x-icon">
+    <!-- <meta http-equiv="refresh" content="3"> -->
+    <title>ORG-wallet</title>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+
+</head>
+
+<body>
+  <header id="header">
+    <div class="nav-wrap flex">
+        <div class="col nav-menu">
+            <nav>
+                <ul class="flex nav-link-wrap">
+                    <li class="nav-item flex">
+                        <a class="nav-link flex" href="/">
+                            <i class='bx bxs-home d-none'></i>
+                            <span class="nav-name">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item flex">
+                        <a class="nav-link flex" href="/category">
+                            <i class='bx bxs-category d-none'></i>
+                            <span class="nav-name">Category</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-about">
+                        <a class="nav-link" href="/about">
+                            <span class="nav-name">About</span>
+                        </a>
+                    </li>
+                    <li class="nav-item flex">
+                        <a class="nav-link flex" href="/contact">
+                            <i class='bx bxs-comment-dots d-none'></i>
+                            <span class="nav-name">Contact</span>
+                        </a>
+                    </li>
+                    <li class="nav-item flex d-none mobile-nav">
+                        <a class="nav-link flex" href="/cart" style="position: relative">
+                            <!-- <div class="badge">2</div> -->
+                            <i class='bx bxs-basket d-none'></i>
+                            <span class="nav-name">Cart</span>
+                        </a>
+                    </li>
+                    <li class="nav-item flex d-none mobile-nav">
+                        <a class="nav-link flex" href="/account">
+                            <i class='bx bxs-user-circle d-none'></i>
+                            <span class="nav-name">Account</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="logo-wrap flex col justify-content-center">
+            <a href="/"><img src="/images/logo/logo.png" alt="logo"></a>
+        </div>
+        <div class="col flex justify-content-around align-items-center">
+            <div class="search-wrap border px-3 rounded-1 mt-2 flex">
+                <form action="/search" method="post" class="d-flex align-items-center w-100">
+                    <input type="search" name="search" placeholder="search..">
+                    <button type="submit" class="border-0 bg-white h-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-search" viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            <div class="nav-right-account">
+
+                <a href="/wishlist">
+                    <i class='bx bxs-heart-circle'></i>
+                </a>
+            </div>
+            <div class="nav-right-account" style="position: relative;">
+
+                <a href="/cart">
+                    <!-- <div class="badge">2</div> -->
+                    <i class='bx bxs-basket'></i>
+                </a>
+            </div>
+            <div class="nav-right-account">
+
+                <a href="/account">
+                    <i class='bx bxs-user-circle'></i>
+                </a>
+
+            </div>
+        </div>
+    </div>
+    <div class="d-none nav-bg">
+        <!-- <img src="/images/logo/bg-header-4.png" width="100%"> -->
+    </div>
+</header>
+<div id="home-body">
+  <section class="wallect-sec">
+    <div class="wallect-home">
+      <div class="dashboard">
+        <div class="dashboard-icon">
+          <i class="bx bxs-dashboard-icon"></i>
+          <p class="title">My-Money</p>
+        </div>
+        <p class="money"><%= wallet %></p>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

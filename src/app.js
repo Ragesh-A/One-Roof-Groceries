@@ -58,13 +58,12 @@ app.use('/contact', messageRouter);
 app.use('/manager', managerRouter);
 app.use('/support', supportRouter);
 app.use('/category', categoryRouter);
-app.use('/wishlist', wishlistRouter);
+// app.use('/wishlist', wishlistRouter);
 app.use('/search', searchRouter);
-
+app.get('/q', (req, res) => {res.render('common/order-confirm')})
 app.get('/t', getAllProducts, (req, res) => {
   res.render('product', { products: req.products });
 });
-
-app.get('*', (req, res) => res.render('redirection'));
+app.get('*', (req, res) => res.render('404'))
 
 module.exports = app;

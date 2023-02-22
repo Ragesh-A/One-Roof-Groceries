@@ -36,13 +36,15 @@ exports.adminMiddleware = async (req, res, next) => {
 
 exports.supportMiddleware = async (req, res, next) => {
    await getImage(req);
-   if (req.user.role != "supportTeam") res.status(403).redirect("/account");
+   if (req.user.role == "supportTeam" || req.user.role == "admin") return next();
+   return res.status(403).redirect("/account");
    next();
 };
 exports.managerMiddleware = async (req, res, next) => {
    await getImage(req);
-   if (req.user.role != "manager") return res.status(403).redirect("/account");
-   next();
+   if (req.user.role == "manager" || req.user.role == "admin") return next();
+   return res.status(403).redirect("/account");
+  
 };
 
 exports.siginOrNot = async (req, res, next) => {

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- <meta http-equiv="refresh" content="2"> -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+
+  <link rel="icon" href="/images/logo/icon.png" type="image/x-icon">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+
+  <%- include('../includes/adminNavbar.ejs') %>
+    <main class="main" id="adminMain">
+      <div class="flex">
+        <div class="">
+          <div class="page-title">
+            <h1 style="text-transform: capitalize">
+              Orders
+            </h1>
+          </div>
+          <div class="direction">
+            <ul class="flex">
+              <li>Home</li>
+              <li style="text-transform: capitalize">
+                orders
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <div class="condtents">
+
+        <div class="content-section card" id="users">
+
+          <div class="userBox">
+
+            <table id="table_id" class="table">
+              <p class="server-response"><%= success %></p>
+              <thead>
+                <tr style="font-weight: 800; background-color: var(--blue); color: var(--white);">
+                  <th class="table-hide">id</th>
+                  <th>email</th>
+                  <th>date</th>
+                  <th class="table-hide">payment</th>
+                  <th class="table-hide">order Amount</th>
+                  <th>order status</th>
+                  <th>action</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <% ordersList.forEach(order=> {%>
+                  <tr class="users">
+                    <td class="table-hide">
+                      <%=order._id %>
+                    </td>
+                    <td>
+                      <%=order.billingAddress.email %>
+                    </td>
+                    <td>
+                      <%=order.orderDate.toLocaleString().split(',')[0] %>
+                    </td>
+                    <td class="table-hide">
+                      <%=order.paymentMethod %>
+                    </td>
+                    <td class="table-hide"></td>
+                    <td>
+                      <div class="status">
+                        <div style="<%if(order.status == 'pending'){%>
+                        background-color: rgb(255, 0, 0);
+                        box-shadow: 0 0 10px rgb(255, 0, 0),  0 0 10px rgb(255, 0, 0);
+                        <%}%>"></div>
+                        <%=order.status %>
+                      </div>
+                    </td>
+                    <td class="flex">
+                      <div style="margin: 0 10px;"><a class="admin-order-btn" href="/admin/view-order/<%= order._id %>"><i class='bx bx-show'></i></a></div>
+                      <% if(order.status == 'cancelled' || order.status == 'returned'){%> 
+                      <div style="margin: 0 10px;"></div>
+                      <%}else{%>
+                        <div style="margin: 0 10px;"><a class="admin-order-btn" href="/admin/edit-order/<%= order._id %>"><i class='bx bxs-edit'></i></a></div>
+                        <%}%>
+                    </td>
+                  </tr>
+                  <%}) %>
+              </tbody>
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+    <script src="https://kit.fontawesome.com/6819033383.js" crossorigin="anonymous"></script>
+    <script src="/js/main.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('#table_id').DataTable();
+      });
+    </script>
+
+</body>
+
+
+</html>
