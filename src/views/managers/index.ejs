@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,35 +11,102 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/admin.css">
 </head>
+
 <body>
     <%- include('../includes/managerNavbar.ejs') %>
-    <main id="adminMain">
+        <main id="adminMain">
 
-        <div class="cards-warp">
-            
-                <div class="card card2">
-                    <div>
-                        <i class='bx bxl-flutter'></i>
+            <div class="cards-warp">
+
+                <div class="card card2" style="text-align: center; max-width: 350px;">
+                    <div class=" card-content">
+                        <p class="admin-titles">Total products</p>
+                        <div class="card-logo" style=" margin: 0 auto;">
+                            <a href="/manager/products">
+                                <img src="/images/icons/dairy-products.png" alt="" width="60px">
+                            </a>
+
+                        </div>
                     </div>
-                    <div class="">
-                        <p>test</p>
-                        <h3>Manage</h3>
+                    <p style="color: green; font-size: 64px;font-weight: 800;" id="productcountId">0
+                    </p>
+                </div>
+                <div class="card card2" style="text-align: center; max-width: 350px; margin-left: auto ;">
+                    <div class=" card-content">
+                        <p class="admin-titles">Low Stock products</p>
+                        <div class="card-logo" style=" margin: 0 auto;">
+                            <a href="/manager/products">
+                                <img src="/images/icons/dairy-products.png" alt="" width="60px">
+                            </a>
+
+                        </div>
                     </div>
+                    <p style="color: red; font-size: 64px;font-weight: 800;" id="lowcountId">0
+                    </p>
                 </div>
-                <div class="card card2">
-                    <i class='bx bx-file-find'></i>
-                    <h3>search</h3>
-                </div>
-                <div class="card card2">gdsghghdfs</div>
             
-        </div>
+
+            </div>
+            <div class="card">
+                <canvas id="bar-chart" style="max-height: 500px;"></canvas>
+            </div>
 
 
 
-    </main>
+        </main>
 
 
 
-    <script src="/js/main.js"></script>
+        <script src="/js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const barChart = document.getElementById("bar-chart");
+
+
+
+            let xValues = []
+            let yValues = []
+            let bgc = []
+            let border = []
+            let low = 0
+            fetch('/api/manager/dashboard')
+                .then(res => res.json())
+                .then(data => {
+                    data.product.forEach(product => {
+                        xValues.push(product.shortName)
+                        yValues.push(product.stock)
+                        if(product.stock<10){
+                            bgc.push('rgba(255, 0, 0, 0.5)')
+                            border.push('rgb(255, 0, 0)')
+                            low++
+                        }else{
+                            bgc.push('rgba(0, 255, 0, 0.5)')
+                            border.push('rgb(0, 255, 0)')
+                            
+                        }
+                    });
+                    new Chart(barChart, {
+                        type: "bar",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                backgroundColor: bgc,
+                                borderColor: border,
+                                borderWidth: 1,
+                                data: yValues,
+                                label: "products"
+                            }]
+                        },
+
+                    });
+                    document.getElementById('productcountId').innerText = data.product.length
+                    document.getElementById('lowcountId').innerText = low
+                })
+
+
+
+
+        </script>
 </body>
+
 </html>

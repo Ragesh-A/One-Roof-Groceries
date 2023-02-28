@@ -26,13 +26,29 @@
 
     <%- include('../includes/managerNavbar.ejs') %>
         <main class="main" id="adminMain">
-            <div style="margin-left: auto; margin-bottom: 10px;" class="flex">
+            <!-- <div style="margin-left: auto; margin-bottom: 10px;" class="flex">
                 <a href="/manager/add-product" class="add-btn confirm">
                     <i class='bx bxs-plus-circle'></i>
                     <span>Add Product</span>
                 </a>
+            </div> -->
+            <div class="">
+                <div class="page-title">
+                    <h1 style="text-transform: capitalize">
+                        Products
+                    </h1>
+                    
+                </div>
+                <div class="direction">
+                    <ul class="flex">
+                        <li>Home</li>
+                        <li style="text-transform: capitalize">
+                            products
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="condtents productList">
+            <div class="condtents productList" style="margin-top: 1rem;">
 
                 <div class="content-section card" id="productList">
 
@@ -45,10 +61,10 @@
                             <thead>
                                 <tr style="font-weight: 800; background-color: var(--blue); color: var(--white);">
                                     <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
+                                    <th class="table-hide">Name</th>
+                                    <th class="table-hide">Price</th>
                                     <th>Stock</th>
-                                    <th>Category</th>
+                                    <th class="table-hide">Category</th>
                                     <th>Select</th>
                                 </tr>
                             </thead>
@@ -58,10 +74,10 @@
                                     <tr>
                                         <td><img src="/uploads/product/<%= product.category._id %>/<%= product.productPictures[0].img %>"
                                                 alt="" width="50px"></td>
-                                        <td>
+                                        <td class="table-hide">
                                             <%= product.name %>
                                         </td>
-                                        <td>
+                                        <td class="table-hide">
                                             <%= product.price %>
                                         </td>
                                         <td>
@@ -69,12 +85,12 @@
                                                 <%= product.stock %>
                                                     <%}else{%>
                                                         <div
-                                                            class="<% if(product.stock < 5){%>danger <%}else{%> warning<%}%>">
+                                                            class="<% if(product.stock <= 5){%>danger <%}else{%> warning<%}%>">
                                                             <%= product.stock %>
                                                         </div>
                                                         <%}%>
                                         </td>
-                                        <td>
+                                        <td class="table-hide">
                                             <%= product.category.name %>
                                         </td>
                                         <td><a href="/manager/product/<%= product._id %>"> select</a></td>

@@ -65,7 +65,7 @@ exports.signin = async (req, res) => {
       if (err) res.status(400).json({ err });
       if (user) {
         let t = await user.authenticate(req.body.password);
-        console.log(t);
+        
         if (t) {
           if (user.active) {
             const token = createToken(user);

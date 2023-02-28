@@ -60,8 +60,6 @@ router.get(
   category.deleteCategory
 );
 
-router.get('/product', product.categoryWiseProduct, (req, res) => {
-  res.render('product', { products: req.productsList });
-});
+router.get('/product', product.categoryWiseProduct,category.getCategories,product.renderProducts);
 
 module.exports = router;

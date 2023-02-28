@@ -498,7 +498,7 @@ header {
 .wishlist-item .right{
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 2fr .5fr;
-}/*
+}
 .wishlist-btn{
   position: absolute;
   right: 1rem;
@@ -510,12 +510,17 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 5;
+  color: gray;
 
-}*/
+}
 .wishlist-btn i{
   font-size: 1.5rem;
-  color: var(--green);
+  color: gray;
   
+}
+.wishlist-btn.active i{
+  color: var(--green);
 }
 @media screen and (max-width: 1024px) {
   .cart-sec {

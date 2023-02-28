@@ -55,10 +55,10 @@
               <thead>
                 <tr style="font-weight: 800; background-color: var(--blue); color: var(--white);">
                   <th class="table-hide">id</th>
-                  <th>email</th>
+                  <th class="table-hide">email</th>
                   <th>date</th>
                   <th class="table-hide">payment</th>
-                  <th class="table-hide">order Amount</th>
+                  <!-- <th class="table-hide">order Amount</th> -->
                   <th>order status</th>
                   <th>action</th>
                 </tr>
@@ -70,7 +70,7 @@
                     <td class="table-hide">
                       <%=order._id %>
                     </td>
-                    <td>
+                    <td class="table-hide">
                       <%=order.billingAddress.email %>
                     </td>
                     <td>
@@ -79,7 +79,7 @@
                     <td class="table-hide">
                       <%=order.paymentMethod %>
                     </td>
-                    <td class="table-hide"></td>
+                    <!-- <td class="table-hide"></td> -->
                     <td>
                       <div class="status">
                         <div style="<%if(order.status == 'pending'){%>

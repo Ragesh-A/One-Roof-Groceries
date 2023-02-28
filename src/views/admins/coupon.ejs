@@ -60,11 +60,11 @@
                                 <tr style="font-weight: 800; background-color: var(--blue); color: var(--white);">
                                     <th>Code</th>
                                     <th>Discount</th>
-                                    <th class="table-hide">Status</th>
+                                    <th >Status</th>
                                     <th class="table-hide">Claimed</th>
                                     <th class="table-hide">Total codes</th>
                                     <th class="table-hide">Minimum purchase</th>
-                                    <th>Expires</th>
+                                    <th class="table-hide">Expires</th>
                                     <th>select</th>
                                 </tr>
                             </thead>
@@ -77,7 +77,7 @@
                                         <td>
                                             <%= coupon.discount %>
                                         </td>
-                                        <td class="table-hide">
+                                        <td>
                                             <%= coupon.status %>
                                         </td>
                                         <td class="table-hide">
@@ -89,7 +89,7 @@
                                         <td class="table-hide">
                                             <%= coupon.minimum_purchase %>
                                         </td>
-                                        <td>
+                                        <td class="table-hide">
                                             <% var date = new Date(coupon.expiry);
                                             var formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear(); %>
                                             <%= formattedDate  %>

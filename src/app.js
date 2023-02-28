@@ -9,22 +9,7 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 
 const indexRouter = require('./routes/index');
-const adminRouter = require('./routes/admin');
-const accountRouter = require('./routes/account');
-const categoryRouter = require('./routes/category');
-const messageRouter = require('./routes/message');
-const managerRouter = require('./routes/manager');
-const supportRouter = require('./routes/support');
-const productRouter = require('./routes/product');
-const wishlistRouter = require('./routes/wishlist');
-const otpRouter = require('./routes/test');
-const apiRouter = require('./routes/api');
-const cartRouter = require('./routes/cart');
-const searchRouter = require('./routes/search');
-const { getAllProducts, latestProducts } = require('./controller/product');
-
 mongoose.set('strictQuery', true);
-
 const app = express();
 env.config();
 
@@ -48,22 +33,9 @@ app.use(
 );
 
 app.use('/', indexRouter);
-app.use('/api', apiRouter);
-app.use('/otp', otpRouter);
-app.use('/cart', cartRouter);
-app.use('/admin', adminRouter);
-app.use('/account', accountRouter);
-app.use('/product', productRouter);
-app.use('/contact', messageRouter);
-app.use('/manager', managerRouter);
-app.use('/support', supportRouter);
-app.use('/category', categoryRouter);
-// app.use('/wishlist', wishlistRouter);
-app.use('/search', searchRouter);
-app.get('/q', (req, res) => {res.render('common/order-confirm')})
-app.get('/t', getAllProducts, (req, res) => {
-  res.render('product', { products: req.products });
-});
+app.get('/t',(req, res) => {
+  res.send(req.query.page)
+})
 app.get('*', (req, res) => res.render('404'))
 
 module.exports = app;

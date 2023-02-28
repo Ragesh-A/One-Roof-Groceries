@@ -3,10 +3,10 @@ const User = require("../models/userSchema");
 
 exports.requireSignin = async (req, res, next) => {
    if (req.cookies.Authorization) {
-      const token = req.cookies.Authorization.split(" ")[1];
-      const user = jwt.verify(token, process.env.JWT_KEY);
-
       try {
+      const token = req.cookies.Authorization.split(" ")[1];
+      const user = jwt.verify(token, process.env.JWT_KEY, { algorithms: ['HS256'] });
+
          User.findOne({ _id: user._id }).exec((err, data) => {
             if (data) {
                if (data.active) {

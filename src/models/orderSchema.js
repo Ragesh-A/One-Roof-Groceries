@@ -15,10 +15,14 @@ const orderschema = new mongoose.Schema(
       email: String,
       phone: String,
     },
-    products: {
-      type: Array,
-      required: true,
-    },
+    products: [{
+      product_id : mongoose.Schema.Types.ObjectId,
+      name : String,
+      shortName : String,
+      price : Number,
+      quantity : Number,
+      offer : Number,
+    }],
     actuallAmount: {
       type: Number
     },

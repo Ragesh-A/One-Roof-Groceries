@@ -1,6 +1,11 @@
 <%- include('../includes/homehead') %>
 <% if(items== ''){ %>
-    <img src="/images/backgrounds/" alt="">
+   
+    <section class="flex empty-cart">
+        <img src="/images/backgrounds/preview.gif" alt="empty wishlist">
+        <hr>
+        <h2>------- Empty wishlist -------</h2>
+    </section>
 <%}else{ %>
 <section class="wishlist-sec">
     
@@ -36,36 +41,13 @@
                         </a>
                     </div>
                 <%}%>
-                <a data-id="<%= item._id %>" class="remove-items">
+                <a data-id="<%= item._id %>" class="remove-items" style="color: black; font-size: 18px; font-weight: 800">
                     <i class='bx bx-minus-circle' ></i>
                 </a>
             </div>
 
         </figure>
         <%})%>
-        <!--  -->
-
-        <!-- <figure class="cart-item flex">
-            <div class="left flex">
-                <div class="cart__img ">
-                    <img src="/uploads/product/63de012951a7a7985fb94218/Orange-19.png" alt="" width="100%">
-                </div>
-            </div>
-            
-            <div class="right flex">
-                <div class="cart__title-box">
-                    <p class="cart__title">TNAME</p>
-                </div>
-                <p class="unit-price">150 <span>per kg</span></p>
-                <div>
-                    <a href="" class="btn confirm">MOVE TO CART</a>
-                </div>
-                <p class="sub-total">₹<span>150</span></p>
-                
-            </div>
-
-        </figure> -->
-
         
     </div>
     <div class="right">
@@ -85,7 +67,9 @@
                     .then(data=> {
                         let parent = document.getElementById(`${this.dataset.id}`)
                         parent.parentNode.removeChild(parent);
-                        console.log(data)
+                        if(data.user.length == 0){
+                            window.location.reload();
+                        }
                     })
                     .catch(err=> console.log(err))
 

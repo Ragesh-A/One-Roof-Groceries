@@ -83,15 +83,20 @@
                           <h3 class="discount-price">-₹<%= orderDetails.subtotal - orderDetails.totalPrice.toFixed(2)%>
                           </h3>
                           <h4 class="total-due">TOTAL DUE</h4>
-                          <h3 class="total-due-price">₹ <%= orderDetails.totalPrice.toFixed(2) %> Rupees</h3>
+                          <h3 class="total-due-price" data-amount="<%= orderDetails.totalPrice.toFixed(2) %>"
+                            id="amount">₹ Rupees</h3>
                         </div>
                       </div>
                     </div>
               </div>
               <div class="flex">
-                <a href="/cart/buy/address" class="btn text-black border-top border-2" >cancel</a>
-                
-                  <a href="/cart/buy/order/confirm" class="btn place-order-btn" >confirm </a>
+                <a href="/cart/buy/address" class="btn text-black border-top border-2">cancel</a>
+
+                <% if(tOrder){%> 
+                <button class="btn place-order-btn" id="rzp-button" data-orderId="<%=tOrder.id %>">Pay</button>
+                <%}else{%>
+                <a href="/cart/buy/order/confirm" class="btn place-order-btn">confirm </a>
+                <%}%>
               </div>
             </div>
           </div>
@@ -99,24 +104,58 @@
       </div>
     </section>
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+      let amountId = document.getElementById("amount")
+      const rzpBtn = document.getElementById("rzp-button")
+      let amount = amountId.dataset.amount
+      amountId.innerText = `₹ ${amount} Rupees`
+
+      var orderId = rzpBtn.dataset.orderId;
+      
+      rzpBtn.onclick = function (e) {
+        var options = {
+          "key": "rzp_test_8emA6zzli6nGP1", // Enter the Key ID generated from the Dashboard
+          "amount": `${amount*100}`, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          "currency": "INR",
+          "name": "One Roof Groceries",
+          "description": "Order Transaction",
+          // "image": "https://example.com/your_logo",
+          "order_id":  orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+          "callback_url": "/cart/buy/order/confirm",
+          "theme": {
+        "color": "#78b144"
+    }
+        }
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+          
+          alert(response.error.description);
+          
+        });
+        rzp1.open();
+        e.preventDefault();
+      }
+
+      //creates new orderId everytime
+      fetch("/api/online-payment/verify",settings)
+      .then(res=> res.json())
+      .then(data=> {
+        console.log(data);
+        orderId = data.orderId;
+
+      })
+      .catch(err=> console.error(err));
 
 
+      // $.ajax(settings).done(function (response) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      //   orderId = response.orderId;
+      //   console.log(orderId);
+      //   $("button").show();
+      // });
+      
+    </script>
 
 </body>
 

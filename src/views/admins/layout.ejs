@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- <meta http-equiv="refresh" content="2"> -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
@@ -34,39 +33,148 @@
                         </ul>
                     </div>
                 </div>
+                <div style="margin-left: auto;" class="flex">
+                    <a class="add-btn confirm" id="add-banner-btn">
+                        <i class='bx bxs-plus-circle'></i>
+                        <span>Add banner</span>
+                    </a>
+                </div>
 
             </div>
             <div class="condtents">
 
-                <div class="slider-wrap">
-
-                    <div class="slider-image">
-                        <img src="/images/slideshow/home4-slideshow-1.jpg" alt="" width="100%">
-                        <button class="edit-icon confirm" style="top: 1rem;"><i class='bx bxs-pencil'></i></button>
+                <table class="table3 card"> 
+                    <div>
+                        <p class="server-response red">
+                            <%= err %>
+                        </p>
+                        <p class="server-response green">
+                            <%= success %>
+                        </p>
                     </div>
-                    <div class="slider-image">
-                        <img src="/images/slideshow/home4-slideshow-1.jpg" alt="" width="100%">
-                        <button class="edit-icon confirm" style="top: 1rem;"><i class='bx bxs-pencil'></i></button>
+                    <thead>
+                        <tr>
+                            <th>IMAGE</th>
+                            <th>NAME</th>
+                            <th class="table-hide">ACTION</th>
+                            <th class="table-hide">message</th>
+                            <th>select</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%bannerList.forEach(banner=>{%>
+                            <tr>
+                                <td>
+                                    <img src="/uploads/banner/<%=banner.imageName %>" alt="" class="table-image">
+                                </td>
+                                <td>
+                                    <%= banner.name %>
+                                </td>
+                                <td class="table-hide">
+                                    <%= banner.action %>
+                                </td>
+                                <td class="table-hide">
+                                    <%= banner.message %>
+                                </td>
+                                <td>
+                                    <a data-id="<%= banner._id %>" class="edit-btn">
+                                        <i class='bx bxs-edit-alt'></i>
+                                    </a>
+                                    <a href="/admin/banner/delete/<%=banner._id %>">
+                                        <i class='bx bxs-trash'></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <% })%>
+                    </tbody>
+                </table>
 
-                    </div>
-                    <div class="slider-image">
-                        <img src="/images/slideshow/home4-slideshow-1.jpg" alt="" width="100%">
-                        <button class="edit-icon confirm" style="top: 1rem;"><i class='bx bxs-pencil'></i></button>
 
-                    </div>
-                    <div class="slider-image">
-                        <img src="/images/slideshow/home4-slideshow-1.jpg" alt="" width="100%">
-                        <button class="edit-icon confirm" style="top: 1rem;"><i class='bx bxs-pencil'></i></button>
+                <section class="add-banner-sec card" id="add-banner-wrap">
+                    <form id="form" method="post" enctype="multipart/form-data">
+                        <div class="add-banner-header flex">
+                            <i class='bx bxs-image'></i>
+                            <p class="title">Create Banner</p>
+                        </div>
 
-                    </div>
+                        <div class="add-banner-body">
+                            <div class="left">
 
-                </div>
+                                <div class="add-banner-inp-wrap grid">
+                                    <label for="name" class="add-banner-label">Name :</label>
+                                    <input type="text" name="name" id="name" class="add-banner-inp">
+                                </div>
+                                <div class="add-banner-inp-wrap grid">
+                                    <label for="action" class="add-banner-label">Action path :</label>
+                                    <input type="text" name="action" id="action" class="add-banner-inp">
+                                </div>
+                                <div class="add-banner-inp-wrap grid">
+                                    <label for="message" class="add-banner-label">Message :</label>
+                                    <textarea type="text" name="message" id="message" class="add-banner-inp"></textarea>
+                                </div>
+
+                            </div>
+                            <div class="right">
+                                <div class="imge-preview-wrap">
+                                    <img src="" alt="">
+                                </div>
+                                <input type="file" name="image" id="image" accept="image/*">
+                            </div>
+                        </div>
+                        <div>
+                            <input class="update-btn" type="submit" value="ADD BANNER" id="submit-btn">
+                            <a id="cancel-btn" class="update-btn">cancel</a>
+
+                        </div>
+                    </form>
+                </section>
 
 
             </div>
 
         </main>
+        <script>
+            let addBtn = document.getElementById('add-banner-btn')
+            let addWrap = document.getElementById('add-banner-wrap')
+            let cancel = document.getElementById('cancel-btn')
+            let editBtns = document.querySelectorAll('.edit-btn')
+            let form = document.getElementById('form')
+            const nameinp = document.getElementById('name')   
+            const actioninp = document.getElementById('action')   
+            const messageinp = document.getElementById('message') 
+            const submit = document.getElementById('submit-btn')   
 
+            addBtn.onclick = function () {
+                addWrap.classList.toggle('active')
+                form.action = "/admin/banner"
+                submit.value = "Add banner"
+            }
+            cancel.onclick = function () {
+                addWrap.classList.toggle('active')
+                form.action = "/admin/banner"
+                submit.value = "Add banner"
+            }
+
+            for (let i = 0; i < editBtns.length; i++) {
+                editBtns[i].addEventListener('click', function () {
+                    addWrap.classList.toggle('active')
+                    let id = this.dataset.id
+                    form.action = `/admin/banner/update/${id}`;
+                    submit.value = "update banner"
+
+                    fetch(`/api/banner/${id}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            nameinp.value =  data.banner.name
+                            actioninp.value =  data.banner.action
+                            messageinp.value =  data.banner.message
+                        })
+                        .catch(err => console.log(err))
+                })
+            }
+
+
+        </script>
         <script src="https://kit.fontawesome.com/6819033383.js" crossorigin="anonymous"></script>
         <script src="/js/main.js"></script>
 

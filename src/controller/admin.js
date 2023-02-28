@@ -7,16 +7,11 @@ const renderAdminPage = async (req, res) => {
 };
 
 const renderSalesPage = async (req, res) => {
-  console.log(req.delivered);
-  res.render('admins/totalSales', { user: req.user, page: 'sales', delivered : req.delivered });
+  res.render('admins/totalSales', { user: req.user, page: 'sales', delivered : req.totalSales, err: req.flash('err') });
 };
 
 const renderExpensesPage = async (req, res) => {
   res.render('admins/totalExpenses', { user: req.user, page: 'expenses' });
-};
-
-const renderLayout = async (req, res) => {
-  res.render('admins/layout', { user: req.user, page: 'layouts' });
 };
 
 const renderAddEmployess = async (req, res) => {
@@ -90,11 +85,12 @@ const renderEditProduct = async (req, res) => {
 };
 
 const renderMangerDashboard = async (req, res) => {
-  res.render('managers/index', { user: req.user, page: 'dashboard' });
+  res.render('managers/index', { user: req.user, page: 'dashboard'});
 };
 
 const renderSupportDashboard = async (req, res) => {
-  res.render('supportive/index', { user: req.user, page: 'dashboard' });
+    
+    res.render('supportive/index', { user: req.user, page: 'dashboard',usersList: req.usersList,  });
 };
 
 const renderUsermanagement = async (req, res) => {
@@ -112,7 +108,6 @@ module.exports = {
   renderOrdersPage,
   renderViewOrder,
   renderEditOrder,
-  renderLayout,
   renderAddEmployess,
   renderEditEmployeePage,
   renderMesssagePage,

@@ -25,16 +25,14 @@
             <div id="carouselExampleIndicators" class="carousel slide carousel-fade mt-2" data-bs-ride="carousel">
 
                 <div class="carousel-inner">
+                    <% bannerList.forEach(banner=>{ %> 
                     <div class="carousel-item  active" data-bs-interval="2000">
-                        <img src="/images/slideshow/home4-slideshow-1.jpg" class="d-block w-100" alt="...">
+                        <a href="<%=banner.action %>">
+                            <img src="/uploads/banner/<%= banner.imageName %>" class="d-block w-100" alt="...">
+                        </a>
                     </div>
-                    <div class="carousel-item  active" data-bs-interval="2000">
-                        <img src="/images/slideshow/home4-slideshow-2.jpg" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item  active" data-bs-interval="2000">
-                        <img src="/images/slideshow/home4-slideshow-3.jpg" class="d-block w-100" alt="...">
-                    </div>
-
+                    <%})%>
+                    
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide="prev">
@@ -96,6 +94,9 @@
                                                 <a class="stock-out-btn flex">
                                                     <p>OUT OF STOCK</p>
                                                 </a>
+                                                <div>
+                                                    
+                                                </div>
                                             </div>
                                             <%}%>
                                     </div>
@@ -106,7 +107,9 @@
 
             </section>
 
-
+<div class="p-3">
+   
+</div>
 
 
 
@@ -120,6 +123,7 @@
 
             for(let i = 0; i < wishlistBtn.length; i++){
                 wishlistBtn[i].addEventListener('click', function(e){
+                    // this.children[0].style.color = '#78b144'
                     fetch(`/api/wishlist/${this.dataset.id}`,{
                         method: 'put',
                     })

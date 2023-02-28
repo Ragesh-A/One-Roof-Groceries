@@ -6,6 +6,7 @@ const fs = require('fs');
 const profileDestination = path.join(__dirname, '../public/uploads/profiles');
 const categoryDestination = path.join(__dirname, '../public/uploads/category');
 let productDestination = path.join(__dirname, '../public/uploads/product');
+const bannerDestination = path.join(__dirname,'../public/uploads/banner');
 
 const profileImageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -48,6 +49,17 @@ const poductImageUpadate = multer.diskStorage({
   },
 });
 
+//BANNER STORAGE
+const BannerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, bannerDestination);
+  },
+  filename: (req, file, cb)=>{
+    cb(null, `${Date.now()}-${file.originalname}`)
+  }
+});
+
+const uploadBanner = multer({storage: BannerStorage})
 const uploadProfileImage = multer({ storage: profileImageStorage });
 const uploadCategoryImage = multer({ storage: categoryImageStorage });
 const uploadProductImage = multer({
@@ -55,6 +67,8 @@ const uploadProductImage = multer({
   limits: { files: 5 },
 });
 
+
+//PROFILE IMAGE RESIZER
 const resizeImage = (req, res, next) => {
   if (!req.file) return next();
 
@@ -74,6 +88,7 @@ const resizeImage = (req, res, next) => {
     });
 };
 
+//PRODUCT IMAGE VALISATION AND CROPPING
 const resizeProductImage = (req, res, next) => {
   if (!req.files){
     req.flash('err', 'connot set images ');
@@ -88,12 +103,33 @@ const resizeProductImage = (req, res, next) => {
   })
   next();
 };
+//BANNER VALIDATIONS AND CROPPING
+const resizebanner = (req, res, next)=>{
+  if(req.file == undefined){
+    req.flash('err', "image is required")
+    return res.redirect('/admin/layouts')
+  }
+  
+  let fileBuffer = fs.readFileSync(req.file.path)
+  sharp(fileBuffer)
+  .resize(1570, 700)
+  .toFile(req.file.path, (err, file)=>{
+    if(file) return next()
+    if(err){
+      req.flash('err', "error while resizing the image")
+      res.redirect('/admin/layouts')
+    }
+  })
+}
+
 
 module.exports = {
   
   uploadProfileImage,
   uploadCategoryImage,
   uploadProductImage,
+  uploadBanner,
   resizeImage,
   resizeProductImage,
+  resizebanner,
 };

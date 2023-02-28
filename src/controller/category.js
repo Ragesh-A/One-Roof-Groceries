@@ -63,7 +63,7 @@ const createCategory = (req, res) => {
 
 const getCategories = async (req, res, next) => {
    try {
-      let categoryList = await Category.find({});
+      let categoryList = await Category.find({}).sort({name: 1});
       req.categoryList = categoryList;
    } catch (error) {
       console.log(error);

@@ -1,47 +1,60 @@
-const Product = require("../models/productSchema");
+const Product = require('../models/productSchema');
 
-const searchProduct = async(req, res, next) => {
-  
-  let search = req.query.search
+const searchProduct = async (req, res, next) => {
+  let searchq = req.query.q ? req.query.q : '';
+  let page = req.query.page ? parseInt(req.query.page) : 1;
+  let limit = req.query.limit < 20 ? parseInt(req.query.limit) : 20;
+  let category = req.query.category || '';
+  let max = req.query.max || 5000;
+  let min = req.query.min || 0;
+
+  let price = { $gt: min, $lt: max };
+  let search = { $regex: searchq, $options: 'i' };
+  let result = [];
+  let pages = 0
   try {
-    const result = await Product.find(
-      { $or : [{productInfo: {$regex : search, $options: 'i'}},{name: {$regex : search, $options: 'i'}}]}
-    )
+    //IF CTEFORY NOT SPECIFIED
+    if (category == '') {
+      result = await Product.find({
+        $or: [{ productInfo: search }, { name: search }],
+        price: price,
+      })
+        .skip((page - 1) * 20)
+        .limit(limit);
+       //GET TOTAL LEGTH OF PRODUCT
+        pages = await Product.find({
+          $or: [{ productInfo: search }, { name: search }],
+          price: price,
+        }).count();
+        pages = pages/20
+    }
+    //IF CATEGORY SPECIFIED
+    if (category != '') {
+      result = await Product.find({
+        $or: [{ productInfo: search }, { name: search }],
+        price: price,
+        category: category,
+      })
+        .skip((page - 1) * 20)
+        .limit(limit);
+       //GET TOTAL LEGTH OF PRODUCT
+        pages = await Product.find({
+          $or: [{ productInfo: search }, { name: search }],
+          price: price, category: category,
+        }).count();
+        pages = pages/20
+    }
+   
+    result.pages = pages <1 ? 1 : pages;
     req.productList = result;
     next();
-  
-  
   } catch (error) {
-    req.flash('err', error.message)
-    res.redirect('/err')
+    console.log(error.message);
+    
+    req.productList = [];
+    next();
   }
-
-
-
-
-
-
-
-
-
-
-//   Product.find({name: {
-//     $regex: req.body.search, $options: 'i'
-//   }}).exec((err, productList) => {
-//     if (err) {
-//       return res.status(500).json({
-//         error: err
-//       })
-//     }if (productList){
-//       console.log(productList);
-//       req.productList = productList;
-//       next();
-//     }
-//     else{
-//       res.send("no result")
-//     }
-//   })
-}
+};
 
 module.exports = {
   searchProduct,

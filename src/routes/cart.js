@@ -5,6 +5,8 @@ const order = require('../controller/order');
 const product = require('../controller/product');
 const { getUser } = require('../controller/user');
 const user = require('../controller/user');
+const payment = require('../controller/razorpay');
+               
 const router = express.Router();
 
 //LOGINED USER CART
@@ -51,6 +53,7 @@ router.post(
   userAuth.requireSignin,
   user.getWallet,
   order.createOrdersession,
+  payment.createOnlineOrder,
   cart.renderOrderConfirm
 );
 
@@ -58,6 +61,15 @@ router.get(
   '/buy/order/confirm',
   userAuth.requireSignin,
   product.latestProducts,
+  payment.verifyOfflinePayment,
+  order.createOrder,
+  product.reduceStock
+);
+router.post(
+  '/buy/order/confirm',
+  userAuth.requireSignin,
+  product.latestProducts,
+  payment.verifyOnlinePayment,
   order.createOrder,
   product.reduceStock
 );

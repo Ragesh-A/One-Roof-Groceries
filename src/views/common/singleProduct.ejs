@@ -35,19 +35,19 @@
                                 <div class="multiple-img-wrap flex">
                                     <div class="multiple-images">
                                         <img src="/uploads/product/<%= product.category %>/<% if(product.productPictures.length > 1){%><%= product.productPictures[1].img %><%}else{%><%= product.productPictures[0].img %><%}%>"
-                                            alt="" class="p-1">
+                                            alt="" class="p-1 images-swicth">
                                     </div>
                                     <div class="multiple-images">
                                         <img src="/uploads/product/<%= product.category %>/<% if(product.productPictures.length > 2){%><%= product.productPictures[2].img %><%}else{%><%= product.productPictures[0].img %><%}%>"
-                                            alt="" class="p-1">
+                                            alt="" class="p-1 images-swicth">
                                     </div>
                                     <div class="multiple-images">
                                         <img src="/uploads/product/<%= product.category %>/<% if(product.productPictures.length > 3){%><%= product.productPictures[3].img %><%}else{%><%= product.productPictures[0].img %><%}%>"
-                                            alt="" class="p-1">
+                                            alt="" class="p-1 images-swicth">
                                     </div>
                                     <div class="multiple-images">
                                         <img src="/uploads/product/<%= product.category %>/<% if(product.productPictures.length > 4){%><%= product.productPictures[4].img %><%}else{%><%= product.productPictures[0].img %><%}%>"
-                                            alt="" class="p-1">
+                                            alt="" class="p-1 images-swicth">
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                         <br><br>
                         <div class="product-selection-wrap">
                             <div class="btn-wrap">
-                                <a href="" class="add-to-cart-btn">Add To Wish</a>
+                                <a data-id="<%=product._id %>" class="add-to-cart-btn" id="wishlist-btn">Add To Wish</a>
                             </div>
                             <div>
                                 <div class="price-wrap flex">
@@ -175,8 +175,9 @@
             const productImage = document.getElementById('productImage');
             let test = document.getElementById('testing');
             const productSectionWrap = document.getElementById('product-section-wrap');
+            const imagesSwitch = document.querySelectorAll('.images-swicth')
 
-            //IMAGE ZOON
+            //IMAGE ZOOm
             imagWrap.addEventListener('mousemove', (e) => {
                 const x = e.clientX - e.target.offsetLeft;
                 const y = e.clientY - e.target.offsetTop;
@@ -212,6 +213,32 @@
                 const newPage = document.querySelector(`.page[data-page="${page}"]`);
                 newPage.classList.add('active');
             }
+
+            // ADD TO WISHLIST
+            let wishlistBtn = document.getElementById('wishlist-btn')
+
+
+
+            
+                wishlistBtn.addEventListener('click', function(e){
+                    fetch(`/api/wishlist/${this.dataset.id}`,{
+                        method: 'put',
+                    })
+                    .then(res=> res.json())
+                    .then(data=> console.log(data))
+                    .catch(err=> console.log(err))
+                })
+
+            //IMAGE SWITCHER 
+            // imagesSwitch.forEach(image=>{
+            //     image.addEventListener('click', function(e){
+            //         let tmp = this.src;
+            //         this.src = productImage.src;
+            //         productImage.src = tmp
+            //     });
+            // })
+            // productImage.src = 
+            
 
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

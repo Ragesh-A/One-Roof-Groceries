@@ -171,7 +171,7 @@
                     runOtpTimer();
                     //resend otp
                     resendOtpBtn.onclick = () => {
-                        runOtpTimer
+                        runOtpTimer()
                         getOtpMessage();
                     }
                     //send otp
@@ -212,6 +212,7 @@
         }
         //SEND AN OTP
         function getOtpMessage() {
+            runOtpTimer()
             fetch('/api/getOtp', {
                 method: "post",
                 headers: {
@@ -225,12 +226,19 @@
             .then(res => res.json())
             .then(data => {
                 alertBox.style.display = 'flex'
+                alertBox.style.backgroundColor = '#00ff2f27'
+                alertBox.style.borderColor = 'green'
                 alertmessage.innerText = data.message
-                alertmessage.style.color = 'red'
+                alertmessage.style.color = 'green'
+                closeBtn.style.color = 'green'
+                setTimeout(()=>{
+                    alertBox.style.display = 'none'
+                }, 3000)
             })
             .catch(err => console.log(err))
         }
         function runOtpTimer() {
+            resendOtpBtn.style.display = 'none'
             let timer = 20
             let otpTimer = setInterval(() => {
                 otpTimerScreen.style.display = 'flex'

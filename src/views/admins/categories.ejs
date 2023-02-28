@@ -63,7 +63,7 @@
                                 <tr style="font-weight: 800; background-color: var(--blue); color: var(--white);">
                                     <th>Image</th>
                                     <th>Name</th>
-                                    <th>Description</th>
+                                    <th class="table-hide">Description</th>
                                     <th>Select</th>
                                 </tr>
                             </thead>
@@ -76,7 +76,7 @@
                                         <td>
                                             <%= category.name %>
                                         </td>
-                                        <td>
+                                        <td class="table-hide">
                                             <%= category.description %>
                                         </td>
                                         <td><a href="/admin/category/edit/<%= category._id %>"

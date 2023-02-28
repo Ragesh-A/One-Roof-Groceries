@@ -1,14 +1,16 @@
 const express = require('express');
-const router = express.Router();
 const userAuth = require('../commonMiddleware/index');
 const coupon = require('../controller/coupon');
 const admin = require('../controller/admin');
 const orders = require('../controller/order');
 const { dashboard } = require('../controller/fetch');
-const { uploadProfileImage } = require('../controller/imagehandler');
+const multer = require('../controller/imagehandler');
 const { getemployees, getOneUser } = require('../controller/test');
 const user = require('../controller/user');
 const product = require('../controller/product');
+const banner = require('../controller/banner');
+const report = require('../controller/reports');
+const router = express.Router();
 
 /*----------------- ROUTES ----------------*/
 const categoryRouter = require('./category');
@@ -35,10 +37,25 @@ router.get(
   '/sales',
   userAuth.requireSignin,
   userAuth.adminMiddleware,
-  orders.getAllDelivered,
+  orders.salesReport,
   admin.renderSalesPage
+); 
+//DOWNLOAD SALES REPORTS EXCEL
+router.get(
+  '/sales/download-xls',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  orders.salesReport,
+  report.downloadXls
 );
-
+//DOWNLOAD SALES REPORTS PDF
+router.get(
+  '/sales/download-pdf',
+  userAuth.requireSignin,
+  userAuth.adminMiddleware,
+  orders.salesReport,
+  report.downloadPdf
+);
 //EXPENSES REPORTS RENDER
 router.get(
   '/expenses',
@@ -83,7 +100,7 @@ router.post(
   '/add-employee',
   userAuth.requireSignin,
   userAuth.adminMiddleware,
-  uploadProfileImage.single('profilePicture'),
+  multer.uploadProfileImage.single('profilePicture'),
   user.addUser
 );
 
@@ -132,14 +149,6 @@ router.get(
   admin.renderMesssagePage
 );
 
-//RENDER LAYOUTS
-router.get(
-  '/layouts',
-  userAuth.requireSignin,
-  userAuth.adminMiddleware,
-  admin.renderLayout
-);
-
 //COUPONS
 router.get(
   '/coupon',
@@ -168,7 +177,38 @@ router.get(
   userAuth.adminMiddleware,
   coupon.deleteCoupon
 );
+
+//BANNER MANAGEMENT
+router.get(
+  '/layouts',
+  userAuth.requireSignin,
+  userAuth.managerMiddleware,
+  banner.getAllBanners,
+  banner.renderBannerPage
+);
+router.post(
+  '/banner',
+  userAuth.requireSignin,
+  userAuth.managerMiddleware,
+  multer.uploadBanner.single('image'),
+  multer.resizebanner,
+  banner.createBanner
+);
+// router.post('/banner', userAuth.requireSignin, userAuth.managerMiddleware,);
+router.put(
+  '/layouts/:id',
+  userAuth.requireSignin,
+  userAuth.managerMiddleware,
+  banner.updateBanner
+);
+router.get(
+  '/banner/delete/:id',
+  userAuth.requireSignin,
+  userAuth.managerMiddleware,
+  banner.deleteBanner
+);
 //CATEGORY ROUTER
 router.use('/category', categoryRouter);
+
 
 module.exports = router;

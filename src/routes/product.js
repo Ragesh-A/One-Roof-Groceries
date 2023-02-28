@@ -1,19 +1,8 @@
 const express = require('express');
-const { getProduct, relatedProducts, testSlugProduct } = require('../controller/product');
+const product = require('../controller/product');
 const router = express.Router();
 
-router.get('/:id', getProduct, relatedProducts, (req, res) => {
-  res.render('common/singleProduct', {
-    product: req.product,
-    relatedProducts: req.relatedProducts,
-  });
-});
-
-router.get('/test/:slug',testSlugProduct, relatedProducts, (req, res) => {
-  res.render('common/singleProduct', {
-    product: req.product,
-    relatedProducts: req.relatedProducts,
-  });
-});
+router.get('/:id', product.getProduct, product.relatedProducts, product.renderSingleProduct);
+router.get('/test/:slug',product.testSlugProduct, product.relatedProducts, product.renderSingleProduct);
 
 module.exports = router;

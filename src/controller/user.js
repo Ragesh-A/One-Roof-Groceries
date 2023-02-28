@@ -7,7 +7,8 @@ const getUser = async (req, res, next) => {
     if (!user) return res.redirect('/err');
     (req.result = user), next();
   } catch (error) {
-    console.log(error);
+    req, flash('err', error.message);
+    res.redirect('/err');
   }
 };
 
@@ -48,15 +49,17 @@ const updateProfile = async (req, res) => {
     name: req.body.name,
     phone: req.body.phone,
     email: req.body.email,
-    "address.0": [{
-      name: req.body.name,
-      phone: req.body.phone,
-      email: req.body.email,
-      district: req.body.district,
-      pincode: req.body.pincode,
-      city: req.body.city,
-      place: req.body.place,
-    }],
+    'address.0': [
+      {
+        name: req.body.name,
+        phone: req.body.phone,
+        email: req.body.email,
+        district: req.body.district,
+        pincode: req.body.pincode,
+        city: req.body.city,
+        place: req.body.place,
+      },
+    ],
   };
 
   if (req.file) {
@@ -112,83 +115,92 @@ const getAllUser = async (req, res, next) => {
     }
   });
 };
-
+//ADD NEW ADDRESS
 const newAddress = async (req, res) => {
   try {
-   let t = await User.findOne({_id : req.user._id})
+    let t = await User.findOne({ _id: req.user._id });
 
-   let user = await User.findOneAndUpdate(
+    let user = await User.findOneAndUpdate(
       { _id: req.user._id },
       { $push: { address: req.body } }
     );
-    if(!user){
-      req.flash('sucess', "new address not added")
-       return res.redirect('/cart/buy/address');
-      }
-      req.flash('success', "new address add sucessfully" )
+    if (!user) {
+      req.flash('sucess', 'new address not added');
+      return res.redirect('/cart/buy/address');
+    }
+    req.flash('success', 'new address add sucessfully');
     res.redirect('/cart/buy/address');
   } catch (error) {
-   console.log(error);
+    console.log(error);
   }
-
 };
 
-//GET WALLET 
+//GET WALLET
 const getWallet = async (req, res, next) => {
   try {
     let user = await User.findOne({ _id: req.user._id });
-    if (!user){
-      req.flash('err','wallect has issues');
-       return res.redirect('/err');
-      }
+    if (!user) {
+      req.flash('err', 'wallect has issues');
+      return res.redirect('/err');
+    }
     req.wallet = user.wallet;
     next();
   } catch (error) {
     console.log(error);
   }
 };
-
+//UPDATE WALLECT
 const updateWallet = async (req, res, next) => {
   try {
+    console.log(req.order.actuallAmount);
     const money = req.order.actuallAmount;
-    console.log('-------------------------------');
-    console.log('money will be increase' + money);
     const updatedWallet = await User.updateOne(
-    {_id: req.user._id},{$inc:{wallet: money}},{upsert: true}
-  );
-  if(!updatedWallet) {
-    req.flash('err', "wallect failed to update while cancel order")
-    return res.redirect('/err')
-  }
-  next();
+      { _id: req.user._id },
+      { $inc: { wallet: money } },
+      { upsert: true }
+    );
+    if (!updatedWallet) {
+      req.flash('err', 'wallect failed to update while cancel order');
+      return res.redirect('/err');
+    }
+    next();
   } catch (error) {
     req.flash('err', error.message);
-    res.redirect('/err')
+    res.redirect('/err');
   }
 };
-
+//reduce the wallect amount
 const reduceWallet = async (id, money) => {
-  
-  console.log(money);
+
   const updated = await User.updateOne(
-    {_id: id}, {$set: {wallet : money}}
-  )
-  console.log(updated);
-  if(!updated){
+    { _id: id },
+    { $set: { wallet: money } }
+  );
+
+  if (!updated) {
     return false;
   }
   return true;
-}
-
+};
 
 
 //============== RENDER PAGES ==================
-const renderWishlist = (req, res)=>{
-  res.render('common/wishlist',{items: req.wishlist})
-}
-
+const renderWishlist = (req, res) => {
+  res.render('common/wishlist', { items: req.wishlist });
+};
+const renderHome = async (req, res) => {
+  res.render('index', {
+    latestProducts: req.latestProducts,
+    page: 'home',
+    bannerList: req.bannerList,
+  });
+};
+const renderErr = async (req, res) => {
+  res.render('malfunction', { err: req.flash('err') });
+};
 
 module.exports = {
+  renderHome,
   getUser,
   addUser,
   updateProfile,
@@ -200,4 +212,5 @@ module.exports = {
   reduceWallet,
   updateWallet,
   renderWishlist,
+  renderErr,
 };

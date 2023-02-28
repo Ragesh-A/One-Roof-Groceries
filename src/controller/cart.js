@@ -7,7 +7,6 @@ const addToCart = async (req, res) => {
     if (err) return res.send(err);
     if (cart) {
       //if cart is already existing
-      console.log('cart exist');
       const item = cart.Items.find((c) => c.product.equals(req.product._id));
       if (item) {
         Cart.findOneAndUpdate(
@@ -78,13 +77,11 @@ const getCart = async (req, res, next) => {
       },
     })
     .exec((err, cart) => {
-      if (err) console.log(err);
+      if (err) return res.redirect('/');
       if (cart) {
         req.cart = cart;
-        // res.render('common/cart', { cartList: cart });
       } else {
         req.cart = false;
-        // res.render('common/cart', { cartList: false });
       }
       next();
     });
@@ -92,6 +89,8 @@ const getCart = async (req, res, next) => {
 
 //UPDATE CART
 const updateCart = async (req, res) => {
+  let message = 'updated';
+  let cart;
   try {
     let action = 0;
     req.body.action === 'inc'
@@ -109,23 +108,31 @@ const updateCart = async (req, res) => {
 
     //IF QUALTITY IS ZERO DELETE PRODUCT
     if (action == -1) {
-      userCart.Items.forEach(async (item) => {
+      for(let item of userCart.Items) {
         if (item.quantity == 0) {
-          await Cart.findOneAndUpdate(
+          cart = await Cart.findOneAndUpdate(
             { user: req.user._id },
             { $pull: { Items: { quantity: 0 } } },
             { new: true }
-          ).then((result) => {
-            if (result.Items.length == 0) {
-              deleteCart(result.user);
+          );
+          console.log("io");
+          if (cart) {
+            if (cart.Items.length == 0) {
+              deleteCart(cart.user);
+              message = 'cart deleted';
+              console.log("ko");
             }
-          });
+          }
         }
-      });
+      };
+      console.log('sente');
+      return res.json({ message });
     }
-    res.json({ message: 'cart updated' });
+    console.log('got');
+    res.json({ message });
   } catch (error) {
-    res.json({ message: 'error' });
+    console.log('here');
+    res.json({ message: error.message });
   }
 };
 
@@ -133,6 +140,7 @@ const updateCart = async (req, res) => {
 async function deleteCart(user) {
   await Cart.findOneAndDelete({ user: user }).catch((err) => {
     console.log(err);
+    return;
   });
 }
 
@@ -173,7 +181,6 @@ const getCartAmount = (req, res, next) => {
     const userCart = req.cart;
     let totalAmount = 0;
 
-    // console.log(userCart);
     userCart.Items.forEach((item) => {
       totalAmount +=
         item.product.price * item.quantity -
@@ -203,43 +210,53 @@ const addToWishlist = async (req, res) => {
         { new: true }
       );
 
-      res.json({user})
-    }else{
+      res.json({ user: user.wishlist });
+    } else {
       let user = await User.findOneAndUpdate(
         { _id: userId },
         { $push: { wishlist: productId } },
         { new: true }
       );
-      res.json({user})
+      res.json({user: user.wishlist });
     }
   } catch (error) {
-    req.json({'err': error.message});
-   
+    res.json({ err: error.message });
   }
 };
 
-//GET USER WISHLIST 
+//GET USER WISHLIST
 const getWishlist = async (req, res, next) => {
   const userId = req.user._id;
 
   try {
-    
-   const user = await User.findOne({_id: userId}).populate("wishlist");
-   if(!user){
-    req.flash('err','user not found')
-    return res.redirect('/err-')
-   }
+    const user = await User.findOne({ _id: userId }).populate('wishlist');
+    if (!user) {
+      req.flash('err', 'user not found');
+      return res.redirect('/err-');
+    }
 
-   req.wishlist = user.wishlist
-   next();
-
+    req.wishlist = user.wishlist;
+    next();
   } catch (error) {
-    req.flash('err','user not found')
-    return res.redirect('/err')
+    req.flash('err', 'user not found');
+    return res.redirect('/err');
   }
+};
+
+const cartCount = async (req, res, next) =>{
+ try {
+  if(req.user){
+    const cart = await Cart.findOne({user :req.user._id})
+  
+    console.log(cart)
+  }
+  req.cartCount = 0
+  next()
+  
+ } catch (error) {
+  console.log(error);
+ }
 }
-
-
 
 /*============== RENDER PAGES ============*/
 const renderCart = (req, res) => {
@@ -254,11 +271,15 @@ const renderConfirmPurchase = (req, res) => {
   });
 };
 const renderOrderConfirm = async (req, res) => {
-  res.render('common/order-confirm', { orderDetails: req.session.userOrder });
+  res.render('common/order-confirm', {
+    orderDetails: req.session.userOrder,
+    tOrder: req.tOrder,
+  });
 };
 //============================================================================
 
 module.exports = {
+  cartCount,
   renderCart,
   checkout,
   updateCart,
@@ -271,5 +292,5 @@ module.exports = {
   renderConfirmPurchase,
   // cancelOrder
   getWishlist,
-  addToWishlist
+  addToWishlist,
 };

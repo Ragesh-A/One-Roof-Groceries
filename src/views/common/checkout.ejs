@@ -81,10 +81,14 @@
           <p class="title"><i class='bx bxl-gmail me-1' ></i>Email</p>
           <p class="value"><%= address.email %></p>
         </div>
-        <div class="hover-green">
-          <i class='bx bx-check-double me-1' ></i>
-          <input type="button" value="Select" class="bg-transparent
-          border-0 hover-green selection-btn" id="<%= address._id %>-btn">
+        
+        <div>
+          <div class="hover-green">
+            <i class='bx bx-check-double me-1' ></i>
+            <input type="button" value="Select" class="bg-transparent
+            border-0 hover-green selection-btn" id="<%= address._id %>-btn">
+          </div>
+          <a class="delete-addr" data-addrId="<%=address._id%>" ><i class='bx bxs-trash-alt'></i></a>
         </div>
       </div>
       <% }) %>
@@ -251,6 +255,7 @@
     let couponCode = document.getElementById('c-code');
     let cBtn = document.getElementById('c-btn');
     let response = document.getElementById('server-res')
+    let deleteAddr = document.querySelectorAll('.delete-addr')
 
     //MESSAGE WRAPPER
     messageWrap.style.display = 'none';
@@ -385,6 +390,25 @@
     }
 
     let url = '/cart/buy/thankyou'
+
+    //DELETE ADRESS 
+    for (let i = 0; i < deleteAddr.length; i++) {
+      deleteAddr[i].onclick = function(){
+        
+        let id = this.dataset.addrid
+        fetch(`/api/delete-address/${id}`)
+        .then(res=>{res.json()})
+        .then((data)=>{
+          addrSlide.classList.remove('active');
+          window.location.reload();
+          console.log(data);
+        }).catch(err=>{
+          console.log(err);
+        })
+      }
+      
+    }
+
 
   </script>
   <%- include('../includes/homebottom') %>

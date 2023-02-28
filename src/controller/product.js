@@ -101,12 +101,12 @@ exports.deleteProduct = async (req, res) => {
 exports.getProduct = async (req, res, next) => {
   try {
     Product.findOne({ _id: req.params.id }).exec((err, data) => {
-      if (err) return console.log(err);
+      if (err) return res.redirect('/');
       req.product = data;
       next();
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    
   }
 };
 
@@ -177,10 +177,10 @@ exports.relatedProducts = async (req, res, next) => {
 exports.categoryWiseProduct = async (req, res, next) => {
   Product.find({ category: req.query.q }).exec((err, productsList) => {
     if (err) {
-      res.redirect('/err');
+      req.productsList =[]
     }
     if (productsList) {
-      req.productsList = productsList;
+      req.productList = productsList;
     }
     next();
   });
@@ -196,16 +196,16 @@ exports.reduceStock = async (req, res) => {
       { $inc: { stock: -Math.abs(product.quantity) } },
       { new: true }
     );
-    console.log(reduced);
+    
   });
 };
 
 //LOW STOCK PRODUCT
 exports.checkStock = async (req, res, next) => {
   const lowStock = await Product.find({ stock: { $lte: 10 } });
-  if (!lowStock) return console.log('somrthong stock');
+  if (!lowStock) return console.log('somrthing stock');
 
-  request.lowStock = lowStock;
+  req.lowStock = lowStock;
   next();
 };
 
@@ -238,7 +238,7 @@ exports.stockAvailability = async (req, res, next) => {
 exports.restoreStock = async (req, res, next) => {
   const userOrder = req.order.products;
   let err = "";
-  console.log(userOrder);
+  
   try {
     
     userOrder.forEach(async (product) => {
@@ -250,7 +250,7 @@ exports.restoreStock = async (req, res, next) => {
         req.flash('err', 'something went wrong while restoreing quantity')
         return res.redirect('/err')
       }
-      console.log(updated);
+      
     });
 
     next();
@@ -260,3 +260,20 @@ exports.restoreStock = async (req, res, next) => {
     return res.redirect('/err')
   }
 }
+
+exports.productsAndCount = async function (req, res, next){
+  const product = await Product.find({},{shortName: 1, stock: 1, _id:0})
+  if (!product) return res.json({product: []}) = [];
+  return res.json({product}) ;
+}
+
+exports.renderProducts = async function (req, res){
+  res.render('product',{products: req.productList, categoryList: req.categoryList})
+}
+exports.renderSingleProduct = async function (req, res){
+  res.render('common/singleProduct', {
+    product: req.product,
+    relatedProducts: req.relatedProducts,
+  });
+}
+

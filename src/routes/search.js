@@ -1,10 +1,8 @@
 const express = require("express");
-const { searchProduct } = require("../controller/search");
+const category = require("../controller/category");
+const product = require("../controller/product");
+const search = require("../controller/search");
 const router = express.Router();
 
-router.get('/',searchProduct, (req, res)=>{
-  res.render('product',{products: req.productList})
-});
-
-
+router.get('/',category.getCategories,search.searchProduct, product.renderProducts);
 module.exports = router;

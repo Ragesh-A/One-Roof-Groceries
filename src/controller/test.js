@@ -1,4 +1,3 @@
-const { response } = require('../app');
 const User = require('../models/userSchema');
 
 exports.getemployees = (req, res) => {
@@ -31,7 +30,7 @@ exports.getOneUser = (req, res, next) => {
     _id: req.params._id,
   }).exec((err, user) => {
     if (err) {
-      console.log(err);
+      req.user = {name : "no user found"};
     }
     if (user) {
       req.user = user;

@@ -29,38 +29,11 @@
                 <%}else{%>
                     <section id="productsPage">
 
-                        <!-- <aside class="filter-aside">
-                            <div class="filter-wrap">
-                                <div class="toggle-wrap">
-                                    <i class='bx bxs-arrow-from-left toggle' ></i>
-                                </div>
-                                <div class="filter-items">
-                                    <h5 class="fiter-name">CATEGORY</h5>
-                                    <ul>
-                                        <li class="category-item"><a href="&filter=text"><span>text</span><i class='bx bx-chevrons-right'></i></a></li>
-                                        <li class="category-item"><a href=""><span>text</span><i class='bx bx-chevrons-right'></i></a></li>
-                                        <li class="category-item"><a href=""><span>text</span><i class='bx bx-chevrons-right'></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="filter-items">
-                                    <h5 class="fiter-name">PRICE</h5>
-                                    <div class="filter-price-dispaly-wrap flex">
-                                        <label for="min">min</label>
-                                        <input type="number" name="min" id="min">
-                                    <label for="max">max</label>
-                                    <input type="number" name="max" id="max">
-                                    </div>
-                                    <div class="slider">
-                                        <div class="progres"></div>
-                                    </div>
-                                    <input type="range" name="price-range" id="price-range">
-                                </div>
-                            </div>
-                        </aside> -->
+                        
                         <div class="products-wrap">
                             <div>
-                                <p>The products are waiting for you</p>
-                                 <hr>
+                                <p style="font-family: monospace; font-weight: 800; color: green">The products are waiting for you</p>
+                                <hr>
                             </div>
                             <div class="products grid">
                                 <% products.forEach(product=>{ %>
@@ -71,6 +44,11 @@
                                                 <%= product.offer %>% off
                                             </span>
                                             <% } %>
+                                            <span class="wishlist-icon">
+                                                <a data-id="<%= product._id %>" class="wishlist-btn">
+                                                    <i class='bx bxs-heart' ></i>
+                                                </a>
+                                            </span>
                                                 <a href="product/<%= product._id %>">
                                                     <div class="img">
                                                         <img src="/uploads/product/<%= product.category %>/<%= product.productPictures[0].img %>"
@@ -103,22 +81,107 @@
                                                             <a class="stock-out-btn flex">
                                                                 <p>OUT OF STOCK</p>
                                                             </a>
+                                                            <div>
+                                                                
+                                                            </div>
                                                         </div>
                                                         <%}%>
                                                 </div>
-                                    </div>                                    
-                                <% }) %>
+                                    </div>
+                                    <% }) %>
                             </div>
+                        </div>
+
+                        <div>
+                            <% for(let i=0; i < products.pages ; i++) { %>
+                                <input type="button" class="pageBtn" value="<%= i+1 %>">
+                                <%}%>
                         </div>
 
                     </section>
                     <%} %>
+                    <!-- <aside class="filter-aside">
+                        <form id="filterform">
+                            <div class="filter-wrap">
+                                <div class="toggle-wrap">
+                                    <i class='bx bxs-arrow-from-left toggle'></i>
+                                </div>
+                                <div class="filter-items">
+                                    <h5 class="fiter-name">CATEGORY</h5>
+                                    <ul>
+                                        <% categoryList.forEach(category=>{%>
+                                            <li class="category-item">
+
+                                                <input type="radio" name="category" id="<%=category._id%>"
+                                                    class="category">
+                                                <label for="<%=category._id%>">
+                                                    <%=category.name%>
+                                                </label>
+                                                <i class='bx bx-chevrons-right'></i>
+
+                                            </li>
+                                            <%})%>
+                                    </ul>
+                                </div>
+                                <div class="filter-items">
+                                    <h5 class="fiter-name">PRICE</h5>
+                                    <div class="filter-price-dispaly-wrap flex">
+                                        <label for="min">min</label>
+                                        <input type="number" name="min" id="min">
+                                        <label for="max">max</label>
+                                        <input type="number" name="max" id="max">
+                                    </div>
+                                    <div class="slider">
+                                        <div class="progres"></div>
+                                    </div>
+                                    <input type="range" name="price-range" id="price-range">
+                                </div>
+                            </div>
+                        </form>
+                    </aside> -->
 
         </div>
         <script>
             let minDisplay = document.getElementById('min')
             let maxDisplay = document.getElementById('max')
-            let range
+            let range = ""
+            let page = 1
+            const searchForm = document.getElementById('search-form')
+            const searchBtn = document.getElementById('search-btn')
+            const searchInp = document.getElementById('search-inp')
+            let filter = document.getElementById('filterform')
+            let pageBtn = document.getElementById('pageBtn');
+              searchForm.addEventListener('submit', function(event) {
+             event.preventDefault()
+                console.log(searchInp.value);
+                console.log(searchInp, maxDisplay, minDisplay)
+                if (searchInp.value != '') {
+                    let max = maxDisplay.value
+                    let min = minDisplay.value
+                    console.log(max, min)
+                   
+                    location.href = `/search?q=${searchInp.value}&min=${min}&max=${max}&page=${page}&limit=${20}`
+                    
+                }
+            });
+
+        </script>
+        <script>
+            let wishlistBtn = document.querySelectorAll('.wishlist-btn')
+
+
+
+            for(let i = 0; i < wishlistBtn.length; i++){
+                wishlistBtn[i].addEventListener('click', function(e){
+                    // this.children[0].style.color = '#78b144'
+                    fetch(`/api/wishlist/${this.dataset.id}`,{
+                        method: 'put',
+                    })
+                    .then(res=> res.json())
+                    .then(data=> console.log(data))
+                    .catch(err=> console.log(err))
+                })
+            }
         </script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

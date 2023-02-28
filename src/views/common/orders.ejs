@@ -3,95 +3,120 @@
 
 
 
-  
-  
 
 
-<section class="my-orders-sec">
-  
-  <br><br><br>
-  <% if(orders == ''){%>
-    <h1>Empty</h1>
-  <%}else{%>
-  <h2 class="my-order-title">My Orders</h2>
-    <p class="server-response red"><%= err %></p>
-    <p class="server-response green"><%= success %></p>
-  <% orders.forEach((order, index)=>{%>
-  <div class="order-wrap " id="order-<%= index+1 %>">
-    <div class="order-wrap-head">
-      <div class="order-id-wrap">
-        <p>order<span>#<%= order._id %></span></p>
-      </div>
-      <p>Order placed <%= order.orderDate.toLocaleString() %></p>
-      <i class='bx bx-expand-vertical expand-btn' id="btn-<%= index+1 %>"></i>
-    </div>
-    <hr>
-    <div class="status-wrap">
-      <div>
-        <div class="status-icon">
-          <%if(order. status == 'confirmed'){%> 
-          <i class='bx bx-check'></i>
-          <%}else if( order. status == 'shipped' ){%>
-          <i class='bx bxs-truck'></i>
-          <%}else if( order. status == 'delivered' ){%>
-          <i class='bx bxs-package' ></i>
-          <%}else if( order. status == 'cancelled' ){%>
-          <i class='bx bx-x' ></i>
-          <%}%>
-        </div>
-        <p><%= order. status %></p>
-      </div>
-      <div>
-        <div class="product-delivery">
-          <p class="small-heading">DELIVERY EXP</p>
-          <p class="bolder-heading"><b> <%= order.expectedDeliveryDate %></b> </p>
-        </div>
-      </div>
-    </div>
-    <hr>
-    <div class="order-body-wrap">
-      <% order.products.forEach( product => {%>
-      <div class="product-row-wrap">
-        <div class="product wrap">
-          <p><%= product.name %></p>
-          <p class="small-heading">Qty :<%= product.quantity %></p>
-          <p><b>Rs: <%= product.price * product.quantity %></b> </p>
-        </div>
-      </div>
-      
-      <% }) %>
-    </div>
-    <hr>
-    <% if( order.status != 'cancelled' && order.status != 'returned'){%> 
-     <div class="order-footer">
-      <a class="cancel-order-btn">Cancel order</a>
-      <div class="order-cancel-conf-wrap active">
-        <a href=""></a>
-        <% if(order.status == 'delivered'){%>
-          <a href="/cart/order/return/<%=order._id %>">Return Order</a>
-          <%}else{%>
-        <a href="/cart/order/cancel/<%=order._id %>">Cancel Order</a>
-        <%} %>
-      </div>
-    </div>
-    <%}%>
 
-     
-  </div>
-  <%}) %>
-  <% } %>
-</section>
 
-<script>
-  let expandBtns = document.querySelectorAll('.expand-btn');
-  let orderBx = document.querySelectorAll('.order-wrap');
+  <section class="my-orders-sec">
 
-  for (let i = 0; i < expandBtns.length; i++) {
-    expandBtns[i].addEventListener('click', function(e){
-      let wrap = document.getElementById(`order-${this.id.split('-')[1]}`)
-      wrap.classList.toggle('active')
-    })
-  }
-</script>
+    <br><br><br>
+    <% if(orders=='' ){%>
+      <h1>Empty</h1>
+      <%}else{%>
+        <h2 class="my-order-title">My Orders</h2>
+        <p class="server-response red">
+          <%= err %>
+        </p>
+        <p class="server-response green">
+          <%= success %>
+        </p>
+        <% orders.forEach((order, index)=>{%>
+          <div class="order-wrap " id="order-<%= index+1 %>">
+            <div class="order-wrap-head">
+              <div class="order-id-wrap">
+                <% let color; if(order.status=='cancelled' || order.status=='returned' ){color='red' }else{color='green'
+                  }%>
+                  <p style="color: <%=color%>;">order<span>#<%= order._id %></span></p>
+              </div>
+              <p>Order placed <%= order.orderDate.toLocaleString() %>
+              </p>
+              <i class='bx bx-expand-vertical expand-btn' id="btn-<%= index+1 %>"></i>
+            </div>
+            <hr>
+            <div class="status-wrap">
+              <div>
+                <div class="status-icon">
+                  <%if(order. status=='confirmed' ){%>
+                    <i class='bx bx-check'></i>
+                    <%}else if( order. status=='shipped' ){%>
+                      <i class='bx bxs-truck'></i>
+                      <%}else if( order. status=='delivered' ){%>
+                        <i class='bx bxs-package'></i>
+                        <%}else if( order. status=='cancelled' ){%>
+                          <i class='bx bx-x'></i>
+                          <%}%>
+                </div>
+                <p>
+                  <%= order. status %>
+                </p>
+              </div>
+              <div>
+                <div class="product-delivery">
+                  <p class="small-heading">DELIVERY EXP</p>
+                  <p class="bolder-heading"><b>
+                      <%= order.expectedDeliveryDate %>
+                    </b> </p>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="order-body-wrap">
+              <% order.products.forEach( product=> {%>
+                <div class="product-row-wrap">
+                  <div class="product wrap">
+                    <p>
+                      <%= product.name %>
+                    </p>
+                    <p class="small-heading">Qty :<%= product.quantity %>
+                    </p>
+                    <p><b>Rs: <%= product.price * product.quantity - product.price * product.quantity * product.offer /
+                          100 %></b> </p>
+                  </div>
+                </div>
 
-<%- include('../includes/homebottom') %>
+
+                <% }) %>
+            </div>
+            <%  let date = new Date(order.deliveryDate);
+              let today = new Date() 
+              let df = today - date
+              
+            %>
+            <% let d=  Math.floor(df / (1000 * 60 * 60 * 24)); %>
+            <hr>
+            <% if( order.status !='cancelled' && order.status !='returned' ){%>
+              <div class="order-footer">
+                <a class="cancel-order-btn">Cancel order</a>
+                <div class="order-cancel-conf-wrap active">
+                  <a href=""></a>
+                  <% if(order.status=='delivered' ){%>
+                    <%if(d<=2){%>
+                    <a href="/cart/order/return/<%=order._id %>">Return Order</a>
+                    <%}%>
+                    <%}else{%>
+                      <a href="/cart/order/cancel/<%=order._id %>">Cancel Order</a>
+                      <%} %>
+                </div>
+              </div>
+              <%}%>
+
+
+          </div>
+          <%}) %>
+            <% } %>
+  </section>
+
+  <script>
+    let expandBtns = document.querySelectorAll('.expand-btn');
+    let orderBx = document.querySelectorAll('.order-wrap');
+
+    for (let i = 0; i < expandBtns.length; i++) {
+      expandBtns[i].addEventListener('click', function (e) {
+        let wrap = document.getElementById(`order-${this.id.split('-')[1]}`)
+        wrap.classList.toggle('active')
+      })
+    }
+    console.log(new Date());
+  </script>
+
+  <%- include('../includes/homebottom') %>

@@ -40,6 +40,22 @@ li a:hover {
 #confirm-wrap {
   display: none;
 }
+.download{
+  padding: .5rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between ;
+  font-size: 2rem;
+}
+.download-icon{
+  margin: 0 10px;
+  cursor: pointer;
+}
+.border{ 
+  margin-bottom: 10px;
+  border-bottom: 2px solid #7b7ba0;
+}
 /*----------*/
 .card {
   box-shadow: 0px 0px 20px rgb(1 41 112 / 10%);
@@ -295,8 +311,8 @@ form {
   gap: 1rem;
 }
 .report-cards {
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  column-gap: 10px;
 }
 @media (max-width: 768px) {
   .home {
@@ -435,10 +451,11 @@ form {
 }
 .price {
   justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
 }
-.price .productPage-field {
-  width: 100px;
-}
+
 
 /*-------- PROFILE CARD ------------*/
 
@@ -493,11 +510,7 @@ form {
   background-color: var(--blue);
   color: var(--white);
 }
-@media screen and (max-width: 350px) {
-  .profile-card {
-    grid-template-columns: 1fr;
-  }
-}
+
 /*---------------------- USER LIST ----------------------------*/
 #table_id {
   width: 100%;
@@ -759,7 +772,7 @@ form {
 }
 .cards-warp {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
 }
 .card2 {
@@ -825,11 +838,7 @@ form {
 .confirm-box .btn {
   margin: 0 10px;
 }
-@media screen and (max-width: 768px) {
-  .productEdit-page {
-    grid-template-columns: 1fr;
-  }
-}
+
 
 /*-------- COUPON ---------*/
 .condtents {
@@ -894,6 +903,20 @@ form {
   height: 35px;
   border-radius: 50%;
 }
+@media screen and (max-width: 768px) {
+  .productEdit-page {
+    grid-template-columns: 1fr;
+  }.preview-grid{
+    grid-template-columns: 1fr;
+  }
+  .profile-card {
+    grid-template-columns: 1fr;
+  }
+  #preview-side{
+    margin: 0;
+  }
+  
+}
 /*----------------TABLES ------------------------*/
 table{
 
@@ -936,6 +959,9 @@ table{
 .table2 td{
   padding: 5px 7px;
   text-align: center;
+}
+.table-image{
+  max-width: 75px;
 }
 @media  screen and (min-width: 768px){
   .table, .table th, .table td{
@@ -1106,4 +1132,68 @@ table{
   color: var(--metal);
   border-top-color: var(--metal);
   border-bottom-color: var(--metal);
+}
+
+/*========= BANNER MANAGEMENT ==========*/
+.add-banner-header{
+  font-size: 2rem;
+  align-items: center;
+  padding: .5rem 0;
+}
+.add-banner-header .title{
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.add-banner-body{
+  box-shadow: inset 0 0 10px rgb(1 41 112 / 10%);
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.add-banner-inp-wrap{
+ grid-template-columns: 1fr 2fr;
+ margin-bottom: 1rem;
+ align-items: center;
+}
+.add-banner-inp{
+  border: none;
+  border-bottom: 2px solid var(--primary-blue);
+  outline: none;
+  padding: .4rem;
+}
+.add-banner-body .right{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.imge-preview-wrap{
+  max-width: 16rem;
+  height: 8rem;
+  background-color: red;
+  margin: 1rem 0;
+}
+.add-banner-sec{
+  position: absolute;
+  width: 100%;
+  top: -50rem;
+  left: 0;
+  transition: .5s ease;
+}
+.add-banner-sec.active{
+  top: 0;
+}
+/* table3 */
+.table3{
+  text-align: center;
+}
+.table3 th{
+  background-color: var(--blue);
+  padding: .5rem;
+  border-radius: 5px;
+  color: var(--white);
+}
+.table3 td{
+  font-size: 14px;
+  padding: 5px 0 0;  
 }

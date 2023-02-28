@@ -47,17 +47,17 @@
         
 
         <li class="nav-item">
-            <a class="nav-link collapsed  <% if(page=='message'){ %>active <%} %>" href="/manager/message">
-                <i class='bx bxs-chat'></i>
-                <span>Messages</span>
+            <a class="nav-link collapsed  <% if(page=='message'){ %>active <%} %>" href="/manager/add-product">
+                <i class='bx bxs-up-arrow-square'></i>
+                <span>Add Product</span>
             </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link collapsed  <% if(page=='balancesheet'){ %>active <%} %>" href="/manager/balancesheet">
                 <i class='bx bxs-spreadsheet'></i>
                 <span>Balancesheet</span>
             </a>
-        </li>
+        </li> -->
         <% if(user.role == 'admin'){ %>
         <li class="nav-item">
             <a class="nav-link <% if(page=='dashboard'){ %>active <%} %>" href="/admin">
