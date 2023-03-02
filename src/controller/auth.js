@@ -1,8 +1,9 @@
 const User = require('../models/userSchema');
 const jwt = require('jsonwebtoken');
 const { create } = require('../models/userSchema');
-const { generateOtp } = require('./validators/otp');
+const mail = require('./validators/otp');
 const bcrypt = require('bcrypt');
+const { sendOtp } = require('./validators/otp');
 
 
 exports.signup = async (req, res) => {
@@ -18,7 +19,7 @@ exports.signup = async (req, res) => {
       req.session.message = 'user already registered';
       return res.redirect('/account/signup');
     }
-    let otp = await generateOtp(req.body.email);
+    let otp = await mail.sendOtp(req.body.email);
     req.body.otp = otp;
     console.log(otp);
     req.session.user = req.body;
@@ -97,19 +98,20 @@ exports.signin = async (req, res) => {
 // signout
 exports.signout = (req, res) => {
   res.clearCookie('Authorization').status(200).redirect('/');
+  req.session.destroy();
 };
 
 //change otp in database
 exports.updateOtp = async (req, res) => {
   User.findOne({ email: req.body.email }).exec((err, user) => {
     if (user) {
-      generateOtp(req.body.email).then((otp) => {
+      sendOtp(req.body.email).then((otp) => {
         console.log(otp);
         req.session.otp = otp;
         res.status(201).json({ message: 'otp send' });
       });
     } else {
-      res.status(400).json({ message: 'No user Found' });
+      res.status(200).json({ message: 'No user Found' });
     }
   });
 };

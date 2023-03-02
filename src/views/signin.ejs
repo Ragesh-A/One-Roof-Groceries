@@ -67,6 +67,7 @@
     </section>
 
     <script>
+
         let form = document.getElementById('form')
         let title = document.getElementById('title')
         let closeBtn = document.getElementById('close-btn')
@@ -83,7 +84,7 @@
         let cancelBtn = document.getElementById('cancel-btn')
         let linkswrap = document.getElementById('links-wrap')
         let formInputs = document.querySelectorAll('.form-input')
-
+        let otpDiv;
         //  BUTTON CREATION
         let otpTimerScreen = document.createElement('p')
         let resendOtpBtn = document.createElement('a')
@@ -92,7 +93,7 @@
         linkswrap.appendChild(resendOtpBtn)
         otpTimerScreen.style.display = 'none'
         resendOtpBtn.style.display = 'none'
-        
+
 
 
         var count = 0;
@@ -114,10 +115,10 @@
                     messageArray.push('password should be atleast 8 character')
                 }
             })
-            
+
             if (messageArray == '') {
                 formSubmit.type = 'submit'
-            }else{
+            } else {
                 sendMessage(messageArray);
             }
         }
@@ -131,6 +132,7 @@
             formSubmit.style.display = 'none'
             //Otp btn
             let otpBtn = document.createElement('input')
+
             otpBtn.setAttribute('type', "button")
             otpBtn.setAttribute('value', "get otp ")
             otpBtn.setAttribute('class', "btn confirm")
@@ -140,79 +142,28 @@
             forgotBtn.style.display = 'none'
             messageCount = 0
         }
-        // otp request
+        // get otp button clicked
         function requestOtp() {
             let emailInp = document.getElementById('email')
-            messageCount++
+            if (emailInp.value == '') {
+                alertBox.style.display = 'flex'
+                alertmessage.innerText = "email should be empty"
+                return;
+            }
+
             if (validateEmail(emailInp.value)) {
-
-                count++
-                if (count == 1) {
-                    //div creation
-                    let otpDiv = document.createElement('div')
-                    otpDiv.setAttribute('class', 'input-feild')
-                    otpDiv.setAttribute('id', 'otpWrap')
-                    //label creation
-                    let otpLabel = document.createElement('label')
-                    otpLabel.setAttribute('for', 'otp')
-                    otpLabel.innerHTML = "otp";
-                    //input feild
-                    let otpInput = document.createElement('input')
-                    otpInput.setAttribute('type', 'number')
-                    otpInput.setAttribute('name', 'otp')
-                    otpInput.setAttribute('id', 'otp')
-                    otpInput.setAttribute('class', 'form-input')
-                    //append
-                    inputContainer.appendChild(otpDiv)
-                    let otpContainer = document.getElementById('otpWrap')
-                    otpContainer.appendChild(otpLabel)
-                    otpContainer.appendChild(otpInput)
-                  
-                    runOtpTimer();
-                    //resend otp
-                    resendOtpBtn.onclick = () => {
-                        runOtpTimer()
-                        getOtpMessage();
-                    }
-                    //send otp
-                    getOtpMessage();
-
-                    let otpBtn = document.getElementById('otpRequestBtn')
-                    console.log(otpBtn)
-                    otpBtn.value = "submit"
-                    otpBtn.onclick = function () {
-                        let otpInp = document.getElementById('otp')
-                        console.log(otpInp.value);
-                        if (otpInp.value.length < 3) {
-                            alertBox.style.display = 'flex'
-                            alertmessage.innerText = 'Enter valid Otp'
-                            alertmessage.style.color = 'red'
-                        } else {
-
-                            otpBtn.type = 'submit'
-                        }
-                    }
-
-                } else {
-
-                }
+                getOtpMessage();
+            } else {
+                alertBox.style.display = 'flex'
+                alertmessage.innerText = "Enter a valid email"
             }
         }
 
-        //email validation
-        function validateEmail(email) {
-            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(String(email).toLowerCase());
-        }
-        //ERROR message
-        function sendMessage(message) {
-            alertBox.style.display = 'flex'
-            alertmessage.innerText = message[0]
-            console.log(message);
-        }
+
         //SEND AN OTP
+
         function getOtpMessage() {
-            runOtpTimer()
+
             fetch('/api/getOtp', {
                 method: "post",
                 headers: {
@@ -223,24 +174,88 @@
                 }),
                 credentials: "include",
             })
-            .then(res => res.json())
-            .then(data => {
-                alertBox.style.display = 'flex'
-                alertBox.style.backgroundColor = '#00ff2f27'
-                alertBox.style.borderColor = 'green'
-                alertmessage.innerText = data.message
-                alertmessage.style.color = 'green'
-                closeBtn.style.color = 'green'
-                setTimeout(()=>{
-                    alertBox.style.display = 'none'
-                }, 3000)
-            })
-            .catch(err => console.log(err))
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    alertBox.style.display = 'flex'
+
+                    alertmessage.innerText = data.message
+
+
+                    setTimeout(() => {
+                        alertBox.style.display = 'none'
+                    }, 3000)
+
+                    if (data.message == 'otp send') {
+                        /*------------------------------------------------------*/
+
+                        //div creation
+                        otpDiv = document.createElement('div')
+                        otpDiv.setAttribute('class', 'input-feild')
+                        otpDiv.setAttribute('id', 'otpWrap')
+                        //label creation
+                        let otpLabel = document.createElement('label')
+                        otpLabel.setAttribute('for', 'otp')
+                        otpLabel.innerHTML = "otp";
+                        //input feild
+                        let otpInput = document.createElement('input')
+                        otpInput.setAttribute('type', 'number')
+                        otpInput.setAttribute('name', 'otp')
+                        otpInput.setAttribute('id', 'otp')
+                        otpInput.setAttribute('class', 'form-input')
+
+                        alertBox.style.backgroundColor = '#00ff2f27'
+                        alertBox.style.borderColor = 'green'
+                        closeBtn.style.color = 'green'
+                        alertmessage.style.color = 'green'
+                        //append
+                        count++
+                        if (count == 1) {
+
+                            inputContainer.appendChild(otpDiv)
+                            let otpContainer = document.getElementById('otpWrap')
+                            otpContainer.appendChild(otpLabel)
+                            otpContainer.appendChild(otpInput)
+                        }
+
+                        runOtpTimer();
+                        //resend otp
+                        resendOtpBtn.onclick = () => {
+                            runOtpTimer()
+                            getOtpMessage();
+                        }
+                        //send otp
+                        let otpBtn = document.getElementById('otpRequestBtn')
+                        console.log(otpBtn)
+                        otpBtn.value = "submit"
+                        otpBtn.onclick = function () {
+                            let otpInp = document.getElementById('otp')
+                            console.log(otpInp.value);
+                            if (otpInp.value.length < 3) {
+                                alertBox.style.display = 'flex'
+                                alertmessage.innerText = 'Enter valid Otp'
+                                alertmessage.style.color = 'red'
+                            } else {
+                                otpBtn.type = 'submit'
+                            }
+                        }
+                        /*-------------------------------------------------------------*/
+                    }
+                })
+                .catch(err => console.log(err))
         }
+
+
+        //email validation
+        function validateEmail(email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+        // otp TIMER 
         function runOtpTimer() {
             resendOtpBtn.style.display = 'none'
             let timer = 20
-            let otpTimer = setInterval(() => {
+            var otpTimer = setInterval(() => {
                 otpTimerScreen.style.display = 'flex'
                 timer--
                 otpTimerScreen.innerText = `resent otp with in ${timer}`
@@ -248,16 +263,22 @@
 
             setTimeout(() => {
                 otpTimerScreen.style.display = 'none'
-                resendOtpBtn.innerText = 'resent otp'
+                resendOtpBtn.innerText = 'RESEND OTP'
                 resendOtpBtn.style.display = 'block'
                 clearInterval(otpTimer)
             }, 20000);
         }
 
-
+        //ERROR message
+        function sendMessage(message) {
+            alertBox.style.display = 'flex'
+            alertmessage.innerText = message[0]
+            console.log(message);
+        }
         closeBtn.addEventListener('click', () => {
             alertBox.style.display = 'none  '
         })
+
     </script>
 </body>
 
