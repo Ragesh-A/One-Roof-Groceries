@@ -44,7 +44,7 @@ app.get('*', (req, res) => res.render('404'));
 //DTABASE CONNECTION CODE
 function connectDataBase(){
   mongoose
-  .connect(process.env.NEW_DATABASE_URL)
+  .connect(process.env.DATABASE_URL)
   .then(() => {
     console.log("Atlas is connnected");
     app.listen(PORT, () => {
