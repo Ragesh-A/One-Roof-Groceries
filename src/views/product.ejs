@@ -49,7 +49,7 @@
                                                     <i class='bx bxs-heart' ></i>
                                                 </a>
                                             </span>
-                                                <a href="product/<%= product._id %>">
+                                                <a href="/product/<%= product._id %>">
                                                     <div class="img">
                                                         <img src="/uploads/product/<%= product.category %>/<%= product.productPictures[0].img %>"
                                                             alt="<%= product.name %> image">
@@ -92,11 +92,11 @@
                             </div>
                         </div>
 
-                        <div>
+                        <!-- <div>
                             <% for(let i=0; i < products.pages ; i++) { %>
                                 <input type="button" class="pageBtn" value="<%= i+1 %>">
                                 <%}%>
-                        </div>
+                        </div> -->
 
                     </section>
                     <%} %>
@@ -142,8 +142,8 @@
 
         </div>
         <script>
-            let minDisplay = document.getElementById('min')
-            let maxDisplay = document.getElementById('max')
+            let minDisplay = document.getElementById('min') || 0
+            let maxDisplay = document.getElementById('max') || 0
             let range = ""
             let page = 1
             const searchForm = document.getElementById('search-form')
@@ -156,8 +156,8 @@
                 console.log(searchInp.value);
                 console.log(searchInp, maxDisplay, minDisplay)
                 if (searchInp.value != '') {
-                    let max = maxDisplay.value
-                    let min = minDisplay.value
+                    let max = /*maxDisplay.value ||*/10000
+                    let min = /*minDisplay.value ||*/ 0
                     console.log(max, min)
                    
                     location.href = `/search?q=${searchInp.value}&min=${min}&max=${max}&page=${page}&limit=${20}`

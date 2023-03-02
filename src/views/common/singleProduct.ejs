@@ -229,14 +229,14 @@
                     .catch(err=> console.log(err))
                 })
 
-            //IMAGE SWITCHER 
-            // imagesSwitch.forEach(image=>{
-            //     image.addEventListener('click', function(e){
-            //         let tmp = this.src;
-            //         this.src = productImage.src;
-            //         productImage.src = tmp
-            //     });
-            // })
+            // IMAGE SWITCHER 
+            imagesSwitch.forEach(image=>{
+                image.addEventListener('click', function(e){
+                    let tmp = this.src;
+                    this.src = productImage.src;
+                    productImage.src = tmp
+                });
+            })
             // productImage.src = 
             
 
