@@ -9,6 +9,7 @@ exports.signup = async (req, res) => {
   try {
 
     if (req.message){
+      console.log(req.message);
       return res.render('signup', { message: req.message.err });
     } 
 
