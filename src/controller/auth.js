@@ -24,6 +24,7 @@ exports.signup = async (req, res) => {
     req.session.user = req.body;
     res.render('otp', { message: req.session.message });
   } catch (error) {
+    console.log(error);
     res.redirect('/account/signup');
   }
 };
