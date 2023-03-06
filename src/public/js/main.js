@@ -16,15 +16,7 @@ function timer(sec, redirect) {
     }
   }, sec);
 }
-//admin emplyee profile edit
-const toggleBtn = document.getElementById('toggle-btn');
-const sidebar = document.getElementById('sidebar');
-const main = document.getElementById('adminMain');
 
-toggleBtn.onclick = function () {
-  sidebar.classList.toggle('sidebar-active');
-  main.classList.toggle('sidebar-active');
-};
 window.onload = () => {
   const tabSwitchers = document.querySelectorAll('[data-switcher]');
   for (let i = 0; i < tabSwitchers.length; i++) {

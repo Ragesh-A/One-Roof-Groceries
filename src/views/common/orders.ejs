@@ -1,18 +1,14 @@
 <%- include('../includes/homehead') %>
-
-
-
-
-
-
-
-
+<%if (orders == ''){%>
+<section class="flex empty-cart">
+  <img src="/images/backgrounds/empty-order.gif" alt="cart is empty">
+  <hr>
+  <h2>------- Empty order -------</h2>
+</section>
+<%}else{ %>
   <section class="my-orders-sec">
 
-    <br><br><br>
-    <% if(orders=='' ){%>
-      <h1>Empty</h1>
-      <%}else{%>
+    <br>
         <h2 class="my-order-title">My Orders</h2>
         <p class="server-response red">
           <%= err %>

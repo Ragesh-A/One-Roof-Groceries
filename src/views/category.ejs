@@ -29,7 +29,7 @@
                
                 <% categories.forEach(category =>{ %>
 
-                <a href="/category/product?q=<%= category._id %>" class="child">
+                <a href="/search?page=1&limit=20&category=<%= category._id %>" class="child">
                     <div class="category-wrap flex">
                         <div class="image">
                             <img src="/uploads/category/<%= category.categoryImage %>" alt="">

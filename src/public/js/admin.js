@@ -45,3 +45,12 @@ function sendMessage(messages){
 confirmBoxCloseBtn.onclick = ()=>{
     confirmBox.style.display = 'none';
 }
+//admin emplyee profile edit
+const toggleBtn = document.getElementById('toggle-btn');
+const sidebar = document.getElementById('sidebar');
+const main = document.getElementById('adminMain');
+
+toggleBtn.onclick = function () {
+  sidebar.classList.toggle('sidebar-active');
+  main.classList.toggle('sidebar-active');
+};

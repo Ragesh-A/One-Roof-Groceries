@@ -268,7 +268,8 @@ exports.productsAndCount = async function (req, res, next){
 }
 
 exports.renderProducts = async function (req, res){
-  res.render('product',{products: req.productList, categoryList: req.categoryList})
+
+  res.render('product',{products: req.productList, categoryList: req.categoryList, url : req.pageUrl})
 }
 exports.renderSingleProduct = async function (req, res){
   res.render('common/singleProduct', {

@@ -123,7 +123,7 @@
 
             for(let i = 0; i < wishlistBtn.length; i++){
                 wishlistBtn[i].addEventListener('click', function(e){
-                    // this.children[0].style.color = '#78b144'
+                    this.children[0].style.color = '#78b144'
                     fetch(`/api/wishlist/${this.dataset.id}`,{
                         method: 'put',
                     })

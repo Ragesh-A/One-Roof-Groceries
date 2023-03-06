@@ -9,7 +9,7 @@
     <!-- <meta http-equiv="refresh" content="3"> -->
     <title>One Roof Groceries</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/css/style.css">
@@ -39,42 +39,44 @@
                             </div>
                         </div>
                         <div class="right">
-                            <div class="card my-3">
+
+                            <div class="card2 my-3">
+
                                 <div class="account-feild flex p-3">
                                     <label class="account-field-title" for="name">Name</label>
-                                    <input class="px-2 py-1 rounded border-1" type="text" name="name" id="name" value="<%= user.name %>" style="text-transform: capitalize;">
+                                    <input class="px-2 py-1 rounded border-1" type="text" name="name" id="name"
+                                        value="<%= user.name %>" style="text-transform: capitalize;">
+
                                 </div>
                                 <div class="account-feild flex p-3">
                                     <label class="account-field-title" for="phone">Phone no</label>
-                                    <input class="px-2 py-1 rounded border-1" type="number" name="phone" id="phone" value="<%= user.phone %>">
-                                </div>
-                                <div class="account-feild flex p-3">
-                                    <label class="account-field-title" for="email">Email</label>
-                                    <input class="px-2 py-1 rounded border-1" type="email" name="email" id="email" value="<%= user.email %>">
+                                    <input class="px-2 py-1 rounded border-1" type="number" name="phone" id="phone"
+                                        value="<%= user.phone %>">
                                 </div>
 
-                                <div class="account-feild flex p-3">
-                                    <label class="account-field-title" for="email">Address</label>
-                                    <div>
-                                        <br>
-                                        <div class="account-feild flex p-3">
-                                            <label class="account-field-title" for="district">District</label>
-                                            <input class="px-2 py-1 rounded border-1" type="text" name="district" id="district"
-                                                value="<%= user.address[0].district %>">
-                                        </div>
-                                        <div class="account-feild flex p-3">
-                                            <label class="account-field-title" for="pincode">pincode</label>
-                                            <input class="px-2 py-1 rounded border-1" type="text" name="pincode" id="pincode"
-                                                value="<%= user.address[0].pincode %>">
-                                        </div>
-                                        <div class="account-feild flex p-3">
-                                            <label class="account-field-title" for="city">city</label>
-                                            <input class="px-2 py-1 rounded border-1" type="text" name="city" id="city" value="<%= user.address[0].city %>">
-                                        </div>
-                                        <div class="account-feild flex p-3">
-                                            <label class="account-field-title" for="place">place</label>
-                                            <input class="px-2 py-1 rounded border-1" type="text" name="place" id="place" value="<%= user.address[0].city %>">
-                                        </div>
+
+                                <div class="account-feild p-3">
+                                    <label class="account-field-title mb-2" for="email">Address</label>
+                                    <div class="multiple-address">
+                                        <% user.address.forEach((addr,index)=>{%>
+                                            <div class="card p-3">
+                                                <p><B>City</B> : <%= addr.city%>
+                                                </p>
+                                                <p><B>Place</B> : <%= addr.place%>
+                                                </p>
+                                                <p><b>Phone</b> : <%= addr.phone%>
+                                                </p>
+                                                <p><b>District</b> : <%= addr.district%>
+                                                </p>
+                                                <%if(index != 0){%>
+                                                <div class="p-1 flex flex-row-reverse">
+
+                                                    <a class="delete-addr text-danger cursor-pointer"
+                                                        data-addrId="<%=addr._id%>"><i class='bx bxs-trash-alt'></i></a>
+                                                </div>
+                                                <%}%>
+                                            </div>
+                                            <%})%>
                                     </div>
                                 </div>
 
@@ -93,6 +95,7 @@
         <script>
             const selectBtn = document.getElementById('select-btn')
             const fileBtn = document.getElementById('profilePicture')
+            const deleteAddr = document.querySelectorAll('.delete-addr')
             fileBtn.addEventListener('change', function (event) {
                 const image = this.files[0]
                 const reader = new FileReader();
@@ -101,7 +104,24 @@
                 reader.onload = () => {
                     const imgUrl = reader.result
                 }
-         })
+            })
+
+            for (let i = 0; i < deleteAddr.length; i++) {
+                deleteAddr[i].onclick = function () {
+                    console.log("clicked");
+                    let id = this.dataset.addrid
+                    fetch(`/api/delete-address/${id}`)
+                        .then(res => { res.json() })
+                        .then((data) => {
+                            
+                            window.location.reload();
+                          
+                        }).catch(err => {
+                            console.log(err);
+                        })
+                }
+
+            }
         </script>
 
         <%- include('./includes/bottom.ejs') %>

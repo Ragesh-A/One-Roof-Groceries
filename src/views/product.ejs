@@ -32,7 +32,7 @@
                         
                         <div class="products-wrap">
                             <div>
-                                <p style="font-family: monospace; font-weight: 800; color: green">The products are waiting for you</p>
+                                <p style="font-family: monospace; font-weight: 800; color: green flex"><i class='bx bxs-arrow-from-left 'id="expand-filter"></i>The products are waiting for you</p>
                                 <hr>
                             </div>
                             <div class="products grid">
@@ -92,16 +92,18 @@
                             </div>
                         </div>
 
-                        <!-- <div>
+                        <div class="p-2 flex align-center justify-content-center">
+                            
                             <% for(let i=0; i < products.pages ; i++) { %>
-                                <input type="button" class="pageBtn" value="<%= i+1 %>">
-                                <%}%>
-                        </div> -->
+                                <a href="<%=url%>&page=<%=i+1%>" class="pageBtn px-3 py-2"><%= i+1 %></a>
+                            <%}%>
+                        </div>
 
                     </section>
                     <%} %>
-                    <!-- <aside class="filter-aside">
-                        <form id="filterform">
+                    
+                    <aside id="filter-panel" class="filter-aside">
+                        <form id="filterform"filter-aside>
                             <div class="filter-wrap">
                                 <div class="toggle-wrap">
                                     <i class='bx bxs-arrow-from-left toggle'></i>
@@ -111,14 +113,13 @@
                                     <ul>
                                         <% categoryList.forEach(category=>{%>
                                             <li class="category-item">
-
-                                                <input type="radio" name="category" id="<%=category._id%>"
-                                                    class="category">
+                                                <a href="<%= %>q=<%= category._id %>">
+                                                
                                                 <label for="<%=category._id%>">
                                                     <%=category.name%>
                                                 </label>
                                                 <i class='bx bx-chevrons-right'></i>
-
+                                            </a>
                                             </li>
                                             <%})%>
                                     </ul>
@@ -138,10 +139,14 @@
                                 </div>
                             </div>
                         </form>
-                    </aside> -->
+                    </aside>
 
         </div>
         <script>
+            const productWrap = document.querySelector('.products-wrap')
+            const filterwrap = document.querySelector('#filter-panel')
+            const exp = document.querySelector('#expand-filter')
+            const toggleBtn = document.querySelector('.toggle');
             let minDisplay = document.getElementById('min') || 0
             let maxDisplay = document.getElementById('max') || 0
             let range = ""
@@ -173,7 +178,7 @@
 
             for(let i = 0; i < wishlistBtn.length; i++){
                 wishlistBtn[i].addEventListener('click', function(e){
-                    // this.children[0].style.color = '#78b144'
+                    this.children[0].style.color = '#78b144'
                     fetch(`/api/wishlist/${this.dataset.id}`,{
                         method: 'put',
                     })
@@ -182,6 +187,16 @@
                     .catch(err=> console.log(err))
                 })
             }
+
+            //slider
+            toggleBtn.onclick = function(){
+            productWrap.classList.toggle('active');
+            filterwrap.classList.toggle('active');
+           }
+           exp.onclick  = function(){
+            productWrap.classList.toggle('active');
+            filterwrap.classList.toggle('active');
+           }
         </script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

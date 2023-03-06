@@ -39,14 +39,13 @@ app.use(
 );
 
 app.use('/', indexRouter); 
-app.get('*', (req, res) => res.render('404'));
+app.get('*', (req, res) => res.render('common/404'));
 
 //DTABASE CONNECTION CODE
 function connectDataBase(){
   mongoose
   .connect(process.env.DATABASE_URL)
   .then(() => {
-    console.log("Atlas is connnected");
     app.listen(PORT, () => {
       console.log(`server running on port ${PORT}`)
     });
