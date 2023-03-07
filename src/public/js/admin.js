@@ -8,11 +8,11 @@ let messageWrap = document.getElementById('message-wrap');
 let errMessage = document.getElementById('messagevalue')
 
 //MESSAGE WRAPPER
-confirmBox.style.display = 'none';
-messageWrap.style.display = 'none';
+if(confirmBox)confirmBox.style.display = 'none';
+if(messageWrap)messageWrap.style.display = 'none';
 
 //CRATION OF VALIDATION MESSAGE
-validateBtn.onclick = ()=>{
+if(validateBtn)validateBtn.onclick = ()=>{
     let formFeild = document.querySelectorAll('.form-feild');
     let messages = [];
     formFeild.forEach(inputs=>{
@@ -42,14 +42,13 @@ function sendMessage(messages){
 }
 
 //CONFIRM BOX WRAPPER CLOSE
-confirmBoxCloseBtn.onclick = ()=>{
+if(confirmBoxCloseBtn)confirmBoxCloseBtn.onclick = ()=>{
     confirmBox.style.display = 'none';
 }
 //admin emplyee profile edit
 const toggleBtn = document.getElementById('toggle-btn');
 const sidebar = document.getElementById('sidebar');
 const main = document.getElementById('adminMain');
-
 toggleBtn.onclick = function () {
   sidebar.classList.toggle('sidebar-active');
   main.classList.toggle('sidebar-active');

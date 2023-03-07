@@ -251,7 +251,7 @@
                 let url = form.action.split('/').pop()
                 url = `/admin/coupon/delete/${url}`
                 submitBtn.style.display = 'none'
-                alertMessage.innerText = "Are you sure to delete coupon?"
+                alertMessage.innerText = "Are you sure to delete?"
                 confirmBox.style.display = 'flex    '
                 deleteConfBtn.style.display = 'block'
                     deleteConfBtn.onclick = ()=>{
@@ -272,7 +272,7 @@
                 let conf = await validateFormInp();
 
                 if (conf) {
-                    alertMessage.innerText = "Are you sure to create coupon?"
+                    alertMessage.innerText = "Are you sure to create?"
                     deleteConfBtn.style.display = 'none'
                     messageBox.style.display = 'none'
                     submitBtn.style.display = 'block'
@@ -313,7 +313,7 @@
 
                 let conf = validateFormInp()
                 if (conf) {
-                    alertMessage.innerText = "Are you sure to update coupon?"
+                    alertMessage.innerText = "Are you sure to update?"
                     deleteConfBtn.style.display = 'none'
                     messageBox.style.display = 'none'
                     submitBtn.style.display = 'block'

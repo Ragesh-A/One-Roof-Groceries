@@ -111,6 +111,7 @@
 
         <script src="https://kit.fontawesome.com/6819033383.js" crossorigin="anonymous"></script>
         <script src="/js/main.js"></script>
+        <script src="/js/admin.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             const ctx = document.getElementById('myChart');
@@ -125,7 +126,6 @@
             fetch('/api/admindashboard')
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data, 868767);
                     employessCount.innerText = data.totalIncome - data.salesReturns
                     salesCount.innerText = data.totalIncome
                     adminCount.innerText = data.salesReturns
@@ -161,13 +161,11 @@
                     })
                     var xValues = [];
                     var yValues = [];
-                    let test=data.returnsReports
-                    test.forEach(item=>{
+                    let test = data.returnsReports
+                    test.forEach(item => {
                         xValues.unshift(item._id)
                         yValues.unshift(item.amount)
                     })
-                    console.log(test);
-                    
 
                     new Chart(ctx2, {
                         type: "bar",
@@ -187,16 +185,9 @@
                         },
 
                     });
-
-
-
-
-
-
                 }).catch(err => {
                     console.log(err);
                 })
-            console.log(weeklySales);
         </script>
 
 </body>

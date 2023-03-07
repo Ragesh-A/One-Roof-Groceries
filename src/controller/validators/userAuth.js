@@ -2,7 +2,7 @@ const { check, validationResult } = require('express-validator')
 
 exports.validateSignupRequest = [
     check('name', 'name must  at least five character').notEmpty().isLength({ min: 5 }),
-    check('phone', 'Phone number Should be valid').notEmpty().isLength({ min: 10 }),
+    check('phone', 'Phone number Should be valid').notEmpty().isLength({ min: 10, max: 10 }),
     check('email', 'email is required').notEmpty().isEmail(),
     check('password', 'password should be at least five character').notEmpty().isLength({ min: 2 }),
     check('confirmpassword', 'both password should be equal').notEmpty().isLength({ min: 2 })
