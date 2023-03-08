@@ -39,7 +39,7 @@ app.use(
 );
 
 app.use('/', indexRouter); 
-app.get('*', (req, res) => res.render('common/404'));
+app.get('*', (req, res) => res.render('common/404',{err: req.flash("err")}));
 
 //DTABASE CONNECTION CODE
 function connectDataBase(){
