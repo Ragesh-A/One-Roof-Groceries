@@ -113,7 +113,7 @@
                                     <ul>
                                         <% categoryList.forEach(category=>{%>
                                             <li class="category-item">
-                                                <a href="<%= %>q=<%= category._id %>">
+                                                <a href="/search?category=<%= category._id %>">
                                                 
                                                 <label for="<%=category._id%>">
                                                     <%=category.name%>
@@ -124,7 +124,7 @@
                                             <%})%>
                                     </ul>
                                 </div>
-                                <div class="filter-items">
+                                <!-- <div class="filter-items">
                                     <h5 class="fiter-name">PRICE</h5>
                                     <div class="filter-price-dispaly-wrap flex">
                                         <label for="min">min</label>
@@ -136,7 +136,7 @@
                                         <div class="progres"></div>
                                     </div>
                                     <input type="range" name="price-range" id="price-range">
-                                </div>
+                                </div> -->
                             </div>
                         </form>
                     </aside>
