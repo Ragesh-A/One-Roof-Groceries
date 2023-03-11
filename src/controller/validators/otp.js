@@ -48,23 +48,5 @@ const email = {
   
     });
   },
-  // sendUrl: (email, token) => {
-  //   return new Promise((resolve, reject)=>{
-  //     const mailOption = {
-  //       from: `${appName} ${process.env.EMAIL}`,
-  //       to: email,
-  //       subject: 'Reset your password',
-  //       html: `<h4> Click the link to reset your password </h4> <br/>
-  //       <a href="${appUrl}/reset-password/${token}" >Reset Password</a>`,
-  //     };
-  //     transporter.sendMail(mailOption, (err, info)=>{
-  //       if (err) {
-  //         reject(err);
-  //       } else {
-  //         resolve();
-  //       }
-  //     });
-  //   });
-  // },
 };
 module.exports = email;

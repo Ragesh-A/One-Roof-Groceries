@@ -227,14 +227,10 @@ exports.createOrdersession = async (req, res, next) => {
     //IF COUPON APPLIED
     if (req.session.coupon) {
       let te = totalPrice * (req.session.coupon.discount / 100);
-      // console.log('te' + te);
       if (te > req.session.coupon.maxdiscountedAmount) {
         te = req.session.coupon.maxdiscountedAmount;
       }
-      // console.log('TOTAL PRICE: ' + totalPrice);
       totalPrice -= te;
-      // console.log('TOTAL after discount PRICE: ' + totalPrice);
-      // console.log('TOTAL discount: ' + te);
     }
     let actuallAmount = totalPrice;
 
@@ -251,10 +247,7 @@ exports.createOrdersession = async (req, res, next) => {
         walletAmt = 0;
       }
       if (balance < 0) {
-        //  const z = await reduceWallet(req.user._id, Math.abs(balance));
-        // console.log(totalPrice + '+' + Math.abs(balance));
         wallet_amount_used = totalPrice;
-        // console.log('wallet used:' + wallet_amount_used);
         walletAmt = Math.abs(balance);
         totalPrice = 0;
       }

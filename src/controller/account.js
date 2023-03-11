@@ -1,51 +1,3 @@
-
-/*
-const updateOtp = async (req, res) => {
-  User.findOne({ email: req.body.email }).exec((err, user) => {
-    if (user) {
-      generateOtp(req.body.email).then((otp) => {
-        console.log(otp);
-        req.session.otp = otp;
-
-        res.status(201).json({ message: 'otp send' });
-      });
-    } else {
-      res.status(400).json({ message: 'No user Found' });
-    }
-  });
-};
-
-
-const signup = async (req, res) => {
-  try {
-
-    if (req.message){
-      return res.render('signup', { message: req.message.err });
-    } 
-
-    let user = await User.findOne({ email: req.body.email });
-    if (user) {
-      req.session.message = 'user already registered';
-      return res.redirect('/account/signup');
-    }
-    let otp = await generateOtp(req.body.email);
-    req.body.otp = otp;
-    console.log(otp);
-    req.session.user = req.body;
-    res.render('otp', { message: req.session.message });
-  } catch (error) {
-    res.redirect('/account/signup');
-  }
-};
-
-
-*/
-
-
-
-
-
-
 //============ RENDER PAGES ================ 
 
 const renderSignup = (req, res)=>{
@@ -89,7 +41,6 @@ module.exports = {
   renderLogin,
   renderSignup,
   renderMyOrder,
-  // updateOtp,
   renderAccount,
   renderEditAccount,
   renderWallet,

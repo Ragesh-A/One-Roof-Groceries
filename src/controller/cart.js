@@ -170,11 +170,6 @@ const checkout = async (req, res) => {
   }
 };
 
-//CANCEL ORDER
-// const cancelOrder = async(req, res)=>{
-
-// }
-
 //  MIDDLEWARE FOR GETTING THE AMOUNT OF CART ITEMS
 const getCartAmount = (req, res, next) => {
   try {
@@ -290,7 +285,6 @@ module.exports = {
   getCartAmount,
   renderOrderConfirm,
   renderConfirmPurchase,
-  // cancelOrder
   getWishlist,
   addToWishlist,
 };

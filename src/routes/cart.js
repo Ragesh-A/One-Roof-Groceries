@@ -73,7 +73,7 @@ router.post(
   order.createOrder,
   product.reduceStock
 );
-///cart/order/return/<%=order._id %>
+
 //RENDER CONFIRMATION PAGE || THANKS PAGE
 router.get(
   '/buy/thankyou/',
@@ -102,5 +102,5 @@ router.get(
   order.returnOrder
 
 )
-// router.post('/delete/:id', userAuth.requireSignin, product.getProduct);
+
 module.exports = router;

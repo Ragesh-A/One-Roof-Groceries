@@ -5,14 +5,12 @@ const mail = require('./validators/otp');
 const bcrypt = require('bcrypt');
 const { sendOtp } = require('./validators/otp');
 
-
 exports.signup = async (req, res) => {
   try {
-
-    if (req.message){
+    if (req.message) {
       console.log(req.message);
       return res.render('signup', { message: req.message.err });
-    } 
+    }
 
     let user = await User.findOne({ email: req.body.email });
     if (user) {
@@ -30,10 +28,9 @@ exports.signup = async (req, res) => {
   }
 };
 
-exports.createAccount = async(req, res) => {
+exports.createAccount = async (req, res) => {
   try {
     if (req.session.user.otp == req.body.otp) {
-
       let password = await bcrypt.hash(req.session.user.password, 10);
 
       const _user = new User({
@@ -43,11 +40,11 @@ exports.createAccount = async(req, res) => {
         hash_password: password,
         role: 'user',
         active: true,
-        address:{
+        address: {
           name: req.session.user.name,
           phone: req.session.user.phone,
-          email: req.session.user.email
-        }
+          email: req.session.user.email,
+        },
       });
       _user.save();
       const token = createToken(_user);
@@ -64,31 +61,25 @@ exports.signin = async (req, res) => {
   if (req.message) {
     res.render('signin', { message: req.message.err });
   } else {
-    User.findOne({ email: req.body.email }).exec( async (err, user) => {
+    User.findOne({ email: req.body.email }).exec(async (err, user) => {
       if (err) res.status(400).json({ err });
       if (user) {
         let t = await user.authenticate(req.body.password);
-        
+
         if (t) {
           if (user.active) {
             const token = createToken(user);
-            res
-              .cookie('Authorization', `Bearer ${token}`)
-              .redirect('/');
+            res.cookie('Authorization', `Bearer ${token}`).redirect('/');
           } else {
             res
               .status(403)
               .render('signin', { message: 'Your account has been BANNED!' });
           }
         } else {
-          res
-            .status(400)
-            .render('signin', { message: 'wrong email or password' });
+          res.render('signin', { message: 'wrong email or password' });
         }
       } else {
-        res
-          .status(400)
-          .render('signin', { message: 'wrong email or password' });
+        res.render('signin', { message: 'wrong email or password' });
       }
     });
   }
@@ -105,9 +96,8 @@ exports.updateOtp = async (req, res) => {
   User.findOne({ email: req.body.email }).exec((err, user) => {
     if (user) {
       sendOtp(req.body.email).then((otp) => {
-        console.log(otp);
         req.session.otp = otp;
-        res.status(201).json({ message: 'otp send' });
+        res.status(200).json({ message: 'otp send' });
       });
     } else {
       res.status(200).json({ message: 'No user Found' });
@@ -142,6 +132,7 @@ exports.changePassword = async (req, res) => {
         { hash_password: password }
       ).exec((err, data) => {
         if (err) {
+          req.flash('error', 'error while updating password');
           res.status(400).redirect('/err');
         }
         if (data) {
@@ -149,11 +140,11 @@ exports.changePassword = async (req, res) => {
         }
       });
     } else {
-      console.log('false');
+      req.flash('error', 'password should be at least 7 characters');
       res.redirect('/err');
     }
   } catch (error) {
-    console.log('false');
+    req.flash('error', error.message);
     res.redirect('/err');
   }
 };
