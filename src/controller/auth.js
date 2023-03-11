@@ -51,7 +51,7 @@ exports.createAccount = async(req, res) => {
       });
       _user.save();
       const token = createToken(_user);
-      res.cookie('Authorization', `Bearer ${token}`).status(200).redirect('/');
+      res.cookie('Authorization', `Bearer ${token}`).redirect('/');
     }
   } catch (error) {
     console.log(error);
@@ -74,7 +74,6 @@ exports.signin = async (req, res) => {
             const token = createToken(user);
             res
               .cookie('Authorization', `Bearer ${token}`)
-              .status(200)
               .redirect('/');
           } else {
             res
