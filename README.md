@@ -7,7 +7,7 @@
   <br>
 </h1>
 
-<h4 align="center">One Roof Groceries is an sample ecommerce website that sells groceries and other household items online<a href="https://www.oneroofgroceries.store/" target="_blank">one Roof Groceries</a>.</h4>
+<h4 align="center">One Roof Groceries is an sample ecommerce website that sells groceries and other household items online <a href="https://www.oneroofgroceries.store/" target="_blank">one Roof Groceries</a>.</h4>
 
 
 
@@ -32,6 +32,22 @@ $ npm install
 
 # Run the app
 $ npm start
+```
+
+## env 
+
+```
+Port = 8000
+JWT_KEY = 'your key'
+SECRECT = your key
+ACCOUNT_ID = your key
+AUTH_TOKEN = your key
+APP_PASS = google app password
+APP_EMAIL = google email id
+APP_NAME = One Roof Groceries
+RAZOR_PAY_ID = razor pay id
+RAZOR_PAY_SCERET = razor pay sceret
+NEW_DATABASE_URL = 'monogdb connection URL'
 ```
 
 ## figma
