@@ -113,7 +113,7 @@
                                     <ul>
                                         <% categoryList.forEach(category=>{%>
                                             <li class="category-item">
-                                                <a href="/search?category=<%= category._id %>">
+                                                <a href="<%=url.replace('category=', '')%>&category=<%= category._id %>">
                                                 
                                                 <label for="<%=category._id%>">
                                                     <%=category.name%>
@@ -158,12 +158,9 @@
             let pageBtn = document.getElementById('pageBtn');
               searchForm.addEventListener('submit', function(event) {
              event.preventDefault()
-                console.log(searchInp.value);
-                console.log(searchInp, maxDisplay, minDisplay)
                 if (searchInp.value != '') {
                     let max = /*maxDisplay.value ||*/10000
                     let min = /*minDisplay.value ||*/ 0
-                    console.log(max, min)
                    
                     location.href = `/search?q=${searchInp.value}&min=${min}&max=${max}&page=${page}&limit=${20}`
                     

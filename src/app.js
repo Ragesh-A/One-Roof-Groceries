@@ -44,7 +44,7 @@ app.get('*', (req, res) => res.render('common/404',{err: req.flash("err")}));
 //DTABASE CONNECTION CODE
 function connectDataBase(){
   mongoose
-  .connect(process.env.NEW_DATABASE_URL)
+  .connect(process.env.DATABASE_URL)
   .then(() => {
     app.listen(PORT, () => {
       console.log(`server running on port ${PORT}`)
