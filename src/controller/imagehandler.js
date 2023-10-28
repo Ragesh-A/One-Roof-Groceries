@@ -30,6 +30,11 @@ const categoryImageStorage = multer.diskStorage({
 const productImageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const productPath = path.join(productDestination, req.body.category);
+    fs.mkdir(productPath, { recursive: true }, (err) => {
+      if (err) {
+        return cb(err, null);
+      }
+    })
     cb(null, productPath);
   },
   filename: (req, file, cb) => {
