@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <a href="https://www.oneroofgroceries.store/"><img src="https://www.oneroofgroceries.store/images/logo/logo.png" alt="oneroofgroceries" width="200"></a>
+  <a href="https://www.oneroofgroceries.store/"><img src="https://oneroofgroceries.store/images/logo/logo.png" alt="oneroofgroceries" width="200"></a>
   <br>
   One Roof Groceries
   <br>
